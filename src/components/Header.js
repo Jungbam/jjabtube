@@ -48,10 +48,10 @@ const Header = () => {
           ) : (
             <>
               <NavLink to="/signIn" style={{ textDecoration: "none" }}>
-                <button onClick={() => {}}>로그인</button>
+                <button>로그인</button>
               </NavLink>
               <NavLink to="/signUp" style={{ textDecoration: "none" }}>
-                <button onClick={() => {}}>회원가입</button>
+                <button>회원가입</button>
               </NavLink>
             </>
           )}

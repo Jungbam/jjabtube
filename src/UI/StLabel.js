@@ -34,4 +34,7 @@ export const StSecondaryLabel = styled.button`
   background-color: ${(props) => props.theme.colors.gray};
   color: ${(props) => props.theme.colors.black};
   display: block;
+  &:hover {
+    background-color: rgb(171, 171, 171);
+  }
 `;
