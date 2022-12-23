@@ -57,3 +57,4 @@ const signSlice = createSlice({
 });
 
 export default signSlice.reducer;
+export const { logOut } = signSlice.actions;

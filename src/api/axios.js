@@ -1,6 +1,5 @@
+import axios from "axios";
 import { Cookies } from "react-cookie";
-
-const { default: axios } = require("axios");
 
 const cookie = new Cookies();
 
