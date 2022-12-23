@@ -1,10 +1,15 @@
 import React, { useEffect } from "react";
 import ReactPlayer from "react-player";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { getDetailVideo } from "../../redux/modules/videoSlice";
 
 const Detail = () => {
-  const id = useParams();
-  useEffect(() => {}, []);
+  const { videoId } = useParams();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getDetailVideo(videoId));
+  }, []);
 
   return (
     <section>

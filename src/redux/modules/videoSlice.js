@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { client } from "../../api/axios";
 
 export const searchLabel = createAsyncThunk(
   "videoSlice/searchLabel",
@@ -31,6 +32,7 @@ export const getDetailVideo = createAsyncThunk(
   "videoSlice/getDetailVideo",
   async (videoId, thunkAPI) => {
     try {
+      const result = client.get(`/post/${videoId}`);
       return thunkAPI.rejectWithValue();
     } catch (err) {}
   }
