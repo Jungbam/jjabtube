@@ -6,13 +6,19 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./redux/store/store";
 import GlobalFont from "./styles/fonts/font";
+import GlobalStyle from "./styles/GlobalStyle";
+import theme from "./styles/theme";
+import { ThemeProvider } from "styled-components";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <React.StrictMode>
-      <GlobalFont />
-      <App />
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <GlobalFont />
+        <App />
+      </ThemeProvider>
     </React.StrictMode>
   </Provider>
 );
