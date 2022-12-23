@@ -1,8 +1,8 @@
+import axios from "axios";
 import { Cookies } from "react-cookie";
 
-const { default: axios } = require("axios");
-
 const cookie = new Cookies();
+
 export const client = axios.create({
   baseURL: process.env.REACT_APP_SERVER,
 });
