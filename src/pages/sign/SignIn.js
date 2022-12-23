@@ -1,7 +1,9 @@
-import React,{useState} from "react";
-import { Link } from 'react-router-dom';
+import React,{useState, useEffect} from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import StButton from './../../UI/StButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { __logIn } from '../../redux/modules/signSlice';
 
 const SignIn = () => {
 
@@ -9,20 +11,36 @@ const SignIn = () => {
     email: "",
     password: "",
   })
+  const {isLogedIn} = useSelector((state) => state.signSlice);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const ChangeInputHandler = (e) => {
     const { name, value } = e.target;
     setInput({...input, [name]: value});
   }
-  console.log(input);
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    dispatch(__logIn(input));
+  }
+
+  console.log(isLogedIn);
+
+  useEffect(() => {
+    if(isLogedIn){
+      alert("로그인 성공");
+      navigate("/");
+    }
+  }, [isLogedIn]);
 
   return (
   <StWrapper>
-    <StForm>
+    <StForm onSubmit={onSubmitHandler}>
       <h2>로그인</h2>
       <StInputContainer>
         <StFormInput placeholder='이메일' name='email' onChange={ChangeInputHandler}></StFormInput>
-        <StFormInput placeholder='비밀번호' name='password' type="password" onChange={ChangeInputHandler}></StFormInput>
+        <StFormInput autoComplete='off'placeholder='비밀번호' name='password' type="password" onChange={ChangeInputHandler}></StFormInput>
       </StInputContainer>
       <StBtnContainer>
         <StButton mode={"pr"}>로그인</StButton>
