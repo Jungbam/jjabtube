@@ -79,7 +79,9 @@ const StHeaderContainer = styled.div`
   justify-content: space-between;
   width: 90%;
 `;
-const StInput = styled.input``;
+const StInput = styled.input`
+  height: 2.5rem;
+`;
 const StSearchBox = styled.div`
   display: flex;
 `;
