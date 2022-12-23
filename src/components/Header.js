@@ -47,10 +47,10 @@ const Header = () => {
             <button onClick={() => dispatch(logOut())}>로그아웃</button>
           ) : (
             <>
-              <NavLink to="/signIn" style={{ textDecoration: "none" }}>
+              <NavLink to="/signin" style={{ textDecoration: "none" }}>
                 <button>로그인</button>
               </NavLink>
-              <NavLink to="/signUp" style={{ textDecoration: "none" }}>
+              <NavLink to="/signup" style={{ textDecoration: "none" }}>
                 <button>회원가입</button>
               </NavLink>
             </>
