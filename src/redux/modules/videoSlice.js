@@ -32,9 +32,30 @@ export const getDetailVideo = createAsyncThunk(
   "videoSlice/getDetailVideo",
   async (videoId, thunkAPI) => {
     try {
-      const result = client.get(`/post/${videoId}`);
+      // const result = client.get(`/post/${videoId}`);
+      // if (result.status === 2000) {
+      //   return thunkAPI.fulfillWithValue(result.data)
+      // } else {
+      //   // #404 에러 처리
+      // }
+      const result = {
+        post: {
+          postId: videoId,
+          title: "String",
+          view: 2,
+          content: "String",
+          origVid: "https://www.youtube.com/watch?v=d9dUqJEl6Mk",
+          tag: "영화",
+          updatedAt: "2022-12-23",
+          nickname: "닉네임",
+          profile:
+            "https://cdn.crowdpic.net/list-thumb/thumb_l_4291713E6EC8D22461618B2107D30880.jpg",
+        },
+      };
+      return thunkAPI.fulfillWithValue({ ...result });
+    } catch (err) {
       return thunkAPI.rejectWithValue();
-    } catch (err) {}
+    }
   }
 );
 export const deleteVideo = createAsyncThunk(
@@ -54,7 +75,9 @@ export const patchVideo = createAsyncThunk(
   }
 );
 
-const initialState = {};
+const initialState = {
+  detailViedeo: null,
+};
 const videoSlice = createSlice({
   name: "videoSlice",
   initialState,
@@ -73,7 +96,9 @@ const videoSlice = createSlice({
     [getAllVideo.rejected]: (state, action) => {},
 
     [getDetailVideo.pending]: (state) => {},
-    [getDetailVideo.fulfilled]: (state, action) => {},
+    [getDetailVideo.fulfilled]: (state, action) => {
+      state.detailViedeo = action.payload.post;
+    },
     [getDetailVideo.rejected]: (state, action) => {},
 
     [deleteVideo.pending]: (state) => {},

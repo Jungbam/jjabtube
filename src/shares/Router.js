@@ -35,5 +35,5 @@ const Router = () => {
 
 export default Router;
 const StBox = styled.div`
-  height: 90vh;
+  min-height: 90vh;
 `;
