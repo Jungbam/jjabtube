@@ -1,6 +1,64 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { client } from "../../api/axios";
 
+const allVideos = {
+  posts: [
+    {
+      postId: 1,
+      title: "ㅋㅋㅋ",
+      thumbnail:
+        "https://search.pstatic.net/common?type=f&size=210x296&quality=75&direct=true&src=https%3A%2F%2Fs.pstatic.net%2Fmovie.phinf%2F20121105_238%2F1352106839172YYGry_JPEG%2Fmovie_image.jpg",
+      compVid: "https://www.youtube.com/watch?v=P1rpBQHMpro",
+      nickname: "String",
+      createdAt: "String",
+    },
+    {
+      postId: 2,
+      title: "젭 이런 개같은",
+      thumbnail:
+        "https://search.pstatic.net/common?type=f&size=210x296&quality=75&direct=true&src=https%3A%2F%2Fs.pstatic.net%2Fmovie.phinf%2F20111222_204%2F1324527172471MFCPN_JPEG%2Fmovie_image.jpg",
+      compVid: "https://www.youtube.com/watch?v=mpIMW4WWmuQ",
+      nickname: "String",
+      createdAt: "String",
+    },
+    {
+      postId: 3,
+      title: "심심해",
+      thumbnail:
+        "https://search.pstatic.net/common?type=f&size=210x296&quality=75&direct=true&src=https%3A%2F%2Fs.pstatic.net%2Fmovie.phinf%2F20210528_277%2F1622186630686K5hnU_JPEG%2Fmovie_image.jpg",
+      compVid: "https://www.youtube.com/watch?v=05iJK4Ug4rU",
+      nickname: "String",
+      createdAt: "String",
+    },
+    {
+      postId: 4,
+      title: "API가",
+      thumbnail:
+        "https://search.pstatic.net/common?type=f&size=210x296&quality=75&direct=true&src=https%3A%2F%2Fs.pstatic.net%2Fmovie.phinf%2F20190328_130%2F1553738231369vV0Uh_JPEG%2Fmovie_image.jpg",
+      compVid: "https://www.youtube.com/watch?v=y5s2PGU5IXc",
+      nickname: "String",
+      createdAt: "String",
+    },
+    {
+      postId: 5,
+      title: "서버가 필요해",
+      thumbnail:
+        "https://search.pstatic.net/common?type=f&size=210x296&quality=75&direct=true&src=https%3A%2F%2Fs.pstatic.net%2Fmovie.phinf%2F20210430_210%2F1619758147201EvVcq_JPEG%2Fmovie_image.jpg",
+      compVid: "https://www.youtube.com/watch?v=G1JQd78ZJ2I",
+      nickname: "String",
+      createdAt: "String",
+    },
+    {
+      postId: 6,
+      title: "뭐지",
+      thumbnail:
+        "https://search.pstatic.net/common?type=f&size=210x296&quality=75&direct=true&src=https%3A%2F%2Fs.pstatic.net%2Fmovie.phinf%2F20111222_204%2F1324527172471MFCPN_JPEG%2Fmovie_image.jpg",
+      compVid: "https://www.youtube.com/watch?v=Nr2XeOmjCH8",
+      nickname: "String",
+      createdAt: "String",
+    },
+  ],
+};
 export const searchLabel = createAsyncThunk(
   "videoSlice/searchLabel",
   async (label, thunkAPI) => {
@@ -16,7 +74,9 @@ export const postVideo = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       return thunkAPI.rejectWithValue();
-    } catch (err) {}
+    } catch (err) {
+      return thunkAPI.rejectWithValue();
+    }
   }
 );
 
@@ -24,8 +84,17 @@ export const getAllVideo = createAsyncThunk(
   "videoSlice/getAllVideo",
   async (getAll, thunkAPI) => {
     try {
+      // const result = client.get("/post");
+      // if (result.status === 200) {
+      //   return thunkAPI.rejectWithValue(result.data);
+      // } else {
+      //   return thunkAPI.rejectWithValue();
+      // }
+      console.log("dispatch");
+      return thunkAPI.fulfillWithValue(allVideos.posts);
+    } catch (err) {
       return thunkAPI.rejectWithValue();
-    } catch (err) {}
+    }
   }
 );
 export const getDetailVideo = createAsyncThunk(
@@ -33,7 +102,7 @@ export const getDetailVideo = createAsyncThunk(
   async (videoId, thunkAPI) => {
     try {
       // const result = client.get(`/post/${videoId}`);
-      // if (result.status === 2000) {
+      // if (result.status === 200) {
       //   return thunkAPI.fulfillWithValue(result.data)
       // } else {
       //   // #404 에러 처리
@@ -76,6 +145,7 @@ export const patchVideo = createAsyncThunk(
 );
 
 const initialState = {
+  allVideos: [],
   detailViedeo: null,
 };
 const videoSlice = createSlice({
@@ -92,7 +162,10 @@ const videoSlice = createSlice({
     [postVideo.rejected]: (state, action) => {},
 
     [getAllVideo.pending]: (state) => {},
-    [getAllVideo.fulfilled]: (state, action) => {},
+    [getAllVideo.fulfilled]: (state, action) => {
+      console.log(action);
+      state.allVideos = action.payload;
+    },
     [getAllVideo.rejected]: (state, action) => {},
 
     [getDetailVideo.pending]: (state) => {},
