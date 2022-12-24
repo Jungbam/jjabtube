@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { getDetailVideo } from "../../redux/modules/videoSlice";
+import Comment from "./el/Comment";
 
 const commentList = [
   { coment: "hi" },
@@ -64,7 +65,7 @@ const Detail = () => {
           {openComment && (
             <StCommentContainer>
               {commentList.map((el) => {
-                return <p>{el.coment}</p>;
+                return <Comment>{el.coment}</Comment>;
               })}
             </StCommentContainer>
           )}
@@ -115,4 +116,6 @@ const StInfoContent = styled.div`
 const StCommentContainer = styled.div`
   width: 80%;
   margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 12px;
 `;
