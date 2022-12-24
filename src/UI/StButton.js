@@ -28,7 +28,7 @@ const StPrimaryLgButton = styled.button`
   color: white;
   border: none;
   border-radius: 5px;
-  background-color: ${(props) => props.theme.colors.red};
+  background-color: ${(props) => props.theme.colors.blue};
 `;
 
 const StSecondaryLgButton = styled.button`
