@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 const Player = ({ video }) => {
   const [play, setPlay] = useState(false);
+
   return (
     <StPlayerAll>
       <StPlyerContainer
@@ -14,15 +15,14 @@ const Player = ({ video }) => {
           <StThumbnail src={video.thumbnail} alt={video.title} />
         ) : (
           <ReactPlayer
-            url={video.compVid ?? null}
-            poster={video.thumbnail ?? null}
+            className="react-player"
+            url={video.compVid}
             width="100%"
             height="100%"
             playing={true}
-            muted={true}
+            muted={false}
             controls={true}
-            light={false}
-            pip={true}
+            // light={false}
           />
         )}
       </StPlyerContainer>
@@ -47,6 +47,7 @@ const StPlyerContainer = styled.div`
   overflow: hidden;
   &:hover {
     transform: scale(1.2);
+    z-index: 20;
   }
 `;
 
