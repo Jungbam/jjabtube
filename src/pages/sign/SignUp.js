@@ -18,10 +18,8 @@ const SignUp = () => {
     password: "",
     passwordConfirm: "",
   })
-  const {dupCheck, isSignUp} = useSelector((state) => state.signSlice);
   const dispatch = useDispatch();
   const imgRef = useRef();  
-  const navigate = useNavigate();
 
   const ChangeInputHandler = (e) => {
     const { name, value } = e.target;

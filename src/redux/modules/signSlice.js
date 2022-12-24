@@ -25,19 +25,20 @@ export const dupEmailCheck = createAsyncThunk(
 export const signUp = createAsyncThunk(
   "signSlice/signUp",
   async (formData, thunkAPI) => {
-      formData.append("emailValidate", true);
-      const response = await client.post('/signup', formData);
-      console.log(response);
+    formData.append('emailValidate', true);
+    
+    const response = await client.post('/signup', formData);
+    console.log(response);
 
-      if(response.status === 200){
-        const succeedMsg = response.data.message;
-        window.alert(succeedMsg);
-        return thunkAPI.fulfillWithValue();
-      } else {
-        const errorMsg = response.response.data.errorMessage;
-        window.alert(errorMsg);
-        return thunkAPI.rejectWithValue();
-      }
+    if(response.status === 200){
+      const succeedMsg = response.data.message;
+      window.alert(succeedMsg);
+      return thunkAPI.fulfillWithValue();
+    } else {
+      const errorMsg = response.response.data.errorMessage;
+      window.alert(errorMsg);
+      return thunkAPI.rejectWithValue();
+    }
   }
 );
 
@@ -49,6 +50,7 @@ export const logIn = createAsyncThunk(
     console.log(response);
 
     if(response.status === 200){
+      window.alert("로그인 성공");
       return thunkAPI.fulfillWithValue();
     } else {
       const errorMsg = response.response.data.errorMessage;
@@ -71,9 +73,8 @@ export const auth = createAsyncThunk(
 const initialState = {
   isLogedIn: false,
   isSignUp: false,
-  dupCheck: false,
   error: false,
-  emailValidate: false,
+  dupEmailCheck: false,
 };
 
 const signSlice = createSlice({
@@ -88,7 +89,7 @@ const signSlice = createSlice({
   extraReducers: {
     [dupEmailCheck.pending]: (state) => {},
     [dupEmailCheck.fulfilled]: (state, action) => {
-      state.emailValidate = true;
+      state.dupEmailCheck = true;
     },
     [dupEmailCheck.rejected]: (state, action) => {
       state.error = true;
