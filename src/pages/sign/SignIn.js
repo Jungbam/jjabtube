@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import StButton from './../../UI/StButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { __logIn } from '../../redux/modules/signSlice';
+import { logIn } from '../../redux/modules/signSlice';
 
 const SignIn = () => {
 
@@ -22,17 +22,10 @@ const SignIn = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    dispatch(__logIn(input));
+    dispatch(logIn(input));
   }
 
-  console.log(isLogedIn);
-
-  useEffect(() => {
-    if(isLogedIn){
-      alert("로그인 성공");
-      navigate("/");
-    }
-  }, [isLogedIn]);
+  // console.log(isLogedIn);
 
   return (
   <StWrapper>

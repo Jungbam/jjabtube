@@ -5,7 +5,7 @@ import profile from '../../assets/profile.png';
 
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { __signUp, __dupEmailCheck } from './../../redux/modules/signSlice';
+import { signUp, dupEmailCheck } from './../../redux/modules/signSlice';
 import { useSelector } from 'react-redux';
 
 const SignUp = () => {
@@ -41,8 +41,9 @@ const SignUp = () => {
     setProfileImg(profileImg);
   }
 
-  const dupEmailCheck = () => {
-    dispatch(__dupEmailCheck(input.email));
+  const __dupEmailCheck = (e) => {
+    e.preventDefault();
+    dispatch(dupEmailCheck(input.email));
   }
   
   const onSubmitHandler = (e) => {
@@ -52,20 +53,21 @@ const SignUp = () => {
     for (const property in input){
       formData.append(`${property}`, input[property]);
     }
-    formData.append("profileImg", profileImg);
-    dispatch(__signUp(formData));
-  }
 
-  useEffect(() => {
-    if(isSignUp){
-      alert("회원가입 성공");
-      navigate("/signin");
+    // Profile 이미지 처리 백엔드 완성되면 
+    // formData.append("profileImg", profileImg);
+    // console.log(formData.get('profileImg'));
+
+    for (const pair of formData.entries()) {
+      console.log(`${pair[0]}, ${pair[1]}`);
     }
-  }, [isSignUp]);
+    
+    dispatch(signUp(formData));
+  }
 
   return (
   <Wrapper>
-    <StForm onSubmit={onSubmitHandler}>
+    <StDiv>
       <h2>회원가입</h2>
       <InputContainer>
         <StImgDiv>
@@ -88,15 +90,15 @@ const SignUp = () => {
             onChange={ChangeImgHandler}/>
         <StBtnContainer>
           <StFormInput placeholder='이메일' name='email' onChange={ChangeInputHandler}></StFormInput>
-          <StDupCheckButton onClick={dupEmailCheck}>중복체크</StDupCheckButton>
+          <StDupCheckButton onClick={__dupEmailCheck}>중복체크</StDupCheckButton>
         </StBtnContainer>
         <StFormInput placeholder='닉네임' name='nickname' onChange={ChangeInputHandler}></StFormInput>
         <StFormInput autoComplete='off' placeholder='비밀번호' name='password' type="password" onChange={ChangeInputHandler}></StFormInput>
         <StFormInput autoComplete='off' placeholder='비밀번호 확인' name='passwordConfirm' type="password" onChange={ChangeInputHandler}></StFormInput>
-        
       </InputContainer>
-      <StButton mode={"pr"}>회원가입</StButton>
-    </StForm>
+      {/* 버튼 수정 */}
+      <StPrimaryLgButton onClick={onSubmitHandler}>회원가입</StPrimaryLgButton>
+    </StDiv>
   </Wrapper>);
 };
 
@@ -117,10 +119,10 @@ const InputContainer = styled.div`
   gap: 14px;
 `;
 
-const StForm = styled.form`
+const StDiv = styled.div`
   margin: 0 auto;
   width: 448px;
-  height: 700px;
+  height: 600px;
   border: 1px solid #D1D1D1;
   border-radius: 5px;
   display: flex;
@@ -171,9 +173,18 @@ const StDupCheckButton = styled.button`
   width: 65px;
   height: 56px;
   color: white;
-  background-color: ${(props) => props.theme.colors.gray};
+  background-color: ${(props) => props.theme.colors.blue};
   border: none;
   border-radius: 0 5px 5px 0;
+`;
+
+const StPrimaryLgButton = styled.button`
+  width: 320px;
+  height: 60px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  background-color: ${(props) => props.theme.colors.blue};
 `;
 
 export default SignUp;

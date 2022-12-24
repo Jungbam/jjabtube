@@ -4,49 +4,56 @@ import { Cookies } from "react-cookie";
 
 const cookie = new Cookies();
 
-export const __dupEmailCheck = createAsyncThunk(
+export const dupEmailCheck = createAsyncThunk(
   "signSlice/dupEmailCheck",
   async (email, thunkAPI) => {
-    try {
-      const response = await client.post(`/signup/emailcheck`, email);
-      window.alert(response.data);
+
+    const response = await client.post(`/signup/emailcheck`, {email});
+
+    if(response.status === 200){
+      const succeedMsg = response.data.message;
+      window.alert(succeedMsg);
       return thunkAPI.fulfillWithValue();
-    } catch (err) {
-      window.alert(err.data);
-      return thunkAPI.rejectWithValue(err);
+    } else {
+      const errorMsg = response.response.data.errorMessage;
+      window.alert(errorMsg);
+      return thunkAPI.rejectWithValue();
     }
   }
 );
 
-export const __signUp = createAsyncThunk(
+export const signUp = createAsyncThunk(
   "signSlice/signUp",
   async (formData, thunkAPI) => {
-    try {
-      const {data} = await client.post('/signup', formData);
-      // window.alert(data);
-      return thunkAPI.fulfillWithValue();
-    } catch (err) {
-      window.alert(err.data);
-      return thunkAPI.rejectWithValue(err);
-    }
+      formData.append("emailValidate", true);
+      const response = await client.post('/signup', formData);
+      console.log(response);
+
+      if(response.status === 200){
+        const succeedMsg = response.data.message;
+        window.alert(succeedMsg);
+        return thunkAPI.fulfillWithValue();
+      } else {
+        const errorMsg = response.response.data.errorMessage;
+        window.alert(errorMsg);
+        return thunkAPI.rejectWithValue();
+      }
   }
 );
 
-export const __logIn = createAsyncThunk(
+export const logIn = createAsyncThunk(
   "signSlice/logIn",
-  async (inputData, thunkAPI) => {
-    try {
-      console.log(inputData);
-      const {data} = await client.post('/login', inputData);
-      // cookie.set('token', data.token, { 
-      //   path: '/',
-      //   expires: Math.floor(Date.now() / 1000) + (60 * 60) }
-      // );
-      // window.alert(data);
+  async (loginData, thunkAPI) => {
+
+    const response = await client.post('/login', loginData);
+    console.log(response);
+
+    if(response.status === 200){
       return thunkAPI.fulfillWithValue();
-    } catch (err) {
-      window.alert(err.data);
-      return thunkAPI.rejectWithValue(err);
+    } else {
+      const errorMsg = response.response.data.errorMessage;
+      window.alert(errorMsg);
+      return thunkAPI.rejectWithValue();
     }
   }
 );
@@ -66,6 +73,7 @@ const initialState = {
   isSignUp: false,
   dupCheck: false,
   error: false,
+  emailValidate: false,
 };
 
 const signSlice = createSlice({
@@ -78,27 +86,27 @@ const signSlice = createSlice({
     },
   },
   extraReducers: {
-    [__dupEmailCheck.pending]: (state) => {},
-    [__dupEmailCheck.fulfilled]: (state, action) => {
-      state.dupEmailCheck = true;
+    [dupEmailCheck.pending]: (state) => {},
+    [dupEmailCheck.fulfilled]: (state, action) => {
+      state.emailValidate = true;
     },
-    [__dupEmailCheck.rejected]: (state, action) => {
+    [dupEmailCheck.rejected]: (state, action) => {
       state.error = true;
     },         
 
-    [__signUp.pending]: (state) => {},
-    [__signUp.fulfilled]: (state, action) => {
+    [signUp.pending]: (state) => {},
+    [signUp.fulfilled]: (state, action) => {
       state.isSignUp = true;
     },
-    [__signUp.rejected]: (state, action) => {
+    [signUp.rejected]: (state, action) => {
       state.error = true;
     },
 
-    [__logIn.pending]: (state) => {},
-    [__logIn.fulfilled]: (state, action) => {
+    [logIn.pending]: (state) => {},
+    [logIn.fulfilled]: (state, action) => {
       state.isLogedIn = true;
     },
-    [__logIn.rejected]: (state, action) => {
+    [logIn.rejected]: (state, action) => {
       state.error = true;
     },
 
