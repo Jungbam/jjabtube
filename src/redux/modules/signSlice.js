@@ -71,10 +71,12 @@ export const auth = createAsyncThunk(
 );
 
 const initialState = {
+
   isLogedIn: false,
   isSignUp: false,
   error: false,
   dupEmailCheck: false,
+
 };
 
 const signSlice = createSlice({

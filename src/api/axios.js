@@ -24,7 +24,6 @@ client.interceptors.response.use(
     const token = response.headers.get("token");
     cookie.set("token", token);
 
-    console.log("itcpt res ", response);
     return response;
   },
   function (error) {
