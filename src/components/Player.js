@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
+import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Player = ({ video }) => {
@@ -22,12 +23,17 @@ const Player = ({ video }) => {
             playing={true}
             muted={false}
             controls={true}
-            // light={false}
           />
         )}
       </StPlyerContainer>
       <StContainerCol>
-        <h1>{video.title}</h1>
+        <NavLink
+          to={`/detail/${video.postId}`}
+          style={{ textDecoration: "none" }}
+        >
+          <h1>{video.title}</h1>
+        </NavLink>
+
         <h1>작성자 : {video.nickname}</h1>
         <h1>등록일자 : {video.createdAt}</h1>
       </StContainerCol>
@@ -37,6 +43,10 @@ const Player = ({ video }) => {
 
 const StPlayerAll = styled.div`
   width: 300px;
+  &:hover {
+    transform: scale(1.2);
+    z-index: 20;
+  }
 `;
 
 const StPlyerContainer = styled.div`
@@ -45,10 +55,6 @@ const StPlyerContainer = styled.div`
   height: 200px;
   box-shadow: 0 0 6px #333;
   overflow: hidden;
-  &:hover {
-    transform: scale(1.2);
-    z-index: 20;
-  }
 `;
 
 const StThumbnail = styled.img``;
