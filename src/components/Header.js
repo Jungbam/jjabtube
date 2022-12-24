@@ -28,7 +28,7 @@ const Header = () => {
   return (
     <StHeaderWrapper>
       <StHeaderContainer>
-        <NavLink to="/signIn" style={{ textDecoration: "none" }}>
+        <NavLink to="/" style={{ textDecoration: "none" }}>
           <h1>JJabtube</h1>
         </NavLink>
         <StSearchBox>

@@ -30,7 +30,7 @@ export const auth = createAsyncThunk(
   }
 );
 const initialState = {
-  isLogedIn: false,
+  isLogedIn: true,
 };
 const signSlice = createSlice({
   name: "introSlice",

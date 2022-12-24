@@ -23,6 +23,7 @@ client.interceptors.response.use(
   function (response) {
     const token = response.headers.get("token");
     cookie.set("token", token);
+    console.log("interceptor", response);
     return response;
   },
   function (error) {
