@@ -27,7 +27,6 @@ const SignIn = () => {
     e.preventDefault();
     dispatch(logIn(input));
   }
-  console.log(process.env.REACT_APP_KAKAO_ID);
 
   return (
   <StWrapper>
@@ -58,7 +57,7 @@ const SignIn = () => {
 
 const StWrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
