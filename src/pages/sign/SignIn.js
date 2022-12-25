@@ -2,6 +2,9 @@ import React,{useState, useEffect} from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import StButton from './../../UI/StButton';
+import KakaoImg from '../../assets/kakao.png';
+import {KAKAO_AUTH_URL} from './KakaoLogin';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { logIn } from '../../redux/modules/signSlice';
 
@@ -24,8 +27,7 @@ const SignIn = () => {
     e.preventDefault();
     dispatch(logIn(input));
   }
-
-  // console.log(isLogedIn);
+  console.log(process.env.REACT_APP_KAKAO_ID);
 
   return (
   <StWrapper>
@@ -41,8 +43,17 @@ const SignIn = () => {
           <StButton mode={"second"}>회원가입</StButton>
         </Link>
       </StBtnContainer>
+      <StDivider/>
+      <StSocialContainer>
+        <a href={KAKAO_AUTH_URL}>
+          <StKakaoDiv>
+            <img src={KakaoImg} alt="카카오 로그인" width="32px" height="32px"/>
+          </StKakaoDiv>
+        </a>
+      </StSocialContainer>
     </StForm>
-  </StWrapper>);
+  </StWrapper>
+  );
 };
 
 const StWrapper = styled.div`
@@ -94,4 +105,29 @@ const StFormInput = styled.input`
   }
 `;
 
+const StKakaoDiv = styled.div`
+  background-color: rgb(251, 229, 77);
+  width: 32px;
+  height: 32px; 
+  border-radius: 70%;
+  overflow: hidden;
+  border: none;
+`;
+
+const StDivider = styled.div`
+  content: '';
+  margin: 15px 0;
+	width: 70%;
+	height: 1px;
+  background-color: #D9D9D9;
+`;
+
+const StSocialContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;  
+  
+`;
 export default SignIn;
