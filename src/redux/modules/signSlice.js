@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { client } from "../../api/axios";
 import { Cookies } from "react-cookie";
-import axios from 'axios';
 
 const cookie = new Cookies();
 
@@ -58,15 +57,19 @@ export const logIn = createAsyncThunk(
 
 export const auth = createAsyncThunk(
   "signSlice/auth",
-  async (logData, thunkAPI) => {
+  async (payload, thunkAPI) => {
+    console.log('auth!');
+
+    // 1.로그인할때 브라우저 닫을때 처리
     const response = await client.get("/auth");
-
+    console.log(response);
+    
     if(response.status === 200){
-
+      window.alert("확인 완료");
       return thunkAPI.fulfillWithValue();
     } else {
-      const errorMsg = response.response.data.errorMessage;
-      window.alert(errorMsg);
+    
+      window.alert("토큰 유효하지않음");
       return thunkAPI.rejectWithValue();
     }
   }
@@ -79,7 +82,7 @@ export const kakaoLogin = createAsyncThunk(
       // redirect uri 프론트로 연결 auth code 백엔드로 전달
       console.log(code);
       //
-      const response = await axios.get(`${process.env.REACT_APP_SERVER}/login/kakao?code=${code}`);
+      const response = await client.get(`${process.env.REACT_APP_SERVER}/login/kakao?code=${code}`);
       console.log(response);
 
       if(response.status === 200){
@@ -90,10 +93,8 @@ export const kakaoLogin = createAsyncThunk(
         console.log('kakao error');
         window.alert(response);
         return thunkAPI.rejectWithValue("kakao error");
-      // }
       }
     } catch (err) {
-      console.log("에러에러에러");
       return thunkAPI.rejectWithValue("kakao error");
     }
   }
@@ -148,15 +149,24 @@ const signSlice = createSlice({
       state.errorMsg = action.payload;
     },
 
-    [auth.pending]: (state) => {},
-    [auth.fulfilled]: (state, action) => {},
+    [auth.pending]: (state) => {
+    },
+    [auth.fulfilled]: (state, action) => {
+      state.isLogedIn = false;
+    },
     [auth.rejected]: (state, action) => {
       state.error = false;
+      state.isLogedIn = false;
       // state.errorMsg = action.payload;
     },
 
-    [kakaoLogin.pending]: (state) => {},
-    [kakaoLogin.fulfilled]: (state, action) => {},
+    [kakaoLogin.pending]: (state) => {
+      console.log('kakao login pending');
+    },
+    [kakaoLogin.fulfilled]: (state, action) => {
+      console.log('kakao login fulfilled');
+      state.isLogedIn = true;
+    },
     [kakaoLogin.rejected]: (state, action) => {
       state.error = false;
       state.errorMsg = action.payload;
