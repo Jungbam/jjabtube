@@ -7,11 +7,10 @@ const cookie = new Cookies();
 export const dupEmailCheck = createAsyncThunk(
   "signSlice/dupEmailCheck",
   async (email, thunkAPI) => {
-
     const response = await client.post(`/signup/emailcheck`, {email});
-
     if(response.status === 200){
       const fulfilledMsg = response.data.message;
+
       return thunkAPI.fulfillWithValue(fulfilledMsg);
     } else {
       const errorMsg = response.response.data.errorMessage;
@@ -23,8 +22,7 @@ export const dupEmailCheck = createAsyncThunk(
 export const signUp = createAsyncThunk(
   "signSlice/signUp",
   async (formData, thunkAPI) => {
-    formData.append('emailValidate', true);
-    
+  
     const response = await client.post('/signup', formData);
     console.log(response);
 
@@ -107,7 +105,7 @@ const initialState = {
   error: false,
   errorMsg: '',
   fulfiledMsg: '',
-  dupEmailCheck: false,
+  dupCheck: false,
 
 };
 
@@ -123,10 +121,12 @@ const signSlice = createSlice({
   extraReducers: {
     [dupEmailCheck.pending]: (state) => {},
     [dupEmailCheck.fulfilled]: (state, action) => {
-      state.dupEmailCheck = true;
+      state.dupCheck = true;
+      console.log(state.dupCheck);
       state.fulfiledMsg = action.payload;
     },
     [dupEmailCheck.rejected]: (state, action) => {
+      state.dupCheck = false;
       state.error = true;
       state.errorMsg = action.payload;
     },         

@@ -20,6 +20,7 @@ const SignUp = () => {
   })
   const dispatch = useDispatch();
   const imgRef = useRef();  
+  const {dupCheck} = useSelector((state) => state.signSlice);
 
   const changeInputHandler = (e) => {
     const { name, value } = e.target;
@@ -42,26 +43,31 @@ const SignUp = () => {
 
   const __dupEmailCheck = (e) => {
     e.preventDefault();
-    dispatch(dupEmailCheck(input.email));
+    if(input.email)
+      dispatch(dupEmailCheck(input.email));
   }
   
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    const formData = new FormData();
+    if(dupCheck){
+      const formData = new FormData();
 
-    for (const property in input){
-      formData.append(`${property}`, input[property]);
+      for (const property in input){
+        formData.append(`${property}`, input[property]);
+      }
+
+      // Profile 이미지 처리 백엔드 완성되면 
+      // formData.append("profileImg", profileImg);
+      // console.log(formData.get('profileImg'));
+
+      for (const pair of formData.entries()) {
+        console.log(`${pair[0]}, ${pair[1]}`);
+      }
+
+      formData.append('emailValidate', true);
+
+      dispatch(signUp(formData));
     }
-
-    // Profile 이미지 처리 백엔드 완성되면 
-    // formData.append("profileImg", profileImg);
-    // console.log(formData.get('profileImg'));
-
-    for (const pair of formData.entries()) {
-      console.log(`${pair[0]}, ${pair[1]}`);
-    }
-    
-    dispatch(signUp(formData));
   }
 
   return (
