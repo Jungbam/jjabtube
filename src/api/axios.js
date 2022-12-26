@@ -28,7 +28,6 @@ client.interceptors.response.use(
       cookie.set("token", token);
     }
 
-    console.log(response);
     return response;
   },
   function (error) {

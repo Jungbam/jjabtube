@@ -6,7 +6,6 @@ import SearchPost from "./ele/SearchPost";
 
 const Search = () => {
   const { searchedVideo } = useSelector((state) => state.videoSlice);
-  console.log(searchedVideo);
   const { searchValue } = useParams();
   const dispatch = useDispatch();
 

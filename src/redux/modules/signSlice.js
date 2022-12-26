@@ -7,10 +7,9 @@ const cookie = new Cookies();
 export const dupEmailCheck = createAsyncThunk(
   "signSlice/dupEmailCheck",
   async (email, thunkAPI) => {
+    const response = await client.post(`/signup/emailcheck`, { email });
 
-    const response = await client.post(`/signup/emailcheck`, {email});
-
-    if(response.status === 200){
+    if (response.status === 200) {
       const succeedMsg = response.data.message;
       window.alert(succeedMsg);
       return thunkAPI.fulfillWithValue();
@@ -25,12 +24,11 @@ export const dupEmailCheck = createAsyncThunk(
 export const signUp = createAsyncThunk(
   "signSlice/signUp",
   async (formData, thunkAPI) => {
-    formData.append('emailValidate', true);
-    
-    const response = await client.post('/signup', formData);
-    console.log(response);
+    formData.append("emailValidate", true);
 
-    if(response.status === 200){
+    const response = await client.post("/signup", formData);
+
+    if (response.status === 200) {
       const succeedMsg = response.data.message;
       window.alert(succeedMsg);
       return thunkAPI.fulfillWithValue();
@@ -45,11 +43,9 @@ export const signUp = createAsyncThunk(
 export const logIn = createAsyncThunk(
   "signSlice/logIn",
   async (loginData, thunkAPI) => {
+    const response = await client.post("/login", loginData);
 
-    const response = await client.post('/login', loginData);
-    console.log(response);
-
-    if(response.status === 200){
+    if (response.status === 200) {
       window.alert("로그인 성공");
       return thunkAPI.fulfillWithValue();
     } else {
@@ -71,12 +67,10 @@ export const auth = createAsyncThunk(
 );
 
 const initialState = {
-
   isLogedIn: false,
   isSignUp: false,
   error: false,
   dupEmailCheck: false,
-
 };
 
 const signSlice = createSlice({
@@ -95,7 +89,7 @@ const signSlice = createSlice({
     },
     [dupEmailCheck.rejected]: (state, action) => {
       state.error = true;
-    },         
+    },
 
     [signUp.pending]: (state) => {},
     [signUp.fulfilled]: (state, action) => {

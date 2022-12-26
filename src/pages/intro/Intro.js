@@ -14,8 +14,6 @@ const Intro = () => {
 
   const dispatch = useDispatch();
 
-  console.log(searchedVideo);
-
   useEffect(() => {
     dispatch(getAllVideo());
   }, []);

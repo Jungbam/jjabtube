@@ -1,48 +1,56 @@
-import React,{useState, useEffect} from "react";
-import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import StButton from './../../UI/StButton';
-import { useDispatch, useSelector } from 'react-redux';
-import { logIn } from '../../redux/modules/signSlice';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import StButton from "./../../UI/StButton";
+import { useDispatch, useSelector } from "react-redux";
+import { logIn } from "../../redux/modules/signSlice";
 
 const SignIn = () => {
-
   const [input, setInput] = useState({
     email: "",
     password: "",
-  })
-  const {isLogedIn} = useSelector((state) => state.signSlice);
+  });
+  const { isLogedIn } = useSelector((state) => state.signSlice);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const ChangeInputHandler = (e) => {
     const { name, value } = e.target;
-    setInput({...input, [name]: value});
-  }
+    setInput({ ...input, [name]: value });
+  };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatch(logIn(input));
-  }
-
-  // console.log(isLogedIn);
+  };
 
   return (
-  <StWrapper>
-    <StForm onSubmit={onSubmitHandler}>
-      <h2>로그인</h2>
-      <StInputContainer>
-        <StFormInput placeholder='이메일' name='email' onChange={ChangeInputHandler}></StFormInput>
-        <StFormInput autoComplete='off'placeholder='비밀번호' name='password' type="password" onChange={ChangeInputHandler}></StFormInput>
-      </StInputContainer>
-      <StBtnContainer>
-        <StButton mode={"pr"}>로그인</StButton>
-        <Link to ='/signup'>
-          <StButton mode={"second"}>회원가입</StButton>
-        </Link>
-      </StBtnContainer>
-    </StForm>
-  </StWrapper>);
+    <StWrapper>
+      <StForm onSubmit={onSubmitHandler}>
+        <h2>로그인</h2>
+        <StInputContainer>
+          <StFormInput
+            placeholder="이메일"
+            name="email"
+            onChange={ChangeInputHandler}
+          ></StFormInput>
+          <StFormInput
+            autoComplete="off"
+            placeholder="비밀번호"
+            name="password"
+            type="password"
+            onChange={ChangeInputHandler}
+          ></StFormInput>
+        </StInputContainer>
+        <StBtnContainer>
+          <StButton mode={"pr"}>로그인</StButton>
+          <Link to="/signup">
+            <StButton mode={"second"}>회원가입</StButton>
+          </Link>
+        </StBtnContainer>
+      </StForm>
+    </StWrapper>
+  );
 };
 
 const StWrapper = styled.div`
@@ -51,7 +59,7 @@ const StWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
 `;
 
 const StInputContainer = styled.div`
@@ -71,7 +79,7 @@ const StForm = styled.form`
   margin: 0 auto;
   width: 448px;
   height: 500px;
-  border: 1px solid ${props => props.theme.colors.gray};
+  border: 1px solid ${(props) => props.theme.colors.gray};
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -82,15 +90,15 @@ const StForm = styled.form`
 const StFormInput = styled.input`
   width: 320px;
   height: 56px;
-  color: ${props => props.theme.colors.black};
-  border: 1px solid ${props => props.theme.colors.gray};
+  color: ${(props) => props.theme.colors.black};
+  border: 1px solid ${(props) => props.theme.colors.gray};
   border-radius: 5px;
   padding-left: 10px;
   &:focus {
-    outline: 2px solid ${props => props.theme.colors.blue};
+    outline: 2px solid ${(props) => props.theme.colors.blue};
   }
-  ::placeholder{
-    color: ${props => props.theme.colors.gray};
+  ::placeholder {
+    color: ${(props) => props.theme.colors.gray};
   }
 `;
 

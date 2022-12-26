@@ -8,7 +8,6 @@ export const postComment = createAsyncThunk(
     const { comment, postId } = commentData;
     try {
       const result = await client.post(`/comment/post/${postId}`, { comment });
-      console.log(result);
       if (result.status === 200) thunkAPI.dispatch(getDetailVideo(postId));
       else thunkAPI.rejectWithValue(406);
     } catch (err) {

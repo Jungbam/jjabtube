@@ -10,7 +10,6 @@ const Comment = ({ el, videoId }) => {
   const [updating, setUpdating] = useState();
   const dispatch = useDispatch();
   const [upComment, setUpComment] = useState("");
-  console.log(videoId);
   return (
     <StWrapper>
       <StP>{el.nickname}</StP>

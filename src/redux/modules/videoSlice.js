@@ -6,7 +6,6 @@ export const searchTag = createAsyncThunk(
   async (tag, thunkAPI) => {
     try {
       const result = await client.get(`/post/search?tag=${tag}`);
-      console.log(result);
       if (result.status === 200)
         return thunkAPI.fulfillWithValue(result.data.posts);
     } catch (err) {
@@ -141,7 +140,6 @@ const videoSlice = createSlice({
 
     [searchTitle.pending]: (state) => {},
     [searchTitle.fulfilled]: (state, action) => {
-      console.log("풀필드");
       state.searchedVideo = action.payload;
     },
     [searchTitle.rejected]: (state, action) => {},
