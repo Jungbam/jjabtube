@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { logOut } from "../redux/modules/signSlice";
+import { initSearch } from "../redux/modules/videoSlice";
 
 const Header = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -13,23 +14,21 @@ const Header = () => {
 
   const enterKeyHandler = (e) => {
     if (window.event.keyCode === 13) {
-      dispatch(); // 엔터 쳤을 때 요청
       setSearchValue("");
-      navigate("/");
+      navigate(`/search/${searchValue}`);
     }
   };
 
   const enterHandler = (e) => {
-    dispatch(); // 엔터 버튼 눌렀을 때 요청
     setSearchValue("");
-    navigate("/");
+    navigate(`/search/${searchValue}`);
   };
 
   return (
     <StHeaderWrapper>
       <StHeaderContainer>
         <NavLink to="/" style={{ textDecoration: "none" }}>
-          <h1>JJabtube</h1>
+          <h1 onClick={() => dispatch(initSearch())}>JJabtube</h1>
         </NavLink>
         <StSearchBox>
           <StInput

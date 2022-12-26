@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-const Player = ({ video }) => {
+const SearchPost = ({ video }) => {
   const [play, setPlay] = useState(false);
 
   return (
@@ -33,21 +33,24 @@ const Player = ({ video }) => {
         >
           <h1>{video.title}</h1>
         </NavLink>
-
-        <h1>작성자 : {video.nickname}</h1>
-        <h1>등록일자 : {video.createdAt}</h1>
-        <h1>조회수 : {video.view}</h1>
+        <StBoxRow>
+          <p>조회수 : {video.view}</p>
+          <p>등록일자 : {video.createdAt}</p>
+        </StBoxRow>
+        <div>
+          <h2>작성자 : {video.nickname}</h2>
+          <p>{video.content}</p>
+        </div>
       </StContainerCol>
     </StPlayerAll>
   );
 };
 
+export default SearchPost;
+
 const StPlayerAll = styled.div`
-  width: 300px;
-  &:hover {
-    transform: scale(1.2);
-    z-index: 20;
-  }
+  width: 80%;
+  display: flex;
 `;
 
 const StPlyerContainer = styled.div`
@@ -57,11 +60,11 @@ const StPlyerContainer = styled.div`
   box-shadow: 0 0 6px #333;
   overflow: hidden;
 `;
-
+const StBoxRow = styled.div`
+  display: flex;
+`;
 const StThumbnail = styled.img``;
 const StContainerCol = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
-export default Player;

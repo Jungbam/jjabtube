@@ -1,19 +1,20 @@
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import Player from "../../components/Player";
+import Player from "./ele/Player";
 import { getAllVideo, searchTag } from "../../redux/modules/videoSlice";
 import { StButton, StLabel } from "../../UI/StIndex";
 import AddForm from "./ele/AddForm";
 import Modal from "./ele/Modal";
 
 const Intro = () => {
-  const { allVideos } = useSelector((state) => state.videoSlice);
+  const { allVideos, searchedVideo } = useSelector((state) => state.videoSlice);
   const { isLogedIn } = useSelector((state) => state.signSlice);
   const [modal, setModal] = useState(false);
 
   const dispatch = useDispatch();
+
+  console.log(searchedVideo);
 
   useEffect(() => {
     dispatch(getAllVideo());
@@ -24,17 +25,17 @@ const Intro = () => {
   };
 
   const searchByTagHandler = (e) => {
-    dispatch(searchTag(e.target.value));
+    dispatch(searchTag(e.target.name));
   };
 
   return (
     <section>
       <article>
-        <StLabel onClick={searchByTagHandler} name="축구">
-          축구
+        <StLabel onClick={searchByTagHandler} name="cat">
+          cat
         </StLabel>
-        <StLabel onClick={searchByTagHandler} name="Lol">
-          LoL
+        <StLabel onClick={searchByTagHandler} name="pet">
+          pet
         </StLabel>
         <StLabel onClick={searchByTagHandler} name="운동">
           운동
@@ -54,12 +55,22 @@ const Intro = () => {
         </Modal>
       )}
       <StAllVideoContainer>
-        {allVideos.map((video) => {
-          return <Player key={`player${video.postId}`} video={video} />;
-        })}
+        {searchedVideo === null ? (
+          allVideos?.map((video) => {
+            return <Player key={`player${video.postId}`} video={video} />;
+          })
+        ) : (
+          <></>
+        )}
+        {searchedVideo?.length === 0 ? (
+          <p>검색결과가 없습니다.</p>
+        ) : (
+          searchedVideo?.map((video) => {
+            return <Player key={`player${video.postId}`} video={video} />;
+          })
+        )}
       </StAllVideoContainer>
     </section>
-
   );
 };
 
@@ -72,7 +83,6 @@ const StAllVideoContainer = styled.div`
   flex-wrap: wrap;
   gap: 20px;
 `;
-
 
 const StWrap1 = styled.div`
   width: 300px;
@@ -108,4 +118,3 @@ const StNickname = styled.div`
   font-size: 1rem;
   font-weight: 500;
 `;
-

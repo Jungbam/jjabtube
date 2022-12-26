@@ -2,11 +2,25 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { client } from "../../api/axios";
 
 export const searchTag = createAsyncThunk(
-  "videoSlice/searchLabel",
+  "videoSlice/searchTag",
   async (tag, thunkAPI) => {
     try {
-      const result = await client.get(`/search/${tag}`);
-      if (result.status === 200) return thunkAPI.fulfillWithValue(result.data);
+      const result = await client.get(`/post/search?tag=${tag}`);
+      console.log(result);
+      if (result.status === 200)
+        return thunkAPI.fulfillWithValue(result.data.posts);
+    } catch (err) {
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+export const searchTitle = createAsyncThunk(
+  "videoSlice/searchTitle",
+  async (keyword, thunkAPI) => {
+    try {
+      const result = await client.get(`/post/search?keyword=${keyword}`);
+      if (result.status === 200)
+        return thunkAPI.fulfillWithValue(result.data.posts);
     } catch (err) {
       return thunkAPI.rejectWithValue();
     }
@@ -106,17 +120,31 @@ export const patchVideo = createAsyncThunk(
 );
 
 const initialState = {
-  allVideos: [],
+  allVideos: null,
   detailViedeo: null,
+  searchedVideo: null,
 };
 const videoSlice = createSlice({
   name: "videoSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    initSearch: (state, payload) => {
+      state.searchedVideo = null;
+    },
+  },
   extraReducers: {
     [searchTag.pending]: (state) => {},
-    [searchTag.fulfilled]: (state, action) => {},
+    [searchTag.fulfilled]: (state, action) => {
+      state.searchedVideo = action.payload;
+    },
     [searchTag.rejected]: (state, action) => {},
+
+    [searchTitle.pending]: (state) => {},
+    [searchTitle.fulfilled]: (state, action) => {
+      console.log("풀필드");
+      state.searchedVideo = action.payload;
+    },
+    [searchTitle.rejected]: (state, action) => {},
 
     [postVideo.pending]: (state) => {},
     [postVideo.fulfilled]: (state, action) => {},
@@ -143,4 +171,5 @@ const videoSlice = createSlice({
     [patchVideo.rejected]: (state, action) => {},
   },
 });
+export const { initSearch } = videoSlice.actions;
 export default videoSlice.reducer;
