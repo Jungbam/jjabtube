@@ -60,7 +60,8 @@ export const auth = createAsyncThunk(
   "signSlice/auth",
   async (logData, thunkAPI) => {
     try {
-      // const response = await client.get("/auth");
+      const response = await client.get("/auth");
+      console.log(response);
       return thunkAPI.rejectWithValue();
     } catch (err) {}
   }
