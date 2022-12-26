@@ -1,15 +1,27 @@
 import React from "react";
 import styled from "styled-components";
 
-const StLabel = ({ mode, children }) => {
+const StLabel = ({ mode, children, onClick, name }) => {
   const Label = () => {
     switch (mode) {
       case "pr":
-        return <StPrimaryLabel>{children}</StPrimaryLabel>;
+        return (
+          <StPrimaryLabel onClick={onClick} name={name}>
+            {children}
+          </StPrimaryLabel>
+        );
       case "second":
-        return <StSecondaryLabel>{children}</StSecondaryLabel>;
+        return (
+          <StSecondaryLabel onClick={onClick} name={name}>
+            {children}
+          </StSecondaryLabel>
+        );
       default:
-        return <StPrimaryLabel>{children}</StPrimaryLabel>;
+        return (
+          <StPrimaryLabel onClick={onClick} name={name}>
+            {children}
+          </StPrimaryLabel>
+        );
     }
   };
   return <Label />;

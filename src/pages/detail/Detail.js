@@ -1,70 +1,116 @@
 import React, { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getDetailVideo } from "../../redux/modules/videoSlice";
+import {
+  deleteVideo,
+  getDetailVideo,
+  patchVideo,
+} from "../../redux/modules/videoSlice";
+import StButton from "../../UI/StButton";
+import Comment from "./el/Comment";
 
 const commentList = [
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
+  { comment: "hi", commentId: "hh" },
+  { comment: "hi", commentId: "hh" },
+  { comment: "hi", commentId: "hh" },
+  { comment: "hi", commentId: "hh" },
+  { comment: "hi", commentId: "hh" },
+  { comment: "hi", commentId: "hh" },
+  { comment: "hi", commentId: "hh" },
+  { comment: "hi", commentId: "hh" },
+  { comment: "hi", commentId: "hh" },
+  { comment: "hi", commentId: "hh" },
+  { comment: "hi", commentId: "hh" },
+  { comment: "hi", commentId: "hh" },
+  { comment: "hi", commentId: "hh" },
 ];
 
 const Detail = () => {
-  const { videoId } = useParams();
-  const dispatch = useDispatch();
-  const [openComment, SetOpenComment] = useState(false);
+  const { isLogedIn } = useSelector((state) => state.signSlice);
   const detailVideo = useSelector((state) => state.videoSlice.detailViedeo);
+  const { videoId } = useParams();
+  const [openComment, SetOpenComment] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [updatement, setUpdatement] = useState("");
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(getDetailVideo(videoId));
+    setUpdatement(detailVideo?.content ?? "");
   }, []);
 
+  const onDeleteHandler = () => {
+    dispatch(deleteVideo(videoId));
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
+  const onPatchHandler = () => {
+    dispatch(patchVideo({ videoId, updatement }));
+  };
   return (
     <section>
       {detailVideo && (
         <>
           <StPlayerContainer>
-            <ReactPlayer
-              url={detailVideo.origVid}
-              poster=""
-              width="100%"
-              height="100%"
-              playing={true}
-              muted={true}
-              controls={true}
-              light={false}
-              pip={true}
-            />
+            <video controls width="100%" height="100%" autoPlay>
+              <source src={detailVideo?.origVid} type="video/mp4" />
+            </video>
           </StPlayerContainer>
           <StVideoInfo>
-            <StProfile src={detailVideo.profile} alt={detailVideo.title} />
+            <StProfile src={detailVideo?.profile} alt={detailVideo?.title} />
             <StInfoBox>
-              <h1>{detailVideo.title}</h1>
-              <p>{detailVideo.nickname}</p>
-              <p>{detailVideo.updatedAt}</p>
+              <h1>{detailVideo?.title}</h1>
+              <p>{detailVideo?.nickname}</p>
+              <p>{detailVideo?.updatedAt}</p>
             </StInfoBox>
             <StInfoContent>
-              <p>{detailVideo.content}</p>
+              <p>{detailVideo?.content}</p>
             </StInfoContent>
           </StVideoInfo>
+          {isLogedIn && (
+            <>
+              {updating ? (
+                <>
+                  <input
+                    type="text"
+                    value={updatement}
+                    onChange={(e) => {
+                      setUpdatement(e.target.value);
+                    }}
+                  />
+                  <StButton mode="smpr" onClick={onPatchHandler}>
+                    완료
+                  </StButton>
+                </>
+              ) : (
+                <>
+                  <StButton mode="smpr" onClick={onDeleteHandler}>
+                    삭제
+                  </StButton>
+                  <StButton mode="smpr" onClick={() => setUpdating(true)}>
+                    수정
+                  </StButton>
+                </>
+              )}
+            </>
+          )}
+
           <button onClick={() => SetOpenComment((prev) => !prev)}>
             {openComment ? "댓글 닫기" : "댓글 보기"}
           </button>
           {openComment && (
             <StCommentContainer>
-              {commentList.map((el) => {
-                return <p>{el.coment}</p>;
+              {commentList?.map((el, i) => {
+                return (
+                  <Comment
+                    key={`comment${el?.commentId}${i}`}
+                    el={el}
+                  ></Comment>
+                );
               })}
             </StCommentContainer>
           )}
@@ -115,4 +161,6 @@ const StInfoContent = styled.div`
 const StCommentContainer = styled.div`
   width: 80%;
   margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 12px;
 `;
