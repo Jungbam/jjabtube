@@ -66,7 +66,9 @@ export const auth = createAsyncThunk(
     try {
       // const response = await client.get("/auth");
       return thunkAPI.rejectWithValue();
-    } catch (err) {}
+    } catch (err) {
+      
+    }
   }
 );
 

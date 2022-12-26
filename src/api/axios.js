@@ -21,9 +21,13 @@ client.interceptors.request.use(
 // 토큰 검증, 토큰 쿠키 심기
 client.interceptors.response.use(
   function (response) {
-    const token = response.headers.get("token");
-    cookie.set("token", token);
-
+    if(response.data.token){
+      //쿠키 유효시간 1시간
+      console.log(response.data.token);
+      const token = response.data.token;
+      console.log(token);
+      cookie.set("token", token);
+    }
     return response;
   },
   function (error) {
