@@ -29,23 +29,21 @@ client.interceptors.request.use(
 // 토큰 검증, 토큰 쿠키 심기
 client.interceptors.response.use(
   function (response) {
-
     console.log("들어올때", response);
+    
     if (response.data.token) {
       const token = response.data.token;
-      cookie.set("token", token);
-    }
       // 쿠키 유효시간
       // const expires = new Date();
       // expires.setMinutes(expires.getMinutes()+60);
       // cookie.set("token", token, {expires});
-      
+      console.log("in", response.data.token);
       // 토큰 지우기
-      cookie.remove('token');
-      cookie.set("token", token);
+      cookie.set("token", response.data.token);
     }
     return response;
   },
+
   function (error) {
     if (error?.response.status === 401) {
       cookie.remove("token");

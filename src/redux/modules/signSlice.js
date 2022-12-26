@@ -38,8 +38,7 @@ export const signUp = createAsyncThunk(
 export const logIn = createAsyncThunk(
   "signSlice/logIn",
   async (loginData, thunkAPI) => {
-    const response = await client.post("/login", loginData);
-
+    
     const response = await client.post('/login', loginData);
     console.log(response);
 
@@ -121,7 +120,6 @@ const signSlice = createSlice({
     [dupEmailCheck.pending]: (state) => {},
     [dupEmailCheck.fulfilled]: (state, action) => {
       state.dupCheck = true;
-      console.log(state.dupCheck);
       state.fulfiledMsg = action.payload;
     },
     [dupEmailCheck.rejected]: (state, action) => {
@@ -158,14 +156,12 @@ const signSlice = createSlice({
     [auth.rejected]: (state, action) => {
       state.error = false;
       state.isLogedIn = false;
-      // state.errorMsg = action.payload;
+      state.errorMsg = action.payload;
     },
 
     [kakaoLogin.pending]: (state) => {
-      console.log('kakao login pending');
     },
     [kakaoLogin.fulfilled]: (state, action) => {
-      console.log('kakao login fulfilled');
       state.isLogedIn = true;
     },
     [kakaoLogin.rejected]: (state, action) => {

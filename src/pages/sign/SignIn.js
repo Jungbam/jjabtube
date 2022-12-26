@@ -23,15 +23,11 @@ const SignIn = () => {
     setInput({ ...input, [name]: value });
   };
 
-  const kakaoLoginHandler = (e) => {
-    e.preventDefault();
-    KakaoLogin();
-  }
-
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatch(logIn(input));
-    
+    navigate('/');
+  }
     return (
     <StWrapper>
       <StForm onSubmit={onSubmitHandler}>
@@ -142,4 +138,5 @@ const StSocialContainer = styled.div`
   align-items: center;  
   
 `;
+
 export default SignIn;

@@ -22,10 +22,17 @@ const KakaoLogin = () => {
   const navigate = useNavigate();
   
   // Auth code
-  const code = location.search.split('=')[1];
+  const sendAuth = async () => {
+    const code = location.search.split('=')[1];
+    const res = await dispatch(kakaoLogin(code));
 
-  useEffect( () => {
-    dispatch(kakaoLogin(code));
+    if(res.meta.requestStatus === 'fulfilled'){
+      navigate('/');
+    }
+  }
+
+  useEffect(() => {
+    sendAuth();
   }, []);
 
   return (
