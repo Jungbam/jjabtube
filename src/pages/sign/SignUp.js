@@ -18,20 +18,23 @@ const SignUp = () => {
     passwordConfirm: "",
   });
   const dispatch = useDispatch();
-  const imgRef = useRef();
+  const imgRef = useRef();  
+  const {dupCheck} = useSelector((state) => state.signSlice);
 
-  const ChangeInputHandler = (e) => {
+
+  const changeInputHandler = (e) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
   };
 
-  const ChangeImgHandler = (e) => {
+  const changeImgHandler = (e) => {
     const profileImg = e.target.files[0];
 
     // 이미지 미리보기
     const file = imgRef.current.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
+
     reader.onloadend = () => {
       setPreviewImg(reader.result);
     };
@@ -40,86 +43,73 @@ const SignUp = () => {
 
   const __dupEmailCheck = (e) => {
     e.preventDefault();
-    dispatch(dupEmailCheck(input.email));
+    if(input.email)
+      dispatch(dupEmailCheck(input.email));
   };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    const formData = new FormData();
+    if(dupCheck){
+      const formData = new FormData();
 
-    for (const property in input) {
-      formData.append(`${property}`, input[property]);
+      for (const property in input){
+        formData.append(`${property}`, input[property]);
+      }
+
+      // Profile 이미지 처리 백엔드 완성되면 
+      // formData.append("profileImg", profileImg);
+      // console.log(formData.get('profileImg'));
+
+      for (const pair of formData.entries()) {
+        console.log(`${pair[0]}, ${pair[1]}`);
+      }
+
+      formData.append('emailValidate', true);
+
+      dispatch(signUp(formData));
     }
-
-    dispatch(signUp(formData));
-  };
+  }
 
   return (
-    <Wrapper>
-      <StDiv>
-        <h2>회원가입</h2>
-        <InputContainer>
-          <StImgDiv>
-            <img
-              alt="profile"
-              src={previewImg ? previewImg : profile}
-              width="32px"
-              height="32px"
-              border-radius="50%"
-              object-fit="cover"
-            />
-          </StImgDiv>
-          <StImgLabel htmlFor="profileImg">프로필 이미지 추가</StImgLabel>
-          <StImgInput
+  <Wrapper>
+    <StForm  onSubmit={onSubmitHandler}>
+      <h2>회원가입</h2>
+      <InputContainer>
+        <StImgDiv>
+          <img
+            alt="profile"
+            src={previewImg ? previewImg : profile}
+            width="32px"
+            height="32px"
+            border-radius= "50%"
+            object-fit="cover"
+          />
+        </StImgDiv>
+        <StImgLabel htmlFor="profileImg">프로필 이미지 추가</StImgLabel>  
+          <StImgInput 
             id="profileImg"
             ref={imgRef}
             accept="image/*"
-            name="profileImg"
-            type="file"
-            onChange={ChangeImgHandler}
-          />
-          <StBtnContainer>
-            <StFormInput
-              placeholder="이메일"
-              name="email"
-              onChange={ChangeInputHandler}
-            ></StFormInput>
-            <StDupCheckButton onClick={__dupEmailCheck}>
-              중복체크
-            </StDupCheckButton>
-          </StBtnContainer>
-          <StFormInput
-            placeholder="닉네임"
-            name="nickname"
-            onChange={ChangeInputHandler}
-          ></StFormInput>
-          <StFormInput
-            autoComplete="off"
-            placeholder="비밀번호"
-            name="password"
-            type="password"
-            onChange={ChangeInputHandler}
-          ></StFormInput>
-          <StFormInput
-            autoComplete="off"
-            placeholder="비밀번호 확인"
-            name="passwordConfirm"
-            type="password"
-            onChange={ChangeInputHandler}
-          ></StFormInput>
-        </InputContainer>
-        {/* 버튼 수정 */}
-        <StPrimaryLgButton onClick={onSubmitHandler}>
-          회원가입
-        </StPrimaryLgButton>
-      </StDiv>
-    </Wrapper>
-  );
+            name='profileImg'
+            type='file'
+            onChange={changeImgHandler}/>
+        <StBtnContainer>
+          <StFormInput placeholder='이메일' name='email' onChange={changeInputHandler}></StFormInput>
+          <StDupCheckButton type='button' onClick={__dupEmailCheck}>중복체크</StDupCheckButton>
+        </StBtnContainer>
+        <StFormInput placeholder='닉네임' name='nickname' onChange={changeInputHandler}></StFormInput>
+        <StFormInput autoComplete='off' placeholder='비밀번호' name='password' type="password" onChange={changeInputHandler}></StFormInput>
+        <StFormInput autoComplete='off' placeholder='비밀번호 확인' name='passwordConfirm' type="password" onChange={changeInputHandler}></StFormInput>
+      </InputContainer>
+      {/* 버튼 수정 */}
+      <StPrimaryLgButton>회원가입</StPrimaryLgButton>
+    </StForm>
+  </Wrapper>);
 };
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -134,7 +124,7 @@ const InputContainer = styled.div`
   gap: 14px;
 `;
 
-const StDiv = styled.div`
+const StForm = styled.form`
   margin: 0 auto;
   width: 448px;
   height: 600px;
