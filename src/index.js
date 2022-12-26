@@ -13,13 +13,11 @@ import { ThemeProvider } from "styled-components";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <GlobalFont />
-        <App />
-      </ThemeProvider>
-    </React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <GlobalFont />
+      <App />
+    </ThemeProvider>
   </Provider>
 );
 
