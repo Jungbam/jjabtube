@@ -15,7 +15,8 @@ export const AuthAPI = {
 client.interceptors.request.use(
   function (config) {
     
-    console.log("itcpt request", cookie.get("token"));
+    console.log("나갈 때", config);
+
     config.headers.authorization = `Bearer ${cookie.get("token")}`;
     
     return config;
@@ -28,11 +29,12 @@ client.interceptors.request.use(
 // 토큰 검증, 토큰 쿠키 심기
 client.interceptors.response.use(
   function (response) {
-    console.log(response.data.token);
-    if(response.data.token){
-      const token = response.data.token;
-      console.log(token);
 
+    console.log("들어올때", response);
+    if (response.data.token) {
+      const token = response.data.token;
+      cookie.set("token", token);
+    }
       // 쿠키 유효시간
       // const expires = new Date();
       // expires.setMinutes(expires.getMinutes()+60);
@@ -45,13 +47,10 @@ client.interceptors.response.use(
     return response;
   },
   function (error) {
-
     if (error?.response.status === 401) {
       cookie.remove("token");
       return error;
     }
-
-    console.log("itcpt err ", error.response.data.errorMessage);
     return error;
   }
 );

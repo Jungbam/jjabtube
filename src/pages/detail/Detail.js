@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { postComment } from "../../redux/modules/commentSlice";
 import {
   deleteVideo,
   getDetailVideo,
@@ -10,42 +11,49 @@ import {
 import StButton from "../../UI/StButton";
 import Comment from "./el/Comment";
 
-const commentList = [
-  { comment: "hi", commentId: "hh" },
-  { comment: "hi", commentId: "hh" },
-  { comment: "hi", commentId: "hh" },
-  { comment: "hi", commentId: "hh" },
-  { comment: "hi", commentId: "hh" },
-  { comment: "hi", commentId: "hh" },
-  { comment: "hi", commentId: "hh" },
-  { comment: "hi", commentId: "hh" },
-  { comment: "hi", commentId: "hh" },
-  { comment: "hi", commentId: "hh" },
-  { comment: "hi", commentId: "hh" },
-  { comment: "hi", commentId: "hh" },
-  { comment: "hi", commentId: "hh" },
-];
-
 const Detail = () => {
   const { isLogedIn } = useSelector((state) => state.signSlice);
   const detailVideo = useSelector((state) => state.videoSlice.detailViedeo);
   const { videoId } = useParams();
   const [openComment, SetOpenComment] = useState(false);
   const [updating, setUpdating] = useState(false);
-  const [updatement, setUpdatement] = useState("");
-
+  const [updatement, setUpdatement] = useState({
+    title: "",
+    content: "",
+    tage: "",
+    comment: "",
+  });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const commentList = detailVideo?.comments;
+
+  const onChangUpdatament = (e) => {
+    const { name, value } = e.target;
+    setUpdatement({ ...updatement, [name]: value });
+  };
 
   useEffect(() => {
     dispatch(getDetailVideo(videoId));
-    setUpdatement(detailVideo?.content ?? "");
+    setUpdatement({
+      title: detailVideo?.title ?? "",
+      tag: detailVideo?.tag ?? "",
+      content: detailVideo?.content ?? "",
+      comment: "",
+    });
   }, []);
 
   const onDeleteHandler = () => {
     dispatch(deleteVideo(videoId));
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
   const onPatchHandler = () => {
     dispatch(patchVideo({ videoId, updatement }));
+  };
+  //comment 부분
+  const postCommentHandler = () => {
+    dispatch(postComment({ comment: updatement.comment, postId: videoId }));
   };
   return (
     <section>
@@ -73,10 +81,21 @@ const Detail = () => {
                 <>
                   <input
                     type="text"
-                    value={updatement}
-                    onChange={(e) => {
-                      setUpdatement(e.target.value);
-                    }}
+                    value={updatement.title}
+                    onChange={onChangUpdatament}
+                    name="title"
+                  />
+                  <input
+                    type="text"
+                    value={updatement.content}
+                    onChange={onChangUpdatament}
+                    name="content"
+                  />
+                  <input
+                    type="text"
+                    value={updatement.tag}
+                    onChange={onChangUpdatament}
+                    name="tag"
                   />
                   <StButton mode="smpr" onClick={onPatchHandler}>
                     완료
@@ -99,16 +118,28 @@ const Detail = () => {
             {openComment ? "댓글 닫기" : "댓글 보기"}
           </button>
           {openComment && (
-            <StCommentContainer>
-              {commentList?.map((el, i) => {
-                return (
-                  <Comment
-                    key={`comment${el?.commentId}${i}`}
-                    el={el}
-                  ></Comment>
-                );
-              })}
-            </StCommentContainer>
+            <>
+              <StCommentInput>
+                <input
+                  type="text"
+                  value={updatement.comment}
+                  name="comment"
+                  onChange={onChangUpdatament}
+                ></input>
+                <button onClick={postCommentHandler}>작성</button>
+              </StCommentInput>
+              <StCommentContainer>
+                {commentList?.map((el, i) => {
+                  return (
+                    <Comment
+                      key={`comment${el?.commentId}${i}`}
+                      el={el}
+                      videoId={videoId}
+                    ></Comment>
+                  );
+                })}
+              </StCommentContainer>
+            </>
           )}
         </>
       )}
@@ -153,6 +184,11 @@ const StInfoContent = styled.div`
   height: 70px;
   border-radius: 12px;
   background-color: #ccc;
+`;
+const StCommentInput = styled.div`
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
 `;
 const StCommentContainer = styled.div`
   width: 80%;

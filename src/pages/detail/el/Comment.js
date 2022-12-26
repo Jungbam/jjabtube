@@ -1,11 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import {
+  deleteComment,
+  patchComment,
+} from "../../../redux/modules/commentSlice";
 
-const Comment = ({ el }) => {
+const Comment = ({ el, videoId }) => {
+  const [updating, setUpdating] = useState();
+  const dispatch = useDispatch();
+  const [upComment, setUpComment] = useState("");
   return (
     <StWrapper>
-      <StP>{el.commentId}</StP>
-      <StP>{el.comment}</StP>
+      <StP>{el.nickname}</StP>
+      {updating ? (
+        <input
+          type="text"
+          value={upComment}
+          onChange={(e) => setUpComment(e.target.value)}
+        ></input>
+      ) : (
+        <StP>{el.comment}</StP>
+      )}
+      <StP>{el.createdAt}</StP>
+      <div>
+        {updating ? (
+          <button
+            onClick={() => {
+              dispatch(
+                patchComment({
+                  postId: videoId,
+                  commentId: el.commentId,
+                  comment: upComment,
+                })
+              );
+              setUpdating(false);
+            }}
+          >
+            완료
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              setUpdating(true);
+            }}
+          >
+            수정
+          </button>
+        )}
+        <button
+          onClick={() => {
+            dispatch(
+              deleteComment({ postId: videoId, commentId: el.commentId })
+            );
+          }}
+        >
+          삭제
+        </button>
+      </div>
     </StWrapper>
   );
 };

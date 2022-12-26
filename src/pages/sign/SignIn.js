@@ -10,19 +10,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logIn, kakaoInfo } from '../../redux/modules/signSlice';
 
 const SignIn = () => {
-
   const [input, setInput] = useState({
     email: "",
     password: "",
-  })
-  const {isLogedIn} = useSelector((state) => state.signSlice);
+  });
+  const { isLogedIn } = useSelector((state) => state.signSlice);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const changeInputHandler = (e) => {
     const { name, value } = e.target;
-    setInput({...input, [name]: value});
-  }
+    setInput({ ...input, [name]: value });
+  };
 
   const kakaoLoginHandler = (e) => {
     e.preventDefault();
@@ -32,37 +31,31 @@ const SignIn = () => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatch(logIn(input));
-  }
-
-  return (
-  <StWrapper>
-    <StForm onSubmit={onSubmitHandler}>
-      <h2>로그인</h2>
-      <StInputContainer>
-        <StFormInput placeholder='이메일' name='email' onChange={changeInputHandler}></StFormInput>
-        <StFormInput autoComplete='off'placeholder='비밀번호' name='password' type="password" onChange={changeInputHandler}></StFormInput>
-      </StInputContainer>
-      <StBtnContainer>
-        <StButton mode={"pr"}>로그인</StButton>
-        <Link to ='/signup'>
-          <StButton mode={"second"}>회원가입</StButton>
-        </Link>
-      </StBtnContainer>
-      <StDivider/>
-      <StSocialContainer>
-{/*       
-        <StKakaoButton type='button' onClick={KakaoLogin}>
-          <img src={KakaoImg} alt="카카오 로그인" width="32px" height="32px"/>
-        </StKakaoButton>
-         */}
-        <a href={KAKAO_AUTH_URL}>
-          <StKakaoDiv>
-            <img src={KakaoImg} alt="카카오 로그인" width="32px" height="32px"/>
-          </StKakaoDiv>
-        </a>
-      </StSocialContainer>
-    </StForm>
-  </StWrapper>
+    
+    return (
+    <StWrapper>
+      <StForm onSubmit={onSubmitHandler}>
+        <h2>로그인</h2>
+        <StInputContainer>
+          <StFormInput placeholder='이메일' name='email' onChange={changeInputHandler}></StFormInput>
+          <StFormInput autoComplete='off'placeholder='비밀번호' name='password' type="password" onChange={changeInputHandler}></StFormInput>
+        </StInputContainer>
+        <StBtnContainer>
+          <StButton mode={"pr"}>로그인</StButton>
+          <Link to ='/signup'>
+            <StButton mode={"second"}>회원가입</StButton>
+          </Link>
+        </StBtnContainer>
+        <StDivider/>
+        <StSocialContainer>
+          <a href={KAKAO_AUTH_URL}>
+            <StKakaoDiv>
+              <img src={KakaoImg} alt="카카오 로그인" width="32px" height="32px"/>
+            </StKakaoDiv>
+          </a>
+        </StSocialContainer>
+      </StForm>
+    </StWrapper>
   );
 };
 
@@ -72,7 +65,7 @@ const StWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
 `;
 
 const StInputContainer = styled.div`
@@ -92,7 +85,7 @@ const StForm = styled.form`
   margin: 0 auto;
   width: 448px;
   height: 500px;
-  border: 1px solid ${props => props.theme.colors.gray};
+  border: 1px solid ${(props) => props.theme.colors.gray};
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -103,15 +96,15 @@ const StForm = styled.form`
 const StFormInput = styled.input`
   width: 320px;
   height: 56px;
-  color: ${props => props.theme.colors.black};
-  border: 1px solid ${props => props.theme.colors.gray};
+  color: ${(props) => props.theme.colors.black};
+  border: 1px solid ${(props) => props.theme.colors.gray};
   border-radius: 5px;
   padding-left: 10px;
   &:focus {
-    outline: 2px solid ${props => props.theme.colors.blue};
+    outline: 2px solid ${(props) => props.theme.colors.blue};
   }
-  ::placeholder{
-    color: ${props => props.theme.colors.gray};
+  ::placeholder {
+    color: ${(props) => props.theme.colors.gray};
   }
 `;
 

@@ -22,7 +22,6 @@ export const dupEmailCheck = createAsyncThunk(
 export const signUp = createAsyncThunk(
   "signSlice/signUp",
   async (formData, thunkAPI) => {
-  
     const response = await client.post('/signup', formData);
     console.log(response);
 
@@ -39,6 +38,7 @@ export const signUp = createAsyncThunk(
 export const logIn = createAsyncThunk(
   "signSlice/logIn",
   async (loginData, thunkAPI) => {
+    const response = await client.post("/login", loginData);
 
     const response = await client.post('/login', loginData);
     console.log(response);
@@ -46,6 +46,7 @@ export const logIn = createAsyncThunk(
     if(response.status === 200){
       const fulfiledMsg = '로그인 성공';
       return thunkAPI.fulfillWithValue(fulfiledMsg);
+
     } else {
       const errorMsg = response.response.data.errorMessage;
       return thunkAPI.rejectWithValue(errorMsg);
@@ -99,14 +100,12 @@ export const kakaoLogin = createAsyncThunk(
 );
 
 const initialState = {
-
   isLogedIn: false,
   isSignUp: false,
   error: false,
   errorMsg: '',
   fulfiledMsg: '',
   dupCheck: false,
-
 };
 
 const signSlice = createSlice({
