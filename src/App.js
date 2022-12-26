@@ -2,12 +2,18 @@ import "./App.css";
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 import Router from "./shares/Router";
 import StButton from "./UI/StButton";
+import { useEffect } from 'react';
+import { auth } from './redux/modules/signSlice';
 
 if (process.env.REACT_APP_NODE_ENV === "production") {
   disableReactDevTools();
 }
 
 function App() {
+
+  useEffect(() => {
+    
+  })
   return (
     <div className="App">
       <Router />

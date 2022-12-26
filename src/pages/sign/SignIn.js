@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import StButton from './../../UI/StButton';
 import KakaoImg from '../../assets/kakao.png';
-import {KAKAO_AUTH_URL} from './KakaoLogin';
+import KakaoLogin from './KakaoLogin';
+import { KAKAO_AUTH_URL } from './KakaoLogin';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { logIn } from '../../redux/modules/signSlice';
+import { logIn, kakaoInfo } from '../../redux/modules/signSlice';
 
 const SignIn = () => {
 
@@ -18,9 +19,14 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const ChangeInputHandler = (e) => {
+  const changeInputHandler = (e) => {
     const { name, value } = e.target;
     setInput({...input, [name]: value});
+  }
+
+  const kakaoLoginHandler = (e) => {
+    e.preventDefault();
+    KakaoLogin();
   }
 
   const onSubmitHandler = (e) => {
@@ -33,8 +39,8 @@ const SignIn = () => {
     <StForm onSubmit={onSubmitHandler}>
       <h2>로그인</h2>
       <StInputContainer>
-        <StFormInput placeholder='이메일' name='email' onChange={ChangeInputHandler}></StFormInput>
-        <StFormInput autoComplete='off'placeholder='비밀번호' name='password' type="password" onChange={ChangeInputHandler}></StFormInput>
+        <StFormInput placeholder='이메일' name='email' onChange={changeInputHandler}></StFormInput>
+        <StFormInput autoComplete='off'placeholder='비밀번호' name='password' type="password" onChange={changeInputHandler}></StFormInput>
       </StInputContainer>
       <StBtnContainer>
         <StButton mode={"pr"}>로그인</StButton>
@@ -44,6 +50,11 @@ const SignIn = () => {
       </StBtnContainer>
       <StDivider/>
       <StSocialContainer>
+{/*       
+        <StKakaoButton type='button' onClick={KakaoLogin}>
+          <img src={KakaoImg} alt="카카오 로그인" width="32px" height="32px"/>
+        </StKakaoButton>
+         */}
         <a href={KAKAO_AUTH_URL}>
           <StKakaoDiv>
             <img src={KakaoImg} alt="카카오 로그인" width="32px" height="32px"/>
@@ -102,6 +113,15 @@ const StFormInput = styled.input`
   ::placeholder{
     color: ${props => props.theme.colors.gray};
   }
+`;
+
+const StKakaoButton = styled.button`
+  background-color: rgb(251, 229, 77);
+  width: 32px;
+  height: 32px; 
+  border-radius: 70%;
+  overflow: hidden;
+  border: none;
 `;
 
 const StKakaoDiv = styled.div`
