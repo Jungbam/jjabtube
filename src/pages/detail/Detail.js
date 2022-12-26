@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import {
   deleteVideo,
@@ -35,6 +35,7 @@ const Detail = () => {
   const [updatement, setUpdatement] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getDetailVideo(videoId));
@@ -43,6 +44,9 @@ const Detail = () => {
 
   const onDeleteHandler = () => {
     dispatch(deleteVideo(videoId));
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
   const onPatchHandler = () => {
     dispatch(patchVideo({ videoId, updatement }));

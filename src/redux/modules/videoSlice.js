@@ -68,8 +68,8 @@ export const deleteVideo = createAsyncThunk(
     try {
       const response = await client.delete(`/post/${videoId}`);
       if (response.status === 200) {
-        const result = thunkAPI.dispatch(getDetailVideo(videoId));
-        return thunkAPI.fulfillWithValue(result);
+        const result = thunkAPI.dispatch(getAllVideo());
+        return thunkAPI.fulfillWithValue(result.data);
       } else if (response.status === 403) {
         return thunkAPI.rejectWithValue(403);
       } else if (response.status === 404) {
@@ -89,8 +89,7 @@ export const patchVideo = createAsyncThunk(
     try {
       const response = await client.patch(`/post/${videoId}`, updatement);
       if (response.status === 200) {
-        const result = thunkAPI.dispatch(getDetailVideo(videoId));
-        return thunkAPI.fulfillWithValue(result);
+        thunkAPI.dispatch(getDetailVideo(videoId));
       } else if (response.status === 403) {
         return thunkAPI.rejectWithValue(403);
       } else if (response.status === 404) {
