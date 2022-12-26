@@ -37,6 +37,7 @@ client.interceptors.response.use(
       // const expires = new Date();
       // expires.setMinutes(expires.getMinutes()+60);
       // cookie.set("token", token, {expires});
+      
       // 토큰 지우기
       cookie.remove('token');
       cookie.set("token", token);

@@ -96,17 +96,19 @@ export const kakaoLogin = createAsyncThunk(
       }
     } catch (err) {
       return thunkAPI.rejectWithValue("kakao error");
-    }
+    } 
   }
 );
 
 const initialState = {
+
   isLogedIn: false,
   isSignUp: false,
   error: false,
   errorMsg: '',
   fulfiledMsg: '',
   dupEmailCheck: false,
+
 };
 
 const signSlice = createSlice({

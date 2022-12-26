@@ -1,19 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 
-const StButton = ({ mode, children }) => {
+const StButton = ({ mode, children, onClick }) => {
   const Button = () => {
     switch (mode) {
       case "pr":
-        return <StPrimaryLgButton>{children}</StPrimaryLgButton>;
+        return (
+          <StPrimaryLgButton onClick={onClick}>{children}</StPrimaryLgButton>
+        );
       case "second":
-        return <StSecondaryLgButton>{children}</StSecondaryLgButton>;
+        return (
+          <StSecondaryLgButton onClick={onClick}>
+            {children}
+          </StSecondaryLgButton>
+        );
       case "smpr":
-        return <StPrimarySmButton>{children}</StPrimarySmButton>;
+        return (
+          <StPrimarySmButton onClick={onClick}>{children}</StPrimarySmButton>
+        );
       case "smsecond":
-        return <StSecondarySmButton>{children}</StSecondarySmButton>;
+        return (
+          <StSecondarySmButton onClick={onClick}>
+            {children}
+          </StSecondarySmButton>
+        );
       default:
-        return <StPrimaryLgButton>{children}</StPrimaryLgButton>;
+        return (
+          <StPrimaryLgButton onClick={onClick}>{children}</StPrimaryLgButton>
+        );
     }
   };
 
@@ -21,7 +35,9 @@ const StButton = ({ mode, children }) => {
 };
 
 export default StButton;
-
+StButton.defaultProps = {
+  onClick: () => {},
+};
 const StPrimaryLgButton = styled.button`
   width: 320px;
   height: 60px;
