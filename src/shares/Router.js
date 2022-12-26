@@ -7,6 +7,7 @@ import Error404 from "../pages/404/Error404";
 import Detail from "../pages/detail/Detail";
 import Intro from "../pages/intro/Intro";
 import Live from "../pages/live/Live";
+import Search from "../pages/search/Search";
 import SignIn from "../pages/sign/SignIn";
 import SignUp from "../pages/sign/SignUp";
 import StFixBox from "../UI/StFixBox";
@@ -22,6 +23,7 @@ const Router = () => {
             <Route path="/" element={<Intro />} />
             <Route path="/detail/:videoId" element={<Detail />} />
             <Route path="/live" element={<Live />} />
+            <Route path="/search/:searchValue" element={<Search />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/*" element={<Error404 />} />
