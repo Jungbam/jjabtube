@@ -10,6 +10,7 @@ export const client = axios.create({
 // 토큰 심어보내기
 client.interceptors.request.use(
   function (config) {
+    console.log("나갈 때", config);
     config.headers.authorization = `Bearer ${cookie.get("token")}`;
     return config;
   },
@@ -21,11 +22,13 @@ client.interceptors.request.use(
 // 토큰 검증, 토큰 쿠키 심기
 client.interceptors.response.use(
   function (response) {
+    console.log("들어올때", response);
     if (response.data.token) {
       const token = response.data.token;
       cookie.set("token", token);
     }
 
+    console.log(response);
     return response;
   },
   function (error) {

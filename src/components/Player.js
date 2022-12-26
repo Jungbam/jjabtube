@@ -36,6 +36,7 @@ const Player = ({ video }) => {
 
         <h1>작성자 : {video.nickname}</h1>
         <h1>등록일자 : {video.createdAt}</h1>
+        <h1>조회수 : {video.view}</h1>
       </StContainerCol>
     </StPlayerAll>
   );

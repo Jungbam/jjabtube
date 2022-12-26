@@ -23,6 +23,7 @@ const Comment = ({ el, videoId }) => {
       ) : (
         <StP>{el.comment}</StP>
       )}
+      <StP>{el.createdAt}</StP>
       <div>
         {updating ? (
           <button
