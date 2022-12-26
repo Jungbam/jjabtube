@@ -23,7 +23,6 @@ client.interceptors.response.use(
   function (response) {
     if (response.data.token) {
       const token = response.data.token;
-      console.log(token);
       cookie.set("token", token);
     }
 
@@ -34,8 +33,6 @@ client.interceptors.response.use(
       cookie.remove("token");
       return error;
     }
-
-    console.log("itcpt err ", error.response.data.errorMessage);
     return error;
   }
 );

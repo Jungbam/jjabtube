@@ -21,7 +21,7 @@ const Player = ({ video }) => {
             width="100%"
             height="100%"
             playing={true}
-            muted={false}
+            muted={true}
             controls={true}
           />
         )}
