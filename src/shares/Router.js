@@ -10,7 +10,6 @@ import Live from "../pages/live/Live";
 import SignIn from "../pages/sign/SignIn";
 import SignUp from "../pages/sign/SignUp";
 import StFixBox from "../UI/StFixBox";
-import Post from "../pages/post/Post";
 
 const Router = () => {
   return (
@@ -22,7 +21,6 @@ const Router = () => {
           <Routes>
             <Route path="/" element={<Intro />} />
             <Route path="/detail/:videoId" element={<Detail />} />
-            <Route path="/post" element={<Post />} />
             <Route path="/live" element={<Live />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
