@@ -2,11 +2,24 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { client } from "../../api/axios";
 
 export const searchTag = createAsyncThunk(
-  "videoSlice/searchLabel",
+  "videoSlice/searchTag",
   async (tag, thunkAPI) => {
     try {
-      const result = await client.get(`/search/${tag}`);
-      if (result.status === 200) return thunkAPI.fulfillWithValue(result.data);
+      const result = await client.get(`/post/search?tag=${tag}`);
+      if (result.status === 200)
+        return thunkAPI.fulfillWithValue(result.data.posts);
+    } catch (err) {
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+export const searchTitle = createAsyncThunk(
+  "videoSlice/searchTitle",
+  async (keyword, thunkAPI) => {
+    try {
+      const result = await client.get(`/post/search?keyword=${keyword}`);
+      if (result.status === 200)
+        return thunkAPI.fulfillWithValue(result.data.posts);
     } catch (err) {
       return thunkAPI.rejectWithValue();
     }
@@ -17,10 +30,10 @@ export const postVideo = createAsyncThunk(
   "videoSlice/postVideo",
   async (formData, thunkAPI) => {
     try {
-      const response = client.post("/post", formData);
-      if (response === 200) {
-        return thunkAPI.rejectWithValue();
-      } else if (response === 406) {
+      const response = await client.post("/post", formData);
+      if (response.status === 200) {
+        await thunkAPI.dispatch(getAllVideo());
+      } else if (response.status === 406) {
         return thunkAPI.rejectWithValue(406);
       } else {
         return thunkAPI.rejectWithValue(501);
@@ -51,7 +64,6 @@ export const getDetailVideo = createAsyncThunk(
   async (videoId, thunkAPI) => {
     try {
       const result = await client.get(`/post/${videoId}`);
-      console.log(result);
       if (result.status === 200) {
         return thunkAPI.fulfillWithValue(result.data);
       } else {
@@ -68,8 +80,7 @@ export const deleteVideo = createAsyncThunk(
     try {
       const response = await client.delete(`/post/${videoId}`);
       if (response.status === 200) {
-        const result = thunkAPI.dispatch(getDetailVideo(videoId));
-        return thunkAPI.fulfillWithValue(result);
+        await thunkAPI.dispatch(getAllVideo());
       } else if (response.status === 403) {
         return thunkAPI.rejectWithValue(403);
       } else if (response.status === 404) {
@@ -87,10 +98,13 @@ export const patchVideo = createAsyncThunk(
   async (updateData, thunkAPI) => {
     const { videoId, updatement } = updateData;
     try {
-      const response = await client.patch(`/post/${videoId}`, updatement);
+      const response = await client.patch(`/post/${videoId}`, {
+        title: updatement.title,
+        tag: updatement.tag,
+        content: updatement.content,
+      });
       if (response.status === 200) {
-        const result = thunkAPI.dispatch(getDetailVideo(videoId));
-        return thunkAPI.fulfillWithValue(result);
+        await thunkAPI.dispatch(getDetailVideo(videoId));
       } else if (response.status === 403) {
         return thunkAPI.rejectWithValue(403);
       } else if (response.status === 404) {
@@ -105,17 +119,30 @@ export const patchVideo = createAsyncThunk(
 );
 
 const initialState = {
-  allVideos: [],
+  allVideos: null,
   detailViedeo: null,
+  searchedVideo: null,
 };
 const videoSlice = createSlice({
   name: "videoSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    initSearch: (state, payload) => {
+      state.searchedVideo = null;
+    },
+  },
   extraReducers: {
     [searchTag.pending]: (state) => {},
-    [searchTag.fulfilled]: (state, action) => {},
+    [searchTag.fulfilled]: (state, action) => {
+      state.searchedVideo = action.payload;
+    },
     [searchTag.rejected]: (state, action) => {},
+
+    [searchTitle.pending]: (state) => {},
+    [searchTitle.fulfilled]: (state, action) => {
+      state.searchedVideo = action.payload;
+    },
+    [searchTitle.rejected]: (state, action) => {},
 
     [postVideo.pending]: (state) => {},
     [postVideo.fulfilled]: (state, action) => {},
@@ -142,4 +169,5 @@ const videoSlice = createSlice({
     [patchVideo.rejected]: (state, action) => {},
   },
 });
+export const { initSearch } = videoSlice.actions;
 export default videoSlice.reducer;

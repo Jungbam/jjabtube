@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useInputItem from "../../../hooks/useInputItem";
 import { postVideo } from "../../../redux/modules/videoSlice";
@@ -8,6 +9,7 @@ import { StButton } from "../../../UI/StIndex";
 const AddForm = ({ onToggleModal }) => {
   const { input, onChangeHandler, reset } = useInputItem();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [video, setVideo] = useState();
 
   const formData = new FormData();
@@ -21,8 +23,8 @@ const AddForm = ({ onToggleModal }) => {
     formData.append("video", video);
 
     dispatch(postVideo(formData));
-
     onToggleModal();
+    navigate("/");
     reset();
   };
 
