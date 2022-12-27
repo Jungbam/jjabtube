@@ -30,12 +30,19 @@ export const postVideo = createAsyncThunk(
   }
 );
 
+//일단 인스턴스를 통해서 "/post?lastId=${lastId}"
+//이 요청을 보낸 값이 200이면 fulfilldwit
+
 export const getAllVideo = createAsyncThunk(
   "videoSlice/getAllVideo",
   async (getAll, thunkAPI) => {
     try {
+      const res = await client.get(`/post?lastId=`);
+      console.log(res);
+      return thunkAPI.fulfillWithValue(res);
+    } catch (err) {
       return thunkAPI.rejectWithValue();
-    } catch (err) {}
+    }
   }
 );
 
@@ -93,6 +100,7 @@ export const patchVideo = createAsyncThunk(
 
 const initialState = {
   detailViedeo: null,
+  allVideo: [],
 };
 
 const videoSlice = createSlice({
@@ -111,7 +119,11 @@ const videoSlice = createSlice({
     [postVideo.rejected]: (state, action) => {},
 
     [getAllVideo.pending]: (state) => {},
-    [getAllVideo.fulfilled]: (state, action) => {},
+    [getAllVideo.fulfilled]: (state, action) => {
+      state.allVideo = action.payload.data;
+
+      console.log(action.payload.data);
+    },
     [getAllVideo.rejected]: (state, action) => {},
 
     [getDetailVideo.pending]: (state) => {},

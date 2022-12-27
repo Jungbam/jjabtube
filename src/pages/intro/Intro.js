@@ -1,7 +1,37 @@
 import React from "react";
 import styled from "styled-components";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllVideo } from "../../redux/modules/videoSlice";
 
 const Intro = () => {
+  const dispatch = useDispatch();
+
+  const post = useSelector((state) => state.videoSlice.allVideo.posts);
+  console.log(post);
+
+  useEffect(() => {
+    dispatch(getAllVideo());
+  }, [dispatch]);
+
+  // post.map((posts, index) => {
+  //   // return <div key={index}>posts</div>;
+  //   console.log(posts);
+  // });
+
+  const map2 = [
+    { number: 1, bbbb: "jj" },
+    { number: 2, bbbb: "jj" },
+    { number: 3, bbbb: "jj" },
+    { number: 4, bbbb: "jj" },
+    { number: 5, bbbb: "jj" },
+  ];
+
+  map2.map((item, index) => {
+    console.log(item);
+  });
+
+  console.log(post);
   return (
     <>
       <button>label 1</button>
@@ -11,9 +41,9 @@ const Intro = () => {
         <StWrap1>
           <StVideo></StVideo>
           <StWrap2>
-            <StTitle>TITLE</StTitle>
-            <StView>22</StView>
-            <StNickname>SajoChamchi</StNickname>
+            <StTitle>{}</StTitle>
+            <StView>{}</StView>
+            <StNickname>{}</StNickname>
           </StWrap2>
         </StWrap1>
       </StContainer>
