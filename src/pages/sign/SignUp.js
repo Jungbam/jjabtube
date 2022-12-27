@@ -18,9 +18,9 @@ const SignUp = () => {
     passwordConfirm: "",
   });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const imgRef = useRef();  
   const {dupCheck} = useSelector((state) => state.signSlice);
-
 
   const changeInputHandler = (e) => {
     const { name, value } = e.target;
@@ -41,42 +41,57 @@ const SignUp = () => {
     setProfileImg(profileImg);
   };
 
-  const __dupEmailCheck = (e) => {
+  const __dupEmailCheck = async (e) => {
     e.preventDefault();
-    if(input.email)
-      dispatch(dupEmailCheck(input.email));
+    if(input.email){
+      const res = await dispatch(dupEmailCheck(input.email));
+      console.log(res);
+      if(res.meta.requestStatus === 'fulfilled'){
+        window.alert("사용가능한 이메일 입니다");
+      } else {
+        window.alert("이미 존재하는 이메일 입니다.");
+      }
+    }
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
-    
-    // 유효성 검증
-    for(const key in input){
-      if(key.value.trim() === ''){
-        console.log('안 유효');
+
+    for(const property in input){
+      if(input[property].trim() === ''){
+        window.alert("빈 정보를 입력해주세요");
         return ;
       }
-
     }
 
     if(dupCheck){
       const formData = new FormData();
+      formData.append('emailValidate', true);
 
       for (const property in input){
         formData.append(`${property}`, input[property]);
       }
 
       // Profile 이미지 처리 백엔드 완성되면 
-      formData.append("profileImg", profileImg);
-      console.log(formData.get('profileImg'));
+      // formData.append("profileImg", profileImg);
+      // console.log(formData.get('profileImg'));
 
-      for (const pair of formData.entries()) {
-        console.log(`${pair[0]}, ${pair[1]}`);
+      const res = await dispatch(signUp(formData));
+
+      if(res.meta.requestStatus === 'fulfilled'){
+        window.alert("회원가입 성공!");
+        navigate('/');
+      } else if(input.password !== input.passwordConfirm) {
+        window.alert("패스워드가 일치하지 않습니다");
+        return ;
+      } else {
+        window.alert("이미 존재하는 이메일 입니다.");
+        return ;
       }
 
-      formData.append('emailValidate', true);
-
-      dispatch(signUp(formData));
+    } else {
+      window.alert("이메일 중복 체크 해주세요");
+      return ;
     }
   }
 
@@ -102,6 +117,7 @@ const SignUp = () => {
             accept="image/*"
             name='profileImg'
             type='file'
+            // required
             onChange={changeImgHandler}/>
         <StBtnContainer>
           <StFormInput placeholder='이메일' name='email' onChange={changeInputHandler}></StFormInput>

@@ -23,10 +23,26 @@ const SignIn = () => {
     setInput({ ...input, [name]: value });
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
-    dispatch(logIn(input));
-    navigate('/');
+
+    for(const property in input){
+      if(input[property].trim() === ''){
+        window.alert("빈 정보를 입력해주세요");
+        return ;
+      }
+    }
+
+    const res = await dispatch(logIn(input));
+
+    if(res.meta.requestStatus === 'rejected'){
+      window.alert(res.payload);
+    } else {
+      window.alert(res.payload);
+      navigate('/');
+    }
+;
+    
   }
     return (
     <StWrapper>
