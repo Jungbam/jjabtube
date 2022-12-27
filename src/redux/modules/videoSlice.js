@@ -22,7 +22,7 @@ export const postVideo = createAsyncThunk(
       const post = await client.post(`/post/`, formData);
       console.log(post);
       if (post.status === 200) {
-        return thunkAPI.fulfillWithValue();
+        thunkAPI.dispatch(getAllVideo());
       }
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
@@ -84,13 +84,15 @@ export const deleteVideo = createAsyncThunk(
   async (videoId, thunkAPI) => {
     try {
       const post = await client.delete(`/post/${videoId}`);
+      console.log(post);
+      // if
       return thunkAPI.fulfillWithValue(videoId);
     } catch (err) {
       return thunkAPI.rejectWithValue();
     }
   }
 );
-
+//찍고나서 -> 콘솔확인 -> 다음 코드 작업
 export const patchVideo = createAsyncThunk(
   "videoSlice/patchVideo",
   async (videoId, thunkAPI) => {
