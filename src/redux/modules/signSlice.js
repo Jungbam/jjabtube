@@ -7,11 +7,10 @@ const cookie = new Cookies();
 export const dupEmailCheck = createAsyncThunk(
   "signSlice/dupEmailCheck",
   async (email, thunkAPI) => {
-
     const response = await client.post(`/signup/emailcheck`, {email});
-
     if(response.status === 200){
       const fulfilledMsg = response.data.message;
+
       return thunkAPI.fulfillWithValue(fulfilledMsg);
     } else {
       const errorMsg = response.response.data.errorMessage;
@@ -23,8 +22,6 @@ export const dupEmailCheck = createAsyncThunk(
 export const signUp = createAsyncThunk(
   "signSlice/signUp",
   async (formData, thunkAPI) => {
-    formData.append('emailValidate', true);
-    
     const response = await client.post('/signup', formData);
     console.log(response);
 
@@ -41,13 +38,14 @@ export const signUp = createAsyncThunk(
 export const logIn = createAsyncThunk(
   "signSlice/logIn",
   async (loginData, thunkAPI) => {
-
+    
     const response = await client.post('/login', loginData);
     console.log(response);
 
     if(response.status === 200){
       const fulfiledMsg = '로그인 성공';
       return thunkAPI.fulfillWithValue(fulfiledMsg);
+
     } else {
       const errorMsg = response.response.data.errorMessage;
       return thunkAPI.rejectWithValue(errorMsg);
@@ -96,7 +94,7 @@ export const kakaoLogin = createAsyncThunk(
       }
     } catch (err) {
       return thunkAPI.rejectWithValue("kakao error");
-    }
+    } 
   }
 );
 
@@ -106,7 +104,7 @@ const initialState = {
   error: false,
   errorMsg: '',
   fulfiledMsg: '',
-  dupEmailCheck: false,
+  dupCheck: false,
 };
 
 const signSlice = createSlice({
@@ -121,10 +119,11 @@ const signSlice = createSlice({
   extraReducers: {
     [dupEmailCheck.pending]: (state) => {},
     [dupEmailCheck.fulfilled]: (state, action) => {
-      state.dupEmailCheck = true;
+      state.dupCheck = true;
       state.fulfiledMsg = action.payload;
     },
     [dupEmailCheck.rejected]: (state, action) => {
+      state.dupCheck = false;
       state.error = true;
       state.errorMsg = action.payload;
     },         
@@ -157,14 +156,12 @@ const signSlice = createSlice({
     [auth.rejected]: (state, action) => {
       state.error = false;
       state.isLogedIn = false;
-      // state.errorMsg = action.payload;
+      state.errorMsg = action.payload;
     },
 
     [kakaoLogin.pending]: (state) => {
-      console.log('kakao login pending');
     },
     [kakaoLogin.fulfilled]: (state, action) => {
-      console.log('kakao login fulfilled');
       state.isLogedIn = true;
     },
     [kakaoLogin.rejected]: (state, action) => {
