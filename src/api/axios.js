@@ -39,7 +39,7 @@ client.interceptors.response.use(
       // cookie.set("token", token, {expires});
       console.log("in", response.data.token);
       // 토큰 지우기
-      cookie.set("token", response.data.token);
+      cookie.set("token", response.data.token, {path: "/"});
     }
     return response;
   },

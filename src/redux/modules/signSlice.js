@@ -79,10 +79,9 @@ export const kakaoLogin = createAsyncThunk(
     try{
       // redirect uri 프론트로 연결 auth code 백엔드로 전달
       console.log(code);
-      //
+      
       const response = await client.get(`${process.env.REACT_APP_SERVER}/login/kakao?code=${code}`);
       console.log(response);
-
       if(response.status === 200){
         console.log('status 200');
         return thunkAPI.fulfillWithValue();
