@@ -15,8 +15,18 @@ export const postVideo = createAsyncThunk(
   "videoSlice/postVideo",
   async (formData, thunkAPI) => {
     try {
-      return thunkAPI.rejectWithValue();
-    } catch (err) {}
+      let values = formData.values();
+      for (const pair of values) {
+        console.log(pair);
+      }
+      const post = await client.post(`/post/`);
+      console.log(post);
+      if (post.status === 200) {
+        return thunkAPI.fulfillWithValue();
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err);
+    }
   }
 );
 
@@ -28,6 +38,7 @@ export const getAllVideo = createAsyncThunk(
     } catch (err) {}
   }
 );
+
 export const getDetailVideo = createAsyncThunk(
   "videoSlice/getDetailVideo",
   async (videoId, thunkAPI) => {
@@ -58,14 +69,19 @@ export const getDetailVideo = createAsyncThunk(
     }
   }
 );
+
 export const deleteVideo = createAsyncThunk(
   "videoSlice/deleteVideo",
   async (videoId, thunkAPI) => {
     try {
+      const post = await client.delete(`/post/${videoId}`);
+      return thunkAPI.fulfillWithValue(videoId);
+    } catch (err) {
       return thunkAPI.rejectWithValue();
-    } catch (err) {}
+    }
   }
 );
+
 export const patchVideo = createAsyncThunk(
   "videoSlice/patchVideo",
   async (videoId, thunkAPI) => {
@@ -78,6 +94,7 @@ export const patchVideo = createAsyncThunk(
 const initialState = {
   detailViedeo: null,
 };
+
 const videoSlice = createSlice({
   name: "videoSlice",
   initialState,
