@@ -17,13 +17,9 @@ const Post = () => {
 
     const formData = new FormData();
     formData.append("video", video);
-    console.log(video);
     formData.append("tag", tag);
-    console.log("tag:" + tag);
     formData.append("title", title);
-    console.log("title:" + title);
     formData.append("content", content);
-    console.log("content:" + content);
 
     let values = formData.values();
     for (const pair of values) {

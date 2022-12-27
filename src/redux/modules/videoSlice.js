@@ -19,7 +19,7 @@ export const postVideo = createAsyncThunk(
       for (const pair of values) {
         console.log(pair);
       }
-      const post = await client.post(`/post/`);
+      const post = await client.post(`/post/`, formData);
       console.log(post);
       if (post.status === 200) {
         return thunkAPI.fulfillWithValue();
@@ -105,7 +105,9 @@ const videoSlice = createSlice({
     [searchLabel.rejected]: (state, action) => {},
 
     [postVideo.pending]: (state) => {},
-    [postVideo.fulfilled]: (state, action) => {},
+    [postVideo.fulfilled]: (state, action) => {
+      state.videoSlice = action.payload;
+    },
     [postVideo.rejected]: (state, action) => {},
 
     [getAllVideo.pending]: (state) => {},
