@@ -9,8 +9,9 @@ import Intro from "../pages/intro/Intro";
 import Live from "../pages/live/Live";
 import SignIn from "../pages/sign/SignIn";
 import SignUp from "../pages/sign/SignUp";
-import KakaoLogin from '../pages/sign/KakaoLogin';
+import KakaoLogin from "../pages/sign/KakaoLogin";
 import StFixBox from "../UI/StFixBox";
+import Post from "../pages/post/Post";
 
 const Router = () => {
   return (
@@ -21,11 +22,12 @@ const Router = () => {
         <StBox>
           <Routes>
             <Route path="/" element={<Intro />} />
+            <Route path="/post" element={<Post />} />
             <Route path="/detail/:videoId" element={<Detail />} />
             <Route path="/live" element={<Live />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/login/kakao" element={<KakaoLogin/>} />
+            <Route path="/login/kakao" element={<KakaoLogin />} />
             <Route path="/*" element={<Error404 />} />
           </Routes>
         </StBox>
