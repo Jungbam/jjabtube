@@ -2,49 +2,46 @@ import React from "react";
 import styled from "styled-components";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllVideo } from "../../redux/modules/videoSlice";
+import { deleteVideo, getAllVideo } from "../../redux/modules/videoSlice";
 
 const Intro = () => {
   const dispatch = useDispatch();
 
-  const post = useSelector((state) => state.videoSlice.allVideo.posts);
-  console.log(post);
+  const post = useSelector((state) => state.videoSlice.allVideo);
+  // console.log(post);
 
   useEffect(() => {
     dispatch(getAllVideo());
   }, [dispatch]);
 
-  // post.map((posts, index) => {
-  //   // return <div key={index}>posts</div>;
-  //   console.log(posts);
-  // });
+  const deleteHandler = (id) => {
+    dispatch(deleteVideo(id));
+    console.log(id);
+  };
 
-  const map2 = [
-    { number: 1, bbbb: "jj" },
-    { number: 2, bbbb: "jj" },
-    { number: 3, bbbb: "jj" },
-    { number: 4, bbbb: "jj" },
-    { number: 5, bbbb: "jj" },
-  ];
-
-  map2.map((item, index) => {
-    console.log(item);
-  });
-
-  console.log(post);
   return (
     <>
       <button>label 1</button>
       <button>label 2</button>
       <button>label 3</button>
+
       <StContainer>
         <StWrap1>
-          <StVideo></StVideo>
-          <StWrap2>
-            <StTitle>{}</StTitle>
-            <StView>{}</StView>
-            <StNickname>{}</StNickname>
-          </StWrap2>
+          {post?.map((posts, index) => {
+            return (
+              <div key={index}>
+                <StVideo></StVideo>
+                <StWrap2>
+                  <StTitle>{posts.title}</StTitle>
+                  <StView>{posts.view}</StView>
+                  <StNickname>{posts.nickname}</StNickname>
+                  <button onClick={() => deleteHandler(posts.postId)}>
+                    DELETE
+                  </button>
+                </StWrap2>
+              </div>
+            );
+          })}
         </StWrap1>
       </StContainer>
     </>
@@ -54,13 +51,13 @@ const Intro = () => {
 export default Intro;
 
 const StContainer = styled.div`
-  display: flex;
   flex-wrap: wrap;
   gap: 20px;
 `;
 
 const StWrap1 = styled.div`
-  width: 300px;
+  display: flex;
+  width: 1300px;
   overflow: hidden;
 `;
 

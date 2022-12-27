@@ -38,8 +38,10 @@ export const getAllVideo = createAsyncThunk(
   async (getAll, thunkAPI) => {
     try {
       const res = await client.get(`/post?lastId=`);
-      console.log(res);
-      return thunkAPI.fulfillWithValue(res);
+
+      const { posts } = res.data;
+
+      return thunkAPI.fulfillWithValue(posts);
     } catch (err) {
       return thunkAPI.rejectWithValue();
     }
@@ -120,9 +122,10 @@ const videoSlice = createSlice({
 
     [getAllVideo.pending]: (state) => {},
     [getAllVideo.fulfilled]: (state, action) => {
-      state.allVideo = action.payload.data;
+      console.log(action);
+      state.allVideo = action.payload;
 
-      console.log(action.payload.data);
+      console.log(action.payload);
     },
     [getAllVideo.rejected]: (state, action) => {},
 
