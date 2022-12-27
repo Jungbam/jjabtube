@@ -49,6 +49,16 @@ const SignUp = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    
+    // 유효성 검증
+    for(const key in input){
+      if(key.value.trim() === ''){
+        console.log('안 유효');
+        return ;
+      }
+
+    }
+
     if(dupCheck){
       const formData = new FormData();
 
@@ -57,8 +67,8 @@ const SignUp = () => {
       }
 
       // Profile 이미지 처리 백엔드 완성되면 
-      // formData.append("profileImg", profileImg);
-      // console.log(formData.get('profileImg'));
+      formData.append("profileImg", profileImg);
+      console.log(formData.get('profileImg'));
 
       for (const pair of formData.entries()) {
         console.log(`${pair[0]}, ${pair[1]}`);
@@ -72,7 +82,7 @@ const SignUp = () => {
 
   return (
   <Wrapper>
-    <StForm  onSubmit={onSubmitHandler}>
+    <StForm onSubmit={onSubmitHandler}>
       <h2>회원가입</h2>
       <InputContainer>
         <StImgDiv>
@@ -101,7 +111,6 @@ const SignUp = () => {
         <StFormInput autoComplete='off' placeholder='비밀번호' name='password' type="password" onChange={changeInputHandler}></StFormInput>
         <StFormInput autoComplete='off' placeholder='비밀번호 확인' name='passwordConfirm' type="password" onChange={changeInputHandler}></StFormInput>
       </InputContainer>
-      {/* 버튼 수정 */}
       <StPrimaryLgButton>회원가입</StPrimaryLgButton>
     </StForm>
   </Wrapper>);
