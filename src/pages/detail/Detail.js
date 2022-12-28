@@ -122,34 +122,35 @@ const Detail = () => {
               )}
             </StVideoInfo>
           </StTotalContainer>
-
-          <button onClick={() => SetOpenComment((prev) => !prev)}>
-            {openComment ? "댓글 닫기" : "댓글 보기"}
-          </button>
-          {openComment && (
-            <>
-              <StCommentInput>
-                <input
-                  type="text"
-                  value={updatement.comment}
-                  name="comment"
-                  onChange={onChangUpdatament}
-                ></input>
-                <button onClick={postCommentHandler}>작성</button>
-              </StCommentInput>
-              <StCommentContainer>
-                {commentList?.map((el, i) => {
-                  return (
-                    <Comment
-                      key={`comment${el?.commentId}${i}`}
-                      el={el}
-                      videoId={videoId}
-                    ></Comment>
-                  );
-                })}
-              </StCommentContainer>
-            </>
-          )}
+          <StCommentBox>
+            <button onClick={() => SetOpenComment((prev) => !prev)}>
+              {openComment ? "댓글 닫기" : "댓글 보기"}
+            </button>
+            {openComment && (
+              <>
+                <StCommentInput>
+                  <input
+                    type="text"
+                    value={updatement.comment}
+                    name="comment"
+                    onChange={onChangUpdatament}
+                  ></input>
+                  <button onClick={postCommentHandler}>작성</button>
+                </StCommentInput>
+                <StCommentContainer>
+                  {commentList?.map((el, i) => {
+                    return (
+                      <Comment
+                        key={`comment${el?.commentId}${i}`}
+                        el={el}
+                        videoId={videoId}
+                      ></Comment>
+                    );
+                  })}
+                </StCommentContainer>
+              </>
+            )}
+          </StCommentBox>
         </>
       )}
     </section>
@@ -244,4 +245,8 @@ const StTag = styled.p`
   width: 100%;
   font-size: 1.6em;
   font-weight: 600;
+`;
+const StCommentBox = styled.div`
+  width: 80%;
+  margin: 0 auto;
 `;
