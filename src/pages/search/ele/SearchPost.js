@@ -78,16 +78,17 @@ const StTitle = styled.h1`
   font-size: 1.8rem;
 `;
 
-const StNickname = styled.p`
-  font-size: 1rem;
-`;
-
 const StView = styled.p`
   font-size: 1rem;
 `;
 
 const StCreatedAt = styled.p`
   font-size: 1rem;
+`;
+
+const StNickname = styled.p`
+  font-size: 1rem;
+  padding-bottom: 10px;
 `;
 
 const StContent = styled.p``;
