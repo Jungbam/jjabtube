@@ -4,11 +4,12 @@ import styled from "styled-components";
 import Player from "./ele/Player";
 import { getAllVideo, searchTag } from "../../redux/modules/videoSlice";
 import { StButton, StLabel } from "../../UI/StIndex";
+import useIntersect from './useIntersect';
 
 const Intro = () => {
-  const { allVideos, searchedVideo } = useSelector((state) => state.videoSlice);
+  const { allVideos, searchedVideo, isLoaded, pageCount } = useSelector((state) => state.videoSlice);
   const { isLogedIn } = useSelector((state) => state.signSlice);
-
+  const [lastId, setLastId] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,6 +19,22 @@ const Intro = () => {
   const searchByTagHandler = (e) => {
     dispatch(searchTag(e.target.name));
   };  
+
+
+  useEffect(() => {
+    console.log(lastId);
+    setLastId(allVideos[allVideos.length-1]?.postId);
+  },[allVideos]);
+
+  const [_, setRef] = useIntersect(async(entry, observer) =>{
+    observer.unobserve(entry.target);
+    console.log(allVideos);
+    console.log(lastId);
+    await dispatch(getAllVideo(lastId));
+    console.log(1);
+    observer.observe(entry.target);
+  }, {lastId});
+  
   return (
     <>
       <section>
@@ -42,8 +59,8 @@ const Intro = () => {
       <section>
         <StAllVideoContainer>
           {searchedVideo === null ? (
-            allVideos?.map((video) => {
-              return <Player key={`player${video.postId}`} video={video} />;
+            allVideos?.map((video, index) => {
+              return <Player key={`player${index}`} video={video} />;
             })
           ) : (
             <></>
@@ -56,6 +73,7 @@ const Intro = () => {
             })
           )}
         </StAllVideoContainer>
+        {isLoaded && <p ref={setRef}>Loading...</p>}
       </section>
     </>
   );
