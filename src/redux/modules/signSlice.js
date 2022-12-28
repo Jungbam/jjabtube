@@ -7,8 +7,8 @@ const cookie = new Cookies();
 export const dupEmailCheck = createAsyncThunk(
   "signSlice/dupEmailCheck",
   async (email, thunkAPI) => {
-    const response = await client.post(`/signup/emailcheck`, {email});
-    if(response.status === 200){
+    const response = await client.post(`/signup/emailcheck`, { email });
+    if (response.status === 200) {
       const fulfilledMsg = response.data.message;
 
       return thunkAPI.fulfillWithValue(fulfilledMsg);
@@ -22,10 +22,10 @@ export const dupEmailCheck = createAsyncThunk(
 export const signUp = createAsyncThunk(
   "signSlice/signUp",
   async (formData, thunkAPI) => {
-    const response = await client.post('/signup', formData);
+    const response = await client.post("/signup", formData);
     console.log(response);
 
-    if(response.status === 200){
+    if (response.status === 200) {
       const fulfiledMsg = response.data.message;
       return thunkAPI.fulfillWithValue(fulfiledMsg);
     } else {
@@ -38,14 +38,12 @@ export const signUp = createAsyncThunk(
 export const logIn = createAsyncThunk(
   "signSlice/logIn",
   async (loginData, thunkAPI) => {
-    
-    const response = await client.post('/login', loginData);
+    const response = await client.post("/login", loginData);
     console.log(response);
 
-    if(response.status === 200){
-      const fulfiledMsg = '로그인 성공';
+    if (response.status === 200) {
+      const fulfiledMsg = "로그인 성공";
       return thunkAPI.fulfillWithValue(fulfiledMsg);
-
     } else {
       const errorMsg = response.response.data.errorMessage;
       return thunkAPI.rejectWithValue(errorMsg);
@@ -57,36 +55,34 @@ export const auth = createAsyncThunk(
   "signSlice/auth",
 
   async (payload, thunkAPI) => {
-    console.log('auth!');
+    console.log("auth!");
 
     // 1.로그인할때 브라우저 닫을때 처리
     const response = await client.get("/auth");
     console.log(response);
-    
-    if(response.status === 200){
+
+    if (response.status === 200) {
       return thunkAPI.fulfillWithValue();
     } else {
-
       return thunkAPI.rejectWithValue();
     }
   }
 );
 
 export const kakaoLogin = createAsyncThunk(
-  'signSlice/kakaoLogin',
+  "signSlice/kakaoLogin",
   async (code, thunkAPI) => {
-    try{
-      
-      const response = await client.get(`${process.env.REACT_APP_SERVER}/login/kakao?code=${code}`);
+    try {
+      const response = await client.get(`/login/kakao?code=${code}`);
       console.log(response);
-      if(response.status === 200){
+      if (response.status === 200) {
         return thunkAPI.fulfillWithValue();
       } else {
         return thunkAPI.rejectWithValue("kakao error");
       }
     } catch (err) {
       return thunkAPI.rejectWithValue("kakao error");
-    } 
+    }
   }
 );
 
@@ -94,8 +90,8 @@ const initialState = {
   isLogedIn: false,
   isSignUp: false,
   error: false,
-  errorMsg: '',
-  fulfiledMsg: '',
+  errorMsg: "",
+  fulfiledMsg: "",
   dupCheck: false,
 };
 
@@ -105,7 +101,7 @@ const signSlice = createSlice({
   reducers: {
     logOut: (state, action) => {
       state.isLogedIn = false;
-      cookie.remove("token",{path: "/"});
+      cookie.remove("token", { path: "/" });
     },
   },
   extraReducers: {
@@ -118,7 +114,7 @@ const signSlice = createSlice({
       state.dupCheck = false;
       state.error = true;
       state.errorMsg = action.payload;
-    },         
+    },
 
     [signUp.pending]: (state) => {},
     [signUp.fulfilled]: (state, action) => {
@@ -141,21 +137,20 @@ const signSlice = createSlice({
     },
 
     [auth.pending]: (state) => {
-      console.log('auth pending')
+      console.log("auth pending");
     },
     [auth.fulfilled]: (state, action) => {
-      console.log('auth fulfilled')
+      console.log("auth fulfilled");
       state.isLogedIn = true;
     },
     [auth.rejected]: (state, action) => {
-      console.log('auth rejected')
+      console.log("auth rejected");
       state.error = false;
       state.isLogedIn = false;
       state.errorMsg = action.payload;
     },
 
-    [kakaoLogin.pending]: (state) => {
-    },
+    [kakaoLogin.pending]: (state) => {},
     [kakaoLogin.fulfilled]: (state, action) => {
       state.isLogedIn = true;
     },
