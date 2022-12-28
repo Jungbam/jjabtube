@@ -46,7 +46,6 @@ const SignUp = () => {
 
     if (input.email) {
       const res = await dispatch(dupEmailCheck(input.email));
-      console.log(res);
       if (res.meta.requestStatus === "fulfilled") {
         window.alert("사용가능한 이메일 입니다");
       } else {
@@ -73,11 +72,8 @@ const SignUp = () => {
         formData.append(`${property}`, input[property]);
       }
 
-
-      // Profile 이미지 처리 백엔드 완성되면 
+      // Profile 이미지 처리 백엔드 완성되면
       formData.append("profileImg", profileImg);
-      console.log(formData.get('profileImg'));
-
 
       const res = await dispatch(signUp(formData));
 
@@ -88,10 +84,8 @@ const SignUp = () => {
         window.alert("패스워드가 일치하지 않습니다");
         return;
       } else {
-
         // window.alert("이미 존재하는 이메일 입니다.");
-        return ;
-
+        return;
       }
     } else {
       window.alert("이메일 중복 체크 해주세요");
@@ -100,24 +94,22 @@ const SignUp = () => {
   };
 
   return (
-
-  <Wrapper>
-    <StForm onSubmit={onSubmitHandler}>
-      <h2>회원가입</h2>
-      <InputContainer>
-        <StProfileImgDiv>
-          <img
-            alt="profile"
-            src={previewImg ? previewImg : profile}
-            width="32px"
-            height="32px"
-            border-radius= "50%"
-            object-fit="cover"
-          />
-        </StProfileImgDiv>
-        <StImgLabel htmlFor="profileImg">프로필 이미지 추가</StImgLabel>  
-          <StImgInput 
-
+    <Wrapper>
+      <StForm onSubmit={onSubmitHandler}>
+        <h2>회원가입</h2>
+        <InputContainer>
+          <StProfileImgDiv>
+            <img
+              alt="profile"
+              src={previewImg ? previewImg : profile}
+              width="32px"
+              height="32px"
+              border-radius="50%"
+              object-fit="cover"
+            />
+          </StProfileImgDiv>
+          <StImgLabel htmlFor="profileImg">프로필 이미지 추가</StImgLabel>
+          <StImgInput
             id="profileImg"
             ref={imgRef}
             accept="image/*"

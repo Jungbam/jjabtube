@@ -8,10 +8,9 @@ const Search = () => {
   const { searchedVideo } = useSelector((state) => state.videoSlice);
   const { searchValue } = useParams();
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(searchTitle(searchValue));
-  }, [searchedVideo]);
+  }, [searchValue]);
 
   return (
     <div>
