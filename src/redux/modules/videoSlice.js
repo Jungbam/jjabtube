@@ -122,9 +122,6 @@ const videoSlice = createSlice({
     },
     filterDate: (state, payload) => {
       state.searchedVideo = state.searchedVideo;
-      // state.searchedVideo = state.searchedVideo?.sort(
-      //   (a, b) => b.title - a.title
-      // );
     },
   },
   extraReducers: {

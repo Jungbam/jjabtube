@@ -53,7 +53,6 @@ export const auth = createAsyncThunk(
   "signSlice/auth",
 
   async (payload, thunkAPI) => {
-    // 1.로그인할때 브라우저 닫을때 처리
     const response = await client.get("/auth");
 
     if (response.status === 200) {

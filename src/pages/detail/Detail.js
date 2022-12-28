@@ -24,7 +24,6 @@ const Detail = () => {
     tag: "",
     comment: "",
   });
-  console.log(detailVideo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const commentList = detailVideo?.comments;
