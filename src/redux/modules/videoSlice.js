@@ -15,23 +15,24 @@ export const postVideo = createAsyncThunk(
   "videoSlice/postVideo",
   async (formData, thunkAPI) => {
     try {
-      let values = formData.values();
-      for (const pair of values) {
-        console.log(pair);
-      }
+      // let values = formData.values();
+      // for (const pair of values) {
+      //   console.log(pair);
+      // }
       const post = await client.post(`/post/`, formData);
       console.log(post);
       if (post.status === 200) {
         thunkAPI.dispatch(getAllVideo());
+      } else if (post.status === 406) {
+        return thunkAPI.rejectWithValue(406);
+      } else {
+        return thunkAPI.rejectWithValue(501);
       }
     } catch (err) {
-      return thunkAPI.rejectWithValue(err);
+      return thunkAPI.rejectWithValue();
     }
   }
 );
-
-//일단 인스턴스를 통해서 "/post?lastId=${lastId}"
-//이 요청을 보낸 값이 200이면 fulfilldwit
 
 export const getAllVideo = createAsyncThunk(
   "videoSlice/getAllVideo",
@@ -39,9 +40,11 @@ export const getAllVideo = createAsyncThunk(
     try {
       const res = await client.get(`/post?lastId=`);
 
-      const { posts } = res.data;
-
-      return thunkAPI.fulfillWithValue(posts);
+      if (res.status === 200) {
+        return thunkAPI.fulfillWithValue(res.data.posts);
+      } else {
+        return thunkAPI.rejectWithValue();
+      }
     } catch (err) {
       return thunkAPI.rejectWithValue();
     }
@@ -83,22 +86,46 @@ export const deleteVideo = createAsyncThunk(
   "videoSlice/deleteVideo",
   async (videoId, thunkAPI) => {
     try {
-      const post = await client.delete(`/post/${videoId}`);
-      console.log(post);
-      // if
-      return thunkAPI.fulfillWithValue(videoId);
+      const response = await client.delete(`/post/${videoId}`);
+      console.log(response);
+      if (response.status === 200) {
+        await thunkAPI.dispatch(getAllVideo());
+      } else if (response.status === 403) {
+        return thunkAPI.rejectWithValue(403);
+      } else if (response.status === 404) {
+        return thunkAPI.rejectWithValue(404);
+      } else {
+        return thunkAPI.rejectWithValue(501);
+      }
     } catch (err) {
       return thunkAPI.rejectWithValue();
     }
   }
 );
-//찍고나서 -> 콘솔확인 -> 다음 코드 작업
+
+//찍고나서 -> 콘솔확인 -> 다음 코드 작업 ***
 export const patchVideo = createAsyncThunk(
   "videoSlice/patchVideo",
-  async (videoId, thunkAPI) => {
+  async (updateData, thunkAPI) => {
+    const { videoId, updatement } = updateData;
     try {
+      const response = await client.patch(`/post/${videoId}`, {
+        title: updatement.title,
+        tag: updatement.tag,
+        content: updatement.content,
+      });
+      if (response.status === 200) {
+        await thunkAPI.dispatch(getDetailVideo(videoId));
+      } else if (response.status === 403) {
+        return thunkAPI.rejectWithValue(403);
+      } else if (response.status === 404) {
+        return thunkAPI.rejectWithValue(404);
+      } else {
+        return thunkAPI.rejectWithValue(501);
+      }
+    } catch (err) {
       return thunkAPI.rejectWithValue();
-    } catch (err) {}
+    }
   }
 );
 
