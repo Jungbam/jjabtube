@@ -55,6 +55,7 @@ export const logIn = createAsyncThunk(
 
 export const auth = createAsyncThunk(
   "signSlice/auth",
+
   async (payload, thunkAPI) => {
     console.log('auth!');
 
@@ -65,6 +66,7 @@ export const auth = createAsyncThunk(
     if(response.status === 200){
       return thunkAPI.fulfillWithValue();
     } else {
+
       return thunkAPI.rejectWithValue();
     }
   }

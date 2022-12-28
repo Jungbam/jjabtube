@@ -14,7 +14,7 @@ export const AuthAPI = {
 // 토큰 심어보내기
 client.interceptors.request.use(
   function (config) {
-    
+
     console.log("나갈 때", config);
     if(cookie.get("token")){
       config.headers.authorization = `Bearer ${cookie.get("token")}`;
