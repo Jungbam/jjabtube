@@ -3,45 +3,50 @@ import ReactPlayer from "react-player";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
+//업로드 날짜, 정렬기준 (버튼으로 )
+// 버튼을 누르면 컴포넌트 숨어져있다가 보여져야 한다
+
 const SearchPost = ({ video }) => {
   const [play, setPlay] = useState(false);
 
   return (
-    <StWrapAll>
-      <StPlyerContainer
-        onMouseEnter={() => setPlay(true)}
-        onMouseLeave={() => setPlay(false)}
-      >
-        {!play ? (
-          <StThumbnail src={video.thumbnail} alt={video.title} />
-        ) : (
-          <ReactPlayer
-            className="react-player"
-            url={video.compVid}
-            width="100%"
-            height="100%"
-            playing={true}
-            muted={true}
-            controls={true}
-          />
-        )}
-      </StPlyerContainer>
-      <StContainerCol>
-        <NavLink
-          to={`/detail/${video.postId}`}
-          style={{ textDecoration: "none" }}
+    <div>
+      <StWrapAll>
+        <StPlyerContainer
+          onMouseEnter={() => setPlay(true)}
+          onMouseLeave={() => setPlay(false)}
         >
-          <StTitle>{video.title}</StTitle>
-        </NavLink>
+          {!play ? (
+            <StThumbnail src={video.thumbnail} alt={video.title} />
+          ) : (
+            <ReactPlayer
+              className="react-player"
+              url={video.compVid}
+              width="100%"
+              height="100%"
+              playing={true}
+              muted={true}
+              controls={true}
+            />
+          )}
+        </StPlyerContainer>
+        <StContainerCol>
+          <NavLink
+            to={`/detail/${video.postId}`}
+            style={{ textDecoration: "none" }}
+          >
+            <StTitle>{video.title}</StTitle>
+          </NavLink>
 
-        <StBoxRow>
-          <StView>조회수 : {video.view}</StView>
-          <StCreatedAt>등록일자 : {video.createdAt}</StCreatedAt>
-          <StNickname>작성자 : {video.nickname}</StNickname>
-          <StContent>{video.content}</StContent>
-        </StBoxRow>
-      </StContainerCol>
-    </StWrapAll>
+          <StBoxRow>
+            <StView>조회수 : {video.view}</StView>
+            <StCreatedAt>등록일자 : {video.createdAt}</StCreatedAt>
+            <StNickname>작성자 : {video.nickname}</StNickname>
+            <StContent>{video.content}</StContent>
+          </StBoxRow>
+        </StContainerCol>
+      </StWrapAll>
+    </div>
   );
 };
 
@@ -52,7 +57,6 @@ const StWrapAll = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: green; */
 `;
 
 const StPlyerContainer = styled.div`
@@ -70,7 +74,6 @@ const StThumbnail = styled.img``;
 const StContainerCol = styled.div`
   display: flex;
   flex-direction: column;
-  /* background-color: yellow; */
   padding-left: 20px;
 `;
 
