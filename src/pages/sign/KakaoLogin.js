@@ -9,7 +9,6 @@ import { kakaoLogin } from "../../redux/modules/signSlice";
 const { Kakao } = window;
 const CLIENT_ID = process.env.REACT_APP_KAKAO_ID;
 Kakao.init(process.env.REACT_APP_KAKAO_ID);
-// console.log(Kakao.isInitialized());
 
 export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=https://jjabtube-oehq7gdnq-jungbam.vercel.app/login/kakao&response_type=code`;
 

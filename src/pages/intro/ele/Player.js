@@ -5,7 +5,6 @@ import styled from "styled-components";
 
 const Player = ({ video }) => {
   const [play, setPlay] = useState(false);
-  console.log(video);
   return (
     <StPlayerAll>
       <NavLink

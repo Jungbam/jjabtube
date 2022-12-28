@@ -46,7 +46,6 @@ const SignUp = () => {
 
     if (input.email) {
       const res = await dispatch(dupEmailCheck(input.email));
-      console.log(res);
       if (res.meta.requestStatus === "fulfilled") {
         window.alert("사용가능한 이메일 입니다");
       } else {
@@ -75,7 +74,6 @@ const SignUp = () => {
 
       // Profile 이미지 처리 백엔드 완성되면
       formData.append("profileImg", profileImg);
-      console.log(formData.get("profileImg"));
 
       const res = await dispatch(signUp(formData));
 

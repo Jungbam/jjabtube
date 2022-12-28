@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Player from "./ele/Player";
-import { getAllVideo, searchTag } from "../../redux/modules/videoSlice";
-import { StButton, StLabel } from "../../UI/StIndex";
+import {
+  getAllVideo,
+  initSearch,
+  searchTag,
+} from "../../redux/modules/videoSlice";
+import { StLabel } from "../../UI/StIndex";
 
 const Intro = () => {
   const { allVideos, searchedVideo } = useSelector((state) => state.videoSlice);
-  const { isLogedIn } = useSelector((state) => state.signSlice);
 
+  // console.log(searchedVideo);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -17,12 +21,17 @@ const Intro = () => {
 
   const searchByTagHandler = (e) => {
     dispatch(searchTag(e.target.name));
-  };  
+  };
   return (
     <>
       <section>
         <StLabelContainer>
-          <StLabel onClick={searchByTagHandler} name="전체">
+          <StLabel
+            onClick={() => {
+              dispatch(initSearch());
+            }}
+            name="전체"
+          >
             전체
           </StLabel>
           <StLabel onClick={searchByTagHandler} name="강아지">
@@ -64,13 +73,12 @@ const Intro = () => {
 export default Intro;
 
 const StAllVideoContainer = styled.div`
-  display:grid;
+  display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-	column-gap: 30px;
-	row-gap: 10px;
+  column-gap: 30px;
+  row-gap: 10px;
   margin: 0 24px;
 `;
-
 
 const StWrap1 = styled.div`
   width: 300px;
@@ -114,5 +122,3 @@ const StLabelContainer = styled.article`
   justify-content: center;
   gap: 5px;
 `;
-
-

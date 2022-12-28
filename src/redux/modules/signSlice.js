@@ -23,7 +23,6 @@ export const signUp = createAsyncThunk(
   "signSlice/signUp",
   async (formData, thunkAPI) => {
     const response = await client.post("/signup", formData);
-    console.log(response);
 
     if (response.status === 200) {
       const fulfiledMsg = response.data.message;
@@ -39,7 +38,6 @@ export const logIn = createAsyncThunk(
   "signSlice/logIn",
   async (loginData, thunkAPI) => {
     const response = await client.post("/login", loginData);
-    console.log(response);
 
     if (response.status === 200) {
       const fulfiledMsg = "로그인 성공";
@@ -55,11 +53,8 @@ export const auth = createAsyncThunk(
   "signSlice/auth",
 
   async (payload, thunkAPI) => {
-    console.log("auth!");
-
     // 1.로그인할때 브라우저 닫을때 처리
     const response = await client.get("/auth");
-    console.log(response);
 
     if (response.status === 200) {
       return thunkAPI.fulfillWithValue();
@@ -76,7 +71,6 @@ export const kakaoLogin = createAsyncThunk(
       const response = await client.get(
         `${process.env.REACT_APP_SERVER}/login/kakao?code=${code}`
       );
-      console.log(response);
       if (response.status === 200) {
         return thunkAPI.fulfillWithValue();
       } else {
@@ -138,15 +132,11 @@ const signSlice = createSlice({
       state.errorMsg = action.payload;
     },
 
-    [auth.pending]: (state) => {
-      console.log("auth pending");
-    },
+    [auth.pending]: (state) => {},
     [auth.fulfilled]: (state, action) => {
-      console.log("auth fulfilled");
       state.isLogedIn = true;
     },
     [auth.rejected]: (state, action) => {
-      console.log("auth rejected");
       state.error = false;
       state.isLogedIn = false;
       state.errorMsg = action.payload;
