@@ -1,15 +1,27 @@
 import React from "react";
 import styled from "styled-components";
 
-const StLabel = ({ mode, children }) => {
+const StLabel = ({ mode, children, onClick, name }) => {
   const Label = () => {
     switch (mode) {
       case "pr":
-        return <StPrimaryLabel>{children}</StPrimaryLabel>;
+        return (
+          <StPrimaryLabel onClick={onClick} name={name}>
+            {children}
+          </StPrimaryLabel>
+        );
       case "second":
-        return <StSecondaryLabel>{children}</StSecondaryLabel>;
+        return (
+          <StSecondaryLabel onClick={onClick} name={name}>
+            {children}
+          </StSecondaryLabel>
+        );
       default:
-        return <StPrimaryLabel>{children}</StPrimaryLabel>;
+        return (
+          <StPrimaryLabel onClick={onClick} name={name}>
+            {children}
+          </StPrimaryLabel>
+        );
     }
   };
   return <Label />;
@@ -18,20 +30,23 @@ const StLabel = ({ mode, children }) => {
 export default StLabel;
 
 export const StPrimaryLabel = styled.button`
-  width: 100px;
-  height: 44px;
+  padding: 0 8px;
+  height: 38px;
   border-radius: 8px;
   border: none;
   background-color: ${(props) => props.theme.colors.black};
   color: white;
+  &:hover:{
+
+  }
 `;
 
 export const StSecondaryLabel = styled.button`
-  width: 100px;
-  height: 44px;
+  padding: 0 8px;
+  height: 38px;
   border-radius: 8px;
   border: none;
-  background-color: ${(props) => props.theme.colors.gray};
+  background-color: ${(props) => props.theme.colors.lightGray};
   color: ${(props) => props.theme.colors.black};
   display: block;
   &:hover {

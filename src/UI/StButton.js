@@ -1,19 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 
-const StButton = ({ mode, children }) => {
+const StButton = ({ mode, children, onClick }) => {
   const Button = () => {
     switch (mode) {
       case "pr":
-        return <StPrimaryLgButton>{children}</StPrimaryLgButton>;
+        return (
+          <StPrimaryLgButton onClick={onClick}>{children}</StPrimaryLgButton>
+        );
       case "second":
-        return <StSecondaryLgButton>{children}</StSecondaryLgButton>;
+        return (
+          <StSecondaryLgButton onClick={onClick}>
+            {children}
+          </StSecondaryLgButton>
+        );
       case "smpr":
-        return <StPrimarySmButton>{children}</StPrimarySmButton>;
+        return (
+          <StPrimarySmButton onClick={onClick}>{children}</StPrimarySmButton>
+        );
       case "smsecond":
-        return <StSecondarySmButton>{children}</StSecondarySmButton>;
+        return (
+          <StSecondarySmButton onClick={onClick}>
+            {children}
+          </StSecondarySmButton>
+        );
       default:
-        return <StPrimaryLgButton>{children}</StPrimaryLgButton>;
+        return (
+          <StPrimaryLgButton onClick={onClick}>{children}</StPrimaryLgButton>
+        );
     }
   };
 
@@ -21,14 +35,19 @@ const StButton = ({ mode, children }) => {
 };
 
 export default StButton;
-
+StButton.defaultProps = {
+  onClick: () => {},
+};
 const StPrimaryLgButton = styled.button`
   width: 320px;
   height: 60px;
   color: white;
   border: none;
   border-radius: 5px;
-  background-color: ${(props) => props.theme.colors.red};
+  background-color: ${(props) => props.theme.colors.blue};
+  &:hover {
+    background: rgb(49, 101, 195);
+  }
 `;
 
 const StSecondaryLgButton = styled.button`
@@ -38,6 +57,9 @@ const StSecondaryLgButton = styled.button`
   background-color: white;
   border: 1px solid ${(props) => props.theme.colors.black};
   border-radius: 5px;
+  &:hover {
+    background: rgb(240, 240, 240);
+  }
 `;
 
 const StPrimarySmButton = styled.button`
@@ -47,6 +69,9 @@ const StPrimarySmButton = styled.button`
   background-color: ${(props) => props.theme.colors.black};
   border: 1px solid ${(props) => props.theme.colors.black};
   border-radius: 5px;
+  &:hover {
+    background: rgb(49, 101, 195);
+  }
 `;
 
 const StSecondarySmButton = styled.button`
