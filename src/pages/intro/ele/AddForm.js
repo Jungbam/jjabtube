@@ -42,6 +42,7 @@ const AddForm = ({ onToggleModal }) => {
       <label>영상 업로드</label>
       <input
         name="video"
+        accept="video/*, video/mp4, video/mkv, video/x-m4v"
         onChange={(e) => {
           setVideo(e.target.files[0]);
         }}

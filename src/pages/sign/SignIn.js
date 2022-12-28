@@ -95,7 +95,7 @@ const StBtnContainer = styled.div`
 
 const StForm = styled.form`
   margin: 0 auto;
-  width: 448px;
+  width: 450px;
   height: 500px;
   border: 1px solid ${(props) => props.theme.colors.gray};
   border-radius: 5px;
@@ -118,15 +118,6 @@ const StFormInput = styled.input`
   ::placeholder {
     color: ${(props) => props.theme.colors.gray};
   }
-`;
-
-const StKakaoButton = styled.button`
-  background-color: rgb(251, 229, 77);
-  width: 32px;
-  height: 32px; 
-  border-radius: 70%;
-  overflow: hidden;
-  border: none;
 `;
 
 const StKakaoDiv = styled.div`
