@@ -74,8 +74,8 @@ const SignUp = () => {
       }
 
       // Profile 이미지 처리 백엔드 완성되면
-      // formData.append("profileImg", profileImg);
-      // console.log(formData.get('profileImg'));
+      formData.append("profileImg", profileImg);
+      console.log(formData.get("profileImg"));
 
       const res = await dispatch(signUp(formData));
 
