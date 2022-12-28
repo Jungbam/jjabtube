@@ -125,8 +125,9 @@ const StSearchBtn = styled.button`
 const StSmButton = styled.button`
   width: 70px;
   height: 40px;
-  border-radius: 30%;
+  border-radius: 5px;
   border: 1px solid ${(props) => props.theme.colors.gray};
+  background-color:white;
   &:hover {
     background: rgb(220, 220, 220);
   }
