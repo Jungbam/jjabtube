@@ -21,7 +21,7 @@ const Detail = () => {
   const [updatement, setUpdatement] = useState({
     title: "",
     content: "",
-    tage: "",
+    tag: "",
     comment: "",
   });
   const dispatch = useDispatch();

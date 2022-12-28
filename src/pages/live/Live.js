@@ -1,10 +1,11 @@
 import React from "react";
+import Chat from "./ele/Chat";
 
 const Live = () => {
   return (
     <div>
       <div>video</div>
-      <div>chat</div>
+      <Chat />
     </div>
   );
 };
