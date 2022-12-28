@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { client } from "../../api/axios";
+import { SignAPI } from "../../api/axios";
 import { Cookies } from "react-cookie";
 
 const cookie = new Cookies();
@@ -7,10 +7,9 @@ const cookie = new Cookies();
 export const dupEmailCheck = createAsyncThunk(
   "signSlice/dupEmailCheck",
   async (email, thunkAPI) => {
-    const response = await client.post(`/signup/emailcheck`, { email });
+    const response = await SignAPI.dupEmailCheck(email);
     if (response.status === 200) {
       const fulfilledMsg = response.data.message;
-
       return thunkAPI.fulfillWithValue(fulfilledMsg);
     } else {
       const errorMsg = response.response.data.errorMessage;
@@ -22,8 +21,7 @@ export const dupEmailCheck = createAsyncThunk(
 export const signUp = createAsyncThunk(
   "signSlice/signUp",
   async (formData, thunkAPI) => {
-    const response = await client.post("/signup", formData);
-
+    const response = await SignAPI.signUp(formData);
     if (response.status === 200) {
       const fulfiledMsg = response.data.message;
       return thunkAPI.fulfillWithValue(fulfiledMsg);
@@ -37,8 +35,7 @@ export const signUp = createAsyncThunk(
 export const logIn = createAsyncThunk(
   "signSlice/logIn",
   async (loginData, thunkAPI) => {
-    const response = await client.post("/login", loginData);
-
+    const response = await SignAPI.logIn(loginData);
     if (response.status === 200) {
       const fulfiledMsg = "로그인 성공";
       return thunkAPI.fulfillWithValue(fulfiledMsg);
@@ -51,9 +48,8 @@ export const logIn = createAsyncThunk(
 
 export const auth = createAsyncThunk(
   "signSlice/auth",
-
   async (payload, thunkAPI) => {
-    const response = await client.get("/auth");
+    const response = await SignAPI.auth();
 
     if (response.status === 200) {
       return thunkAPI.fulfillWithValue();
@@ -67,9 +63,7 @@ export const kakaoLogin = createAsyncThunk(
   "signSlice/kakaoLogin",
   async (code, thunkAPI) => {
     try {
-      const response = await client.get(
-        `${process.env.REACT_APP_SERVER}/login/kakao?code=${code}`
-      );
+      const response = await kakaoLogin(code);
       if (response.status === 200) {
         return thunkAPI.fulfillWithValue();
       } else {
