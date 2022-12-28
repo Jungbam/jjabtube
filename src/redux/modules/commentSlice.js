@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { client } from "../../api/axios";
+import { CommentAPI } from "../../api/axios";
 import { getDetailVideo } from "./videoSlice";
 
 export const postComment = createAsyncThunk(
@@ -7,9 +7,8 @@ export const postComment = createAsyncThunk(
   async (commentData, thunkAPI) => {
     const { comment, postId } = commentData;
     try {
-      const result = await client.post(`/comment/post/${postId}`, { comment });
+      const result = await CommentAPI.postComment(comment, postId);
       if (result.status === 200) thunkAPI.dispatch(getDetailVideo(postId));
-      else thunkAPI.rejectWithValue(406);
     } catch (err) {
       return thunkAPI.rejectWithValue();
     }
@@ -20,14 +19,8 @@ export const patchComment = createAsyncThunk(
   async (patchData, thunkAPI) => {
     const { commentId, postId, comment } = patchData;
     try {
-      const result = await client.patch(
-        `/comment/${commentId}/post/${postId}`,
-        {
-          comment,
-        }
-      );
+      const result = await CommentAPI.patchComment(commentId, postId, comment);
       if (result.status === 200) thunkAPI.dispatch(getDetailVideo(postId));
-      else thunkAPI.rejectWithValue(406);
     } catch (err) {
       return thunkAPI.rejectWithValue();
     }
@@ -38,11 +31,8 @@ export const deleteComment = createAsyncThunk(
   async (deleteData, thunkAPI) => {
     const { commentId, postId } = deleteData;
     try {
-      const result = await client.delete(
-        `/comment/${commentId}/post/${postId}`
-      );
+      const result = await CommentAPI.deleteComment(commentId);
       if (result.status === 200) thunkAPI.dispatch(getDetailVideo(postId));
-      else thunkAPI.rejectWithValue(406);
     } catch (err) {
       return thunkAPI.rejectWithValue();
     }

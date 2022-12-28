@@ -30,7 +30,6 @@ const SignUp = () => {
   const changeImgHandler = (e) => {
     const profileImg = e.target.files[0];
 
-    // 이미지 미리보기
     const file = imgRef.current.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -72,7 +71,6 @@ const SignUp = () => {
         formData.append(`${property}`, input[property]);
       }
 
-      // Profile 이미지 처리 백엔드 완성되면
       formData.append("profileImg", profileImg);
 
       const res = await dispatch(signUp(formData));
@@ -84,7 +82,6 @@ const SignUp = () => {
         window.alert("패스워드가 일치하지 않습니다");
         return;
       } else {
-        // window.alert("이미 존재하는 이메일 입니다.");
         return;
       }
     } else {
@@ -115,7 +112,6 @@ const SignUp = () => {
             accept="image/*"
             name="profileImg"
             type="file"
-            // required
             onChange={changeImgHandler}
           />
           <StBtnContainer>

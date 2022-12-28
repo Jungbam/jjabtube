@@ -15,7 +15,6 @@ const Search = () => {
   const { searchedVideo } = useSelector((state) => state.videoSlice);
   const { searchValue } = useParams();
 
-  console.log(searchedVideo);
   const dispatch = useDispatch();
 
   useEffect(() => {
