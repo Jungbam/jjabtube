@@ -73,8 +73,8 @@ const SignUp = () => {
       }
 
       // Profile 이미지 처리 백엔드 완성되면 
-      // formData.append("profileImg", profileImg);
-      // console.log(formData.get('profileImg'));
+      formData.append("profileImg", profileImg);
+      console.log(formData.get('profileImg'));
 
       const res = await dispatch(signUp(formData));
 
@@ -85,7 +85,7 @@ const SignUp = () => {
         window.alert("패스워드가 일치하지 않습니다");
         return ;
       } else {
-        window.alert("이미 존재하는 이메일 입니다.");
+        // window.alert("이미 존재하는 이메일 입니다.");
         return ;
       }
 
@@ -100,7 +100,7 @@ const SignUp = () => {
     <StForm onSubmit={onSubmitHandler}>
       <h2>회원가입</h2>
       <InputContainer>
-        <StImgDiv>
+        <StProfileImgDiv>
           <img
             alt="profile"
             src={previewImg ? previewImg : profile}
@@ -109,7 +109,7 @@ const SignUp = () => {
             border-radius= "50%"
             object-fit="cover"
           />
-        </StImgDiv>
+        </StProfileImgDiv>
         <StImgLabel htmlFor="profileImg">프로필 이미지 추가</StImgLabel>  
           <StImgInput 
             id="profileImg"
@@ -133,12 +133,11 @@ const SignUp = () => {
 };
 
 const Wrapper = styled.div`
-  width: 100%;
   height: 90vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 `;
 
 const InputContainer = styled.div`
@@ -150,8 +149,7 @@ const InputContainer = styled.div`
 `;
 
 const StForm = styled.form`
-  margin: 0 auto;
-  width: 448px;
+  width: 450px;
   height: 600px;
   border: 1px solid #d1d1d1;
   border-radius: 5px;
@@ -180,10 +178,10 @@ const StImgInput = styled.input`
   display: none;
 `;
 
-const StImgDiv = styled.div`
+const StProfileImgDiv = styled.div`
   width: 32px;
   height: 32px;
-  border-radius: 70%;
+  border-radius: 50%;
   overflow: hidden;
 `;
 
@@ -210,6 +208,9 @@ const StDupCheckButton = styled.button`
   background-color: ${(props) => props.theme.colors.blue};
   border: none;
   border-radius: 0 5px 5px 0;
+  &:hover {
+    background: rgb(49, 101, 195);
+  }
 `;
 
 const StPrimaryLgButton = styled.button`
@@ -219,6 +220,9 @@ const StPrimaryLgButton = styled.button`
   border: none;
   border-radius: 5px;
   background-color: ${(props) => props.theme.colors.blue};
+  &:hover {
+    background: rgb(49, 101, 195);
+  }
 `;
 
 export default SignUp;

@@ -4,82 +4,71 @@ import styled from "styled-components";
 import Player from "./ele/Player";
 import { getAllVideo, searchTag } from "../../redux/modules/videoSlice";
 import { StButton, StLabel } from "../../UI/StIndex";
-import AddForm from "./ele/AddForm";
-import Modal from "./ele/Modal";
 
 const Intro = () => {
   const { allVideos, searchedVideo } = useSelector((state) => state.videoSlice);
   const { isLogedIn } = useSelector((state) => state.signSlice);
-  const [modal, setModal] = useState(false);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllVideo());
   }, []);
-
-  const onToggleModal = () => {
-    setModal((prev) => !prev);
-  };
-
+  
   const searchByTagHandler = (e) => {
     dispatch(searchTag(e.target.name));
-  };
-
+  };  
   return (
-    <section>
-      <article>
-        <StLabel onClick={searchByTagHandler} name="cat">
-          cat
-        </StLabel>
-        <StLabel onClick={searchByTagHandler} name="pet">
-          pet
-        </StLabel>
-        <StLabel onClick={searchByTagHandler} name="운동">
-          운동
-        </StLabel>
-        <StLabel onClick={searchByTagHandler} name="패션">
-          패션
-        </StLabel>
-      </article>
-      {isLogedIn && (
-        <StButton mode="smpr" onClick={onToggleModal}>
-          +
-        </StButton>
-      )}
-      {isLogedIn && (
-        <Modal modal={modal} closeModal={onToggleModal}>
-          <AddForm onToggleModal={onToggleModal}></AddForm>
-        </Modal>
-      )}
-      <StAllVideoContainer>
-        {searchedVideo === null ? (
-          allVideos?.map((video) => {
-            return <Player key={`player${video.postId}`} video={video} />;
-          })
-        ) : (
-          <></>
-        )}
-        {searchedVideo?.length === 0 ? (
-          <p>검색결과가 없습니다.</p>
-        ) : (
-          searchedVideo?.map((video) => {
-            return <Player key={`player${video.postId}`} video={video} />;
-          })
-        )}
-      </StAllVideoContainer>
-    </section>
+    <>
+      <section>
+        <StLabelContainer>
+          <StLabel onClick={searchByTagHandler} name="전체">
+            전체
+          </StLabel>
+          <StLabel onClick={searchByTagHandler} name="강아지">
+            강아지
+          </StLabel>
+          <StLabel onClick={searchByTagHandler} name="반려동물">
+            반려동물
+          </StLabel>
+          <StLabel onClick={searchByTagHandler} name="운동">
+            운동
+          </StLabel>
+          <StLabel onClick={searchByTagHandler} name="패션">
+            패션
+          </StLabel>
+        </StLabelContainer>
+      </section>
+      <section>
+        <StAllVideoContainer>
+          {searchedVideo === null ? (
+            allVideos?.map((video) => {
+              return <Player key={`player${video.postId}`} video={video} />;
+            })
+          ) : (
+            <></>
+          )}
+          {searchedVideo?.length === 0 ? (
+            <p>검색결과가 없습니다.</p>
+          ) : (
+            searchedVideo?.map((video) => {
+              return <Player key={`player${video.postId}`} video={video} />;
+            })
+          )}
+        </StAllVideoContainer>
+      </section>
+    </>
   );
 };
 
 export default Intro;
 
 const StAllVideoContainer = styled.div`
-  width: 90%;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	column-gap: 30px;
+	row-gap: 10px;
+  margin: 0 16px;
 `;
 
 const StWrap1 = styled.div`
@@ -116,3 +105,12 @@ const StNickname = styled.div`
   font-size: 1rem;
   font-weight: 500;
 `;
+
+const StLabelContainer = styled.article`
+  width: 100%;
+  padding: 1rem 0;
+  display:flex;
+  justify-content: center;
+  gap: 5px;
+`;
+
