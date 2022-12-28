@@ -22,8 +22,8 @@ const Player = ({ video }) => {
           <ReactPlayer
             className="react-player"
             url={video.compVid}
-            width="100%"
             height="100%"
+            width="100%"
             playing={true}
             muted={true}
             controls={true}
@@ -64,6 +64,7 @@ const StPlayerAll = styled.div`
 `;
 
 const StPlyerContainer = styled.div`
+
   background: black;
   height: 180px;
   border-radius: 12px 12px 0 0;
@@ -81,6 +82,7 @@ const StProfileImgDiv = styled.div`
   border-radius: 50%;
   overflow: hidden;
 `;
+
 
 const StContainerCol = styled.div`
   display: flex;
