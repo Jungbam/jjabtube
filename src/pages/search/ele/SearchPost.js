@@ -3,9 +3,6 @@ import ReactPlayer from "react-player";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-//업로드 날짜, 정렬기준 (버튼으로 )
-// 버튼을 누르면 컴포넌트 숨어져있다가 보여져야 한다
-
 const SearchPost = ({ video }) => {
   const [play, setPlay] = useState(false);
 

@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { client } from "../../api/axios";
+import { VideoAPI } from "../../api/axios";
 
 export const searchTag = createAsyncThunk(
   "videoSlice/searchTag",
   async (tag, thunkAPI) => {
     try {
-      const result = await client.get(`/post/search?tag=${tag}`);
+      const result = await VideoAPI.searchTag(tag);
       if (result.status === 200)
         return thunkAPI.fulfillWithValue(result.data.posts);
     } catch (err) {
@@ -17,7 +17,7 @@ export const searchTitle = createAsyncThunk(
   "videoSlice/searchTitle",
   async (keyword, thunkAPI) => {
     try {
-      const result = await client.get(`/post/search?keyword=${keyword}`);
+      const result = await VideoAPI.sarchTitle(keyword);
       if (result.status === 200)
         return thunkAPI.fulfillWithValue(result.data.posts);
     } catch (err) {
@@ -30,7 +30,7 @@ export const postVideo = createAsyncThunk(
   "videoSlice/postVideo",
   async (formData, thunkAPI) => {
     try {
-      const response = await client.post("/post", formData);
+      const response = await VideoAPI.postVideo(formData);
       if (response.status === 200) {
         await thunkAPI.dispatch(getAllVideo());
       }
@@ -44,7 +44,7 @@ export const getAllVideo = createAsyncThunk(
   "videoSlice/getAllVideo",
   async (getAll, thunkAPI) => {
     try {
-      const result = await client.get("/post");
+      const result = await VideoAPI.getAllVideo();
       if (result.status === 200) {
         return thunkAPI.fulfillWithValue(result.data.posts);
       }
@@ -57,7 +57,7 @@ export const getDetailVideo = createAsyncThunk(
   "videoSlice/getDetailVideo",
   async (videoId, thunkAPI) => {
     try {
-      const result = await client.get(`/post/${videoId}`);
+      const result = await VideoAPI.getDetailVideo(videoId);
       if (result.status === 200) {
         return thunkAPI.fulfillWithValue(result.data);
       }
@@ -70,7 +70,7 @@ export const deleteVideo = createAsyncThunk(
   "videoSlice/deleteVideo",
   async (videoId, thunkAPI) => {
     try {
-      const response = await client.delete(`/post/${videoId}`);
+      const response = await VideoAPI.deleteVideo(videoId);
       if (response.status === 200) {
         await thunkAPI.dispatch(getAllVideo());
       }
@@ -84,11 +84,7 @@ export const patchVideo = createAsyncThunk(
   async (updateData, thunkAPI) => {
     const { videoId, updatement } = updateData;
     try {
-      const response = await client.patch(`/post/${videoId}`, {
-        title: updatement.title,
-        tag: updatement.tag,
-        content: updatement.content,
-      });
+      const response = await VideoAPI.patchVideo(videoId, updatement);
       if (response.status === 200) {
         await thunkAPI.dispatch(getDetailVideo(videoId));
       }
@@ -122,9 +118,6 @@ const videoSlice = createSlice({
     },
     filterDate: (state, payload) => {
       state.searchedVideo = state.searchedVideo;
-      // state.searchedVideo = state.searchedVideo?.sort(
-      //   (a, b) => b.title - a.title
-      // );
     },
   },
   extraReducers: {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Player from "./ele/Player";
@@ -12,7 +12,6 @@ import { StLabel } from "../../UI/StIndex";
 const Intro = () => {
   const { allVideos, searchedVideo } = useSelector((state) => state.videoSlice);
 
-  // console.log(searchedVideo);
   const dispatch = useDispatch();
 
   useEffect(() => {
