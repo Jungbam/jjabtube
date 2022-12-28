@@ -14,7 +14,7 @@ const Intro = () => {
   useEffect(() => {
     dispatch(getAllVideo());
   }, []);
-  
+
   const searchByTagHandler = (e) => {
     dispatch(searchTag(e.target.name));
   };  
@@ -68,7 +68,7 @@ const StAllVideoContainer = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 	column-gap: 30px;
 	row-gap: 10px;
-  margin: 0 16px;
+  margin: 0 24px;
 `;
 
 const StWrap1 = styled.div`
@@ -109,7 +109,7 @@ const StNickname = styled.div`
 const StLabelContainer = styled.article`
   width: 100%;
   padding: 1rem 0;
-  display:flex;
+  display: flex;
   justify-content: center;
   gap: 5px;
 `;

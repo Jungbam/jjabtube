@@ -75,10 +75,10 @@ const StThumbnail = styled.img`
 `;
 
 const StProfileImgDiv = styled.div`
-  width: 32px;
+  width: 40px;
   height: 32px;
   margin: 10px 10px 0 10px;
-  border-radius: 70%;
+  border-radius: 50%;
   overflow: hidden;
 `;
 
