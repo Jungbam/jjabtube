@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { logOut } from "../redux/modules/signSlice";
 import { initSearch } from "../redux/modules/videoSlice";
+import youtube from '../assets/youtube.png';
 
 const Header = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -27,30 +28,31 @@ const Header = () => {
   return (
     <StHeaderWrapper>
       <StHeaderContainer>
-        <NavLink to="/" style={{ textDecoration: "none" }}>
-          <h1 onClick={() => dispatch(initSearch())}>JJabtube</h1>
+        <NavLink to="/" style={{ textDecoration: "none", gap: "4px  ", alignItems: "center", display:"flex"}}>
+          <StIcon src={youtube} alt="icon"/>
+          <StH3 onClick={() => dispatch(initSearch())}>JJabtube</StH3>
         </NavLink>
+
         <StSearchBox>
           <StInput
             type="text"
-            placeholder="Search"
+            placeholder="검색"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             onKeyUp={enterKeyHandler}
           ></StInput>
-          <button onClick={enterHandler}>엔터</button>
+          <StSearchBtn onClick={enterHandler}>검색</StSearchBtn>
         </StSearchBox>
-
         <StSignBox>
           {isLogedIn ? (
-            <button onClick={() => dispatch(logOut())}>로그아웃</button>
+            <StSmButton onClick={() => dispatch(logOut())}>로그아웃</StSmButton>
           ) : (
             <>
               <NavLink to="/signin" style={{ textDecoration: "none" }}>
-                <button>로그인</button>
+                <StSmButton>로그인</StSmButton>
               </NavLink>
               <NavLink to="/signup" style={{ textDecoration: "none" }}>
-                <button>회원가입</button>
+                <StSmButton>회원가입</StSmButton>
               </NavLink>
             </>
           )}
@@ -62,28 +64,67 @@ const Header = () => {
 
 export default Header;
 
-const StHeaderWrapper = styled.div`
+const StHeaderWrapper = styled.header`
   position: fixed;
   width: 100%;
-  height: 70px;
+  height: 56px;
   align-items: center;
   top: 0;
   display: flex;
   justify-content: center;
-  background-color: rgba(229, 232, 232, 0.9);
-  font-family: "EF_jejudoldam";
+  background-color: white;
 `;
 const StHeaderContainer = styled.div`
   display: flex;
+  flex-direction: row;  
   justify-content: space-between;
   width: 90%;
 `;
-const StInput = styled.input`
-  height: 2.5rem;
+
+const StH3 = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  font-family: "Heycomic";
+`;
+
+const StIcon = styled.img`
+  width: 32px;
+  height: 32px;
 `;
 const StSearchBox = styled.div`
   display: flex;
+  justify-content: center;
+  width: 40%;
+  border: 1px solid ${(props) => props.theme.colors.gray};
+  border-radius: 30px 30px 30px 30px;
+`;
+
+const StInput = styled.input`
+  width: 100%;
+  height: 2.5rem;
+  border: none;
+  background-color:transparent;
+  padding-left: 15px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const StSearchBtn = styled.button`
+  height: 40px;
+  width: 64px;
+  border: transparent;
+  border-radius: 0 40px 40px 0;
+`;
+
+const StSmButton = styled.button`
+  width: 70px;
+  height: 40px;
+  border-radius: 20%;
+  border: 1px solid ${(props) => props.theme.colors.gray};
 `;
 const StSignBox = styled.div`
   display: flex;
+  gap: 5px;
 `;

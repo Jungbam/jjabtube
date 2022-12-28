@@ -11,11 +11,11 @@ const GlobalStyle = createGlobalStyle`
   * {
     margin: 0;
     padding: 0;  
+    font-family: Roboto, Arial ,sans-serif;   
   }
 
   body {
-    background-color: whitesmoke;
-    font-family: Roboto, Arial ,sans-serif;   
+    background-color: white;
   }
 
   button {
