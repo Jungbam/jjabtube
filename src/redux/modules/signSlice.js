@@ -73,7 +73,9 @@ export const kakaoLogin = createAsyncThunk(
   "signSlice/kakaoLogin",
   async (code, thunkAPI) => {
     try {
-      const response = await client.get(`/login/kakao?code=${code}`);
+      const response = await client.get(
+        `${process.env.REACT_APP_SERVER}/login/kakao?code=${code}`
+      );
       console.log(response);
       if (response.status === 200) {
         return thunkAPI.fulfillWithValue();

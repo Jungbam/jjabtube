@@ -4,13 +4,10 @@ import styled from "styled-components";
 import StButton from "./../../UI/StButton";
 import KakaoImg from "../../assets/kakao.png";
 import KakaoLogin from "./KakaoLogin";
-// import { KAKAO_AUTH_URL } from './KakaoLogin';
+import { KAKAO_AUTH_URL } from "./KakaoLogin";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logIn, kakaoInfo } from "../../redux/modules/signSlice";
-
-const CLIENT_ID = process.env.REACT_APP_KAKAO_ID;
-export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=https://jjabtube-oehq7gdnq-jungbam.vercel.app&response_type=code`;
 
 const SignIn = () => {
   const [input, setInput] = useState({
