@@ -107,7 +107,7 @@ export default Header;
 const StHeaderWrapper = styled.header`
   position: fixed;
   width: 100%;
-  height: 56px;
+  height: 70px;
   align-items: center;
   top: 0;
   display: flex;
