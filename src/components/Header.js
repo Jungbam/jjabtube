@@ -107,7 +107,8 @@ const StInput = styled.input`
   background-color:transparent;
   padding-left: 15px;
   &:focus {
-    outline: none;
+    box-shadow: 1px ${(props) => props.theme.colors.blue} inset;
+    border-radius: 30px 0 0 30px;
   }
 `;
 
@@ -116,14 +117,21 @@ const StSearchBtn = styled.button`
   width: 64px;
   border: transparent;
   border-radius: 0 40px 40px 0;
+  &:hover {
+    background: rgb(220, 220, 220);
+  }
 `;
 
 const StSmButton = styled.button`
   width: 70px;
   height: 40px;
-  border-radius: 20%;
+  border-radius: 30%;
   border: 1px solid ${(props) => props.theme.colors.gray};
+  &:hover {
+    background: rgb(220, 220, 220);
+  }
 `;
+
 const StSignBox = styled.div`
   display: flex;
   gap: 5px;

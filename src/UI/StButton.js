@@ -45,6 +45,9 @@ const StPrimaryLgButton = styled.button`
   border: none;
   border-radius: 5px;
   background-color: ${(props) => props.theme.colors.blue};
+  &:hover {
+    background: rgb(49, 101, 195);
+  }
 `;
 
 const StSecondaryLgButton = styled.button`
@@ -54,6 +57,9 @@ const StSecondaryLgButton = styled.button`
   background-color: white;
   border: 1px solid ${(props) => props.theme.colors.black};
   border-radius: 5px;
+  &:hover {
+    background: rgb(240, 240, 240);
+  }
 `;
 
 const StPrimarySmButton = styled.button`
@@ -63,6 +69,9 @@ const StPrimarySmButton = styled.button`
   background-color: ${(props) => props.theme.colors.black};
   border: 1px solid ${(props) => props.theme.colors.black};
   border-radius: 5px;
+  &:hover {
+    background: rgb(49, 101, 195);
+  }
 `;
 
 const StSecondarySmButton = styled.button`
