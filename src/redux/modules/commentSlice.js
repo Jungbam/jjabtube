@@ -54,16 +54,10 @@ const commentSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [postComment.pending]: (state) => {},
-    [postComment.fulfilled]: (state, action) => {},
     [postComment.rejected]: (state, action) => {},
 
-    [patchComment.pending]: (state) => {},
-    [patchComment.fulfilled]: (state, action) => {},
     [patchComment.rejected]: (state, action) => {},
 
-    [deleteComment.pending]: (state) => {},
-    [deleteComment.fulfilled]: (state, action) => {},
     [deleteComment.rejected]: (state, action) => {},
   },
 });

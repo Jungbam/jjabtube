@@ -33,10 +33,6 @@ export const postVideo = createAsyncThunk(
       const response = await client.post("/post", formData);
       if (response.status === 200) {
         await thunkAPI.dispatch(getAllVideo());
-      } else if (response.status === 406) {
-        return thunkAPI.rejectWithValue(406);
-      } else {
-        return thunkAPI.rejectWithValue(501);
       }
     } catch (err) {
       return thunkAPI.rejectWithValue();
@@ -51,8 +47,6 @@ export const getAllVideo = createAsyncThunk(
       const result = await client.get("/post");
       if (result.status === 200) {
         return thunkAPI.fulfillWithValue(result.data.posts);
-      } else {
-        return thunkAPI.rejectWithValue();
       }
     } catch (err) {
       return thunkAPI.rejectWithValue();
@@ -66,8 +60,6 @@ export const getDetailVideo = createAsyncThunk(
       const result = await client.get(`/post/${videoId}`);
       if (result.status === 200) {
         return thunkAPI.fulfillWithValue(result.data);
-      } else {
-        return thunkAPI.rejectWithValue(404);
       }
     } catch (err) {
       return thunkAPI.rejectWithValue();
@@ -81,12 +73,6 @@ export const deleteVideo = createAsyncThunk(
       const response = await client.delete(`/post/${videoId}`);
       if (response.status === 200) {
         await thunkAPI.dispatch(getAllVideo());
-      } else if (response.status === 403) {
-        return thunkAPI.rejectWithValue(403);
-      } else if (response.status === 404) {
-        return thunkAPI.rejectWithValue(404);
-      } else {
-        return thunkAPI.rejectWithValue(501);
       }
     } catch (err) {
       return thunkAPI.rejectWithValue();
@@ -105,12 +91,6 @@ export const patchVideo = createAsyncThunk(
       });
       if (response.status === 200) {
         await thunkAPI.dispatch(getDetailVideo(videoId));
-      } else if (response.status === 403) {
-        return thunkAPI.rejectWithValue(403);
-      } else if (response.status === 404) {
-        return thunkAPI.rejectWithValue(404);
-      } else {
-        return thunkAPI.rejectWithValue(501);
       }
     } catch (err) {
       return thunkAPI.rejectWithValue();
@@ -130,44 +110,51 @@ const videoSlice = createSlice({
     initSearch: (state, payload) => {
       state.searchedVideo = null;
     },
+    filterView: (state, payload) => {
+      state.searchedVideo = state.searchedVideo?.sort(
+        (a, b) => b.view - a.view
+      );
+    },
+    fitlerTitle: (state, payload) => {
+      state.searchedVideo = state.searchedVideo?.sort(
+        (a, b) => b.title - a.title
+      );
+    },
+    filterDate: (state, payload) => {
+      state.searchedVideo = state.searchedVideo;
+      // state.searchedVideo = state.searchedVideo?.sort(
+      //   (a, b) => b.title - a.title
+      // );
+    },
   },
   extraReducers: {
-    [searchTag.pending]: (state) => {},
     [searchTag.fulfilled]: (state, action) => {
       state.searchedVideo = action.payload;
     },
     [searchTag.rejected]: (state, action) => {},
 
-    [searchTitle.pending]: (state) => {},
     [searchTitle.fulfilled]: (state, action) => {
       state.searchedVideo = action.payload;
     },
     [searchTitle.rejected]: (state, action) => {},
 
-    [postVideo.pending]: (state) => {},
-    [postVideo.fulfilled]: (state, action) => {},
     [postVideo.rejected]: (state, action) => {},
 
-    [getAllVideo.pending]: (state) => {},
     [getAllVideo.fulfilled]: (state, action) => {
       state.allVideos = action.payload;
     },
     [getAllVideo.rejected]: (state, action) => {},
 
-    [getDetailVideo.pending]: (state) => {},
     [getDetailVideo.fulfilled]: (state, action) => {
       state.detailViedeo = action.payload.post;
     },
     [getDetailVideo.rejected]: (state, action) => {},
 
-    [deleteVideo.pending]: (state) => {},
-    [deleteVideo.fulfilled]: (state, action) => {},
     [deleteVideo.rejected]: (state, action) => {},
 
-    [patchVideo.pending]: (state) => {},
-    [patchVideo.fulfilled]: (state, action) => {},
     [patchVideo.rejected]: (state, action) => {},
   },
 });
-export const { initSearch } = videoSlice.actions;
+export const { initSearch, filterNick, filterDate, filterView, fitlerTitle } =
+  videoSlice.actions;
 export default videoSlice.reducer;

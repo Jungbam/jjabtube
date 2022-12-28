@@ -33,9 +33,7 @@ const Player = ({ video }) => {
           <StProfileImgDiv>
             <img
               alt="profile"
-
               src={video.profile}
-
               width="32px"
               height="32px"
               border-radius="50%"
@@ -72,6 +70,8 @@ const StPlyerContainer = styled.div`
 `;
 
 const StThumbnail = styled.img`
+  width: 300px;
+  height: 200px;
   object-fit: cover;
 `;
 
