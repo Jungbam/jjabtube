@@ -50,6 +50,13 @@ const Detail = () => {
   };
   const onPatchHandler = () => {
     dispatch(patchVideo({ videoId, updatement }));
+    setUpdating(false);
+    setUpdatement({
+      title: "",
+      content: "",
+      tag: "",
+      comment: "",
+    });
   };
   const postCommentHandler = () => {
     dispatch(postComment({ comment: updatement.comment, postId: videoId }));
@@ -81,45 +88,51 @@ const Detail = () => {
                 <StContent>{detailVideo?.content}</StContent>
                 <StTag># {detailVideo?.tag}</StTag>
               </StInfoContent>
-              {isLogedIn && (
-                <StButtonBox>
-                  {updating ? (
-                    <>
-                      <input
-                        type="text"
-                        value={updatement.title}
-                        onChange={onChangUpdatament}
-                        name="title"
-                      />
-                      <input
-                        type="text"
-                        value={updatement.content}
-                        onChange={onChangUpdatament}
-                        name="content"
-                      />
-                      <input
-                        type="text"
-                        value={updatement.tag}
-                        onChange={onChangUpdatament}
-                        name="tag"
-                      />
-                      <StButton mode="smpr" onClick={onPatchHandler}>
-                        완료
-                      </StButton>
-                    </>
-                  ) : (
-                    <>
-                      <StButton mode="smpr" onClick={onDeleteHandler}>
-                        삭제
-                      </StButton>
-                      <StButton mode="smpr" onClick={() => setUpdating(true)}>
-                        수정
-                      </StButton>
-                    </>
-                  )}
-                </StButtonBox>
-              )}
             </StVideoInfo>
+            {isLogedIn && (
+              <StButtonBox>
+                {updating ? (
+                  <StUpdateBox>
+                    <label>제목</label>
+                    <input
+                      type="text"
+                      value={updatement.title}
+                      onChange={onChangUpdatament}
+                      name="title"
+                      placeholder="제목"
+                    />
+                    <label>내용</label>
+                    <input
+                      type="text"
+                      value={updatement.content}
+                      onChange={onChangUpdatament}
+                      name="content"
+                      placeholder="내용"
+                    />
+                    <label>태그</label>
+                    <input
+                      type="text"
+                      value={updatement.tag}
+                      onChange={onChangUpdatament}
+                      name="tag"
+                      placeholder="태그"
+                    />
+                    <StButton mode="smpr" onClick={onPatchHandler}>
+                      완료
+                    </StButton>
+                  </StUpdateBox>
+                ) : (
+                  <StUpdateBox>
+                    <StButton mode="smpr" onClick={onDeleteHandler}>
+                      삭제
+                    </StButton>
+                    <StButton mode="smpr" onClick={() => setUpdating(true)}>
+                      수정
+                    </StButton>
+                  </StUpdateBox>
+                )}
+              </StButtonBox>
+            )}
           </StTotalContainer>
           <StCommentBox>
             <button onClick={() => SetOpenComment((prev) => !prev)}>
@@ -209,7 +222,7 @@ const StInfoContent = styled.div`
   gap: 10px;
   padding: 20px;
   width: 80%;
-  height: 100px;
+  height: 150px;
   border-radius: 3px;
   background-color: #ccc;
 `;
@@ -221,7 +234,10 @@ const StCommentInput = styled.div`
 const StButtonBox = styled.div`
   width: 100px;
   display: flex;
+  justify-content: center;
   gap: 10px;
+  width: 80%;
+  margin: 0 auto;
 `;
 const StCommentContainer = styled.div`
   width: 80%;
@@ -229,10 +245,14 @@ const StCommentContainer = styled.div`
   border: 1px solid #ccc;
   border-radius: 12px;
 `;
+const StCommentBox = styled.div`
+  width: 80%;
+  margin: 0 auto;
+`;
+const StUpdateBox = styled.div``;
 const StContent = styled.p`
   width: 100%;
-  font-size: 1.2em;
-  font-weight: 600;
+  font-size: 1em;
   line-height: 2rem;
   white-space: normal;
   display: -webkit-box;
@@ -242,10 +262,11 @@ const StContent = styled.p`
 `;
 const StTag = styled.p`
   width: 100%;
-  font-size: 1.6em;
+  font-size: 1.2em;
   font-weight: 600;
-`;
-const StCommentBox = styled.div`
-  width: 80%;
-  margin: 0 auto;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
