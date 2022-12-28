@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import StButton from "./../../UI/StButton";
 import profile from "../../assets/profile.png";
 
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { signUp, dupEmailCheck } from "./../../redux/modules/signSlice";
 import { useSelector } from "react-redux";
 
@@ -18,9 +16,8 @@ const SignUp = () => {
     passwordConfirm: "",
   });
   const dispatch = useDispatch();
-  const imgRef = useRef();  
-  const {dupCheck} = useSelector((state) => state.signSlice);
-
+  const imgRef = useRef();
+  const { dupCheck } = useSelector((state) => state.signSlice);
 
   const changeInputHandler = (e) => {
     const { name, value } = e.target;
@@ -43,20 +40,19 @@ const SignUp = () => {
 
   const __dupEmailCheck = (e) => {
     e.preventDefault();
-    if(input.email)
-      dispatch(dupEmailCheck(input.email));
+    if (input.email) dispatch(dupEmailCheck(input.email));
   };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    if(dupCheck){
+    if (dupCheck) {
       const formData = new FormData();
 
-      for (const property in input){
+      for (const property in input) {
         formData.append(`${property}`, input[property]);
       }
 
-      // Profile 이미지 처리 백엔드 완성되면 
+      // Profile 이미지 처리 백엔드 완성되면
       // formData.append("profileImg", profileImg);
       // console.log(formData.get('profileImg'));
 
@@ -64,47 +60,71 @@ const SignUp = () => {
         console.log(`${pair[0]}, ${pair[1]}`);
       }
 
-      formData.append('emailValidate', true);
+      formData.append("emailValidate", true);
 
       dispatch(signUp(formData));
     }
-  }
+  };
 
   return (
-  <Wrapper>
-    <StForm  onSubmit={onSubmitHandler}>
-      <h2>회원가입</h2>
-      <InputContainer>
-        <StImgDiv>
-          <img
-            alt="profile"
-            src={previewImg ? previewImg : profile}
-            width="32px"
-            height="32px"
-            border-radius= "50%"
-            object-fit="cover"
-          />
-        </StImgDiv>
-        <StImgLabel htmlFor="profileImg">프로필 이미지 추가</StImgLabel>  
-          <StImgInput 
+    <Wrapper>
+      <StForm onSubmit={onSubmitHandler}>
+        <h2>회원가입</h2>
+        <InputContainer>
+          <StImgDiv>
+            <img
+              alt="profile"
+              src={previewImg ? previewImg : profile}
+              width="32px"
+              height="32px"
+              border-radius="50%"
+              object-fit="cover"
+            />
+          </StImgDiv>
+          <StImgLabel htmlFor="profileImg">프로필 이미지 추가</StImgLabel>
+          <StImgInput
             id="profileImg"
             ref={imgRef}
             accept="image/*"
-            name='profileImg'
-            type='file'
-            onChange={changeImgHandler}/>
-        <StBtnContainer>
-          <StFormInput placeholder='이메일' name='email' onChange={changeInputHandler}></StFormInput>
-          <StDupCheckButton type='button' onClick={__dupEmailCheck}>중복체크</StDupCheckButton>
-        </StBtnContainer>
-        <StFormInput placeholder='닉네임' name='nickname' onChange={changeInputHandler}></StFormInput>
-        <StFormInput autoComplete='off' placeholder='비밀번호' name='password' type="password" onChange={changeInputHandler}></StFormInput>
-        <StFormInput autoComplete='off' placeholder='비밀번호 확인' name='passwordConfirm' type="password" onChange={changeInputHandler}></StFormInput>
-      </InputContainer>
-      {/* 버튼 수정 */}
-      <StPrimaryLgButton>회원가입</StPrimaryLgButton>
-    </StForm>
-  </Wrapper>);
+            name="profileImg"
+            type="file"
+            onChange={changeImgHandler}
+          />
+          <StBtnContainer>
+            <StFormInput
+              placeholder="이메일"
+              name="email"
+              onChange={changeInputHandler}
+            ></StFormInput>
+            <StDupCheckButton type="button" onClick={__dupEmailCheck}>
+              중복체크
+            </StDupCheckButton>
+          </StBtnContainer>
+          <StFormInput
+            placeholder="닉네임"
+            name="nickname"
+            onChange={changeInputHandler}
+          ></StFormInput>
+          <StFormInput
+            autoComplete="off"
+            placeholder="비밀번호"
+            name="password"
+            type="password"
+            onChange={changeInputHandler}
+          ></StFormInput>
+          <StFormInput
+            autoComplete="off"
+            placeholder="비밀번호 확인"
+            name="passwordConfirm"
+            type="password"
+            onChange={changeInputHandler}
+          ></StFormInput>
+        </InputContainer>
+        {/* 버튼 수정 */}
+        <StPrimaryLgButton>회원가입</StPrimaryLgButton>
+      </StForm>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.div`
