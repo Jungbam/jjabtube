@@ -16,9 +16,10 @@ client.interceptors.request.use(
   function (config) {
     
     console.log("나갈 때", config);
+    if(cookie.get("token")){
+      config.headers.authorization = `Bearer ${cookie.get("token")}`;
+    }
 
-    config.headers.authorization = `Bearer ${cookie.get("token")}`;
-    
     return config;
   },
   function (error) {
@@ -30,23 +31,24 @@ client.interceptors.request.use(
 client.interceptors.response.use(
   function (response) {
     console.log("들어올때", response);
-    
+
     if (response.data.token) {
       const token = response.data.token;
       // 쿠키 유효시간
       // const expires = new Date();
       // expires.setMinutes(expires.getMinutes()+60);
       // cookie.set("token", token, {expires});
-      console.log("in", response.data.token);
       // 토큰 지우기
-      cookie.set("token", response.data.token);
+      cookie.set("token", response.data.token, {path: "/"});
     }
     return response;
   },
 
   function (error) {
+    // 카카오 401 왜 안잡힘????????
     if (error?.response.status === 401) {
-      cookie.remove("token");
+      console.log("인터셉터 401");
+      cookie.remove("token", {path: "/"});
       return error;
     }
     return error;

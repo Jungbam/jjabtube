@@ -14,9 +14,9 @@ function App() {
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(auth());
-  // }, [])
+  useEffect(() => {
+    dispatch(auth());
+  }, [])
 
   return (
     <div className="App">

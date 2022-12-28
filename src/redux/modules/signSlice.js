@@ -63,11 +63,8 @@ export const auth = createAsyncThunk(
     console.log(response);
     
     if(response.status === 200){
-      window.alert("확인 완료");
       return thunkAPI.fulfillWithValue();
     } else {
-    
-      window.alert("토큰 유효하지않음");
       return thunkAPI.rejectWithValue();
     }
   }
@@ -77,19 +74,12 @@ export const kakaoLogin = createAsyncThunk(
   'signSlice/kakaoLogin',
   async (code, thunkAPI) => {
     try{
-      // redirect uri 프론트로 연결 auth code 백엔드로 전달
-      console.log(code);
-      //
+      
       const response = await client.get(`${process.env.REACT_APP_SERVER}/login/kakao?code=${code}`);
       console.log(response);
-
       if(response.status === 200){
-        console.log('status 200');
         return thunkAPI.fulfillWithValue();
       } else {
-        // const errorMsg = response.response.data.errorMessage;
-        console.log('kakao error');
-        window.alert(response);
         return thunkAPI.rejectWithValue("kakao error");
       }
     } catch (err) {
@@ -113,7 +103,7 @@ const signSlice = createSlice({
   reducers: {
     logOut: (state, action) => {
       state.isLogedIn = false;
-      cookie.remove("token");
+      cookie.remove("token",{path: "/"});
     },
   },
   extraReducers: {
@@ -149,11 +139,14 @@ const signSlice = createSlice({
     },
 
     [auth.pending]: (state) => {
+      console.log('auth pending')
     },
     [auth.fulfilled]: (state, action) => {
-      state.isLogedIn = false;
+      console.log('auth fulfilled')
+      state.isLogedIn = true;
     },
     [auth.rejected]: (state, action) => {
+      console.log('auth rejected')
       state.error = false;
       state.isLogedIn = false;
       state.errorMsg = action.payload;
