@@ -1,14 +1,23 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { searchTitle } from "../../redux/modules/videoSlice";
 import SearchPost from "./ele/SearchPost";
 import styled from "styled-components";
+import {
+  filterDate,
+  filterNick,
+  filterView,
+  fitlerTitle,
+  searchTitle,
+} from "../../redux/modules/videoSlice";
 
 const Search = () => {
   const { searchedVideo } = useSelector((state) => state.videoSlice);
   const { searchValue } = useParams();
+
+  console.log(searchedVideo);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(searchTitle(searchValue));
   }, [searchValue]);
@@ -19,41 +28,31 @@ const Search = () => {
     <>
       <StWrap>
         <StBtnContainer>
-          <StToggleBtn
+          <StBtn
             onClick={() => {
               setShow(!show);
             }}
           >
-            {show ? "hide" : "show"}
-          </StToggleBtn>
-          {show && <StWrapBtn />}
-
-          <StFilter>
-            <StWrapBtn>
-              <StInnerTitle>업로드 날짜</StInnerTitle>
-              <StBtn>지난 1시간</StBtn>
-              <StBtn>오늘</StBtn>
-              <StBtn>이번 주</StBtn>
-              <StBtn>이번 달</StBtn>
-              <StBtn>올해</StBtn>
-            </StWrapBtn>
-
-            <StWrapBtn>
-              <StInnerTitle>정렬 기준</StInnerTitle>
-              <StBtn>관련성</StBtn>
-              <StBtn>업로드 날짜</StBtn>
-              <StBtn>조회수</StBtn>
-              <StBtn>평점</StBtn>
-            </StWrapBtn>
-          </StFilter>
+            정렬
+          </StBtn>
+          {show && (
+            <StFilter>
+              <StWrapBtn>
+                <StInnerTitle>정렬 기준</StInnerTitle>
+                <StBtn onClick={() => dispatch(fitlerTitle())}>제목순</StBtn>
+                <StBtn onClick={() => dispatch(filterDate())}>날짜순</StBtn>
+                <StBtn onClick={() => dispatch(filterView())}>조회수</StBtn>
+              </StWrapBtn>
+            </StFilter>
+          )}
         </StBtnContainer>
       </StWrap>
 
-      <div>
+      <StSearchResult>
         {searchedVideo?.map((video, i) => (
           <SearchPost key={`search${i}`} video={video} />
         ))}
-      </div>
+      </StSearchResult>
     </>
   );
 };
@@ -62,25 +61,22 @@ export default Search;
 
 const StWrap = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: #ccc;
+  padding: 5px;
 `;
 
 const StBtnContainer = styled.div``;
-
-const StToggleBtn = styled.button`
-  width: 90px;
-  height: 30px;
-  background-color: lightgray;
-`;
 
 const StBtn = styled.button`
   width: 90px;
   height: 30px;
   background-color: white;
   color: black;
+  border: none;
+  box-shadow: inset 0px 0px 6px #333;
+  border-radius: 6px;
 `;
 
 const StWrapBtn = styled.div`
@@ -91,12 +87,21 @@ const StWrapBtn = styled.div`
 `;
 
 const StInnerTitle = styled.p`
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 600;
+  margin: 10px 0 0 0;
+  text-align: center;
 `;
 
 const StFilter = styled.div`
   display: flex;
   gap: 20px;
   justify-content: flex-start;
+`;
+
+const StSearchResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 0 auto;
 `;
