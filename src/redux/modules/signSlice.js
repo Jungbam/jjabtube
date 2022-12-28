@@ -7,16 +7,14 @@ const cookie = new Cookies();
 export const dupEmailCheck = createAsyncThunk(
   "signSlice/dupEmailCheck",
   async (email, thunkAPI) => {
-    const response = await client.post(`/signup/emailcheck`, { email });
+    const response = await client.post(`/signup/emailcheck`, {email});
+    if(response.status === 200){
+      const fulfilledMsg = response.data.message;
 
-    if (response.status === 200) {
-      const succeedMsg = response.data.message;
-      window.alert(succeedMsg);
-      return thunkAPI.fulfillWithValue();
+      return thunkAPI.fulfillWithValue(fulfilledMsg);
     } else {
       const errorMsg = response.response.data.errorMessage;
-      window.alert(errorMsg);
-      return thunkAPI.rejectWithValue();
+      return thunkAPI.rejectWithValue(errorMsg);
     }
   }
 );
@@ -24,18 +22,15 @@ export const dupEmailCheck = createAsyncThunk(
 export const signUp = createAsyncThunk(
   "signSlice/signUp",
   async (formData, thunkAPI) => {
-    formData.append("emailValidate", true);
+    const response = await client.post('/signup', formData);
+    console.log(response);
 
-    const response = await client.post("/signup", formData);
-
-    if (response.status === 200) {
-      const succeedMsg = response.data.message;
-      window.alert(succeedMsg);
-      return thunkAPI.fulfillWithValue();
+    if(response.status === 200){
+      const fulfiledMsg = response.data.message;
+      return thunkAPI.fulfillWithValue(fulfiledMsg);
     } else {
       const errorMsg = response.response.data.errorMessage;
-      window.alert(errorMsg);
-      return thunkAPI.rejectWithValue();
+      return thunkAPI.rejectWithValue(errorMsg);
     }
   }
 );
@@ -43,27 +38,55 @@ export const signUp = createAsyncThunk(
 export const logIn = createAsyncThunk(
   "signSlice/logIn",
   async (loginData, thunkAPI) => {
-    const response = await client.post("/login", loginData);
+    
+    const response = await client.post('/login', loginData);
+    console.log(response);
 
-    if (response.status === 200) {
-      window.alert("로그인 성공");
-      return thunkAPI.fulfillWithValue();
+    if(response.status === 200){
+      const fulfiledMsg = '로그인 성공';
+      return thunkAPI.fulfillWithValue(fulfiledMsg);
+
     } else {
       const errorMsg = response.response.data.errorMessage;
-      window.alert(errorMsg);
-      return thunkAPI.rejectWithValue();
+      return thunkAPI.rejectWithValue(errorMsg);
     }
   }
 );
 
 export const auth = createAsyncThunk(
   "signSlice/auth",
-  async (logData, thunkAPI) => {
-    try {
-      const response = await client.get("/auth");
-      console.log(response);
+
+  async (payload, thunkAPI) => {
+    console.log('auth!');
+
+    // 1.로그인할때 브라우저 닫을때 처리
+    const response = await client.get("/auth");
+    console.log(response);
+    
+    if(response.status === 200){
+      return thunkAPI.fulfillWithValue();
+    } else {
+
       return thunkAPI.rejectWithValue();
-    } catch (err) {}
+    }
+  }
+);
+
+export const kakaoLogin = createAsyncThunk(
+  'signSlice/kakaoLogin',
+  async (code, thunkAPI) => {
+    try{
+      
+      const response = await client.get(`${process.env.REACT_APP_SERVER}/login/kakao?code=${code}`);
+      console.log(response);
+      if(response.status === 200){
+        return thunkAPI.fulfillWithValue();
+      } else {
+        return thunkAPI.rejectWithValue("kakao error");
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue("kakao error");
+    } 
   }
 );
 
@@ -71,7 +94,9 @@ const initialState = {
   isLogedIn: false,
   isSignUp: false,
   error: false,
-  dupEmailCheck: false,
+  errorMsg: '',
+  fulfiledMsg: '',
+  dupCheck: false,
 };
 
 const signSlice = createSlice({
@@ -80,38 +105,63 @@ const signSlice = createSlice({
   reducers: {
     logOut: (state, action) => {
       state.isLogedIn = false;
-      cookie.remove("token");
+      cookie.remove("token",{path: "/"});
     },
   },
   extraReducers: {
     [dupEmailCheck.pending]: (state) => {},
     [dupEmailCheck.fulfilled]: (state, action) => {
-      state.dupEmailCheck = true;
+      state.dupCheck = true;
+      state.fulfiledMsg = action.payload;
     },
     [dupEmailCheck.rejected]: (state, action) => {
+      state.dupCheck = false;
       state.error = true;
-    },
+      state.errorMsg = action.payload;
+    },         
 
     [signUp.pending]: (state) => {},
     [signUp.fulfilled]: (state, action) => {
       state.isSignUp = true;
+      state.fulfiledMsg = action.payload;
     },
     [signUp.rejected]: (state, action) => {
       state.error = true;
+      state.errorMsg = action.payload;
     },
 
     [logIn.pending]: (state) => {},
     [logIn.fulfilled]: (state, action) => {
       state.isLogedIn = true;
+      state.fulfiledMsg = action.payload;
     },
     [logIn.rejected]: (state, action) => {
       state.error = true;
+      state.errorMsg = action.payload;
     },
 
-    [auth.pending]: (state) => {},
-    [auth.fulfilled]: (state, action) => {},
+    [auth.pending]: (state) => {
+      console.log('auth pending')
+    },
+    [auth.fulfilled]: (state, action) => {
+      console.log('auth fulfilled')
+      state.isLogedIn = true;
+    },
     [auth.rejected]: (state, action) => {
-      state.error = true;
+      console.log('auth rejected')
+      state.error = false;
+      state.isLogedIn = false;
+      state.errorMsg = action.payload;
+    },
+
+    [kakaoLogin.pending]: (state) => {
+    },
+    [kakaoLogin.fulfilled]: (state, action) => {
+      state.isLogedIn = true;
+    },
+    [kakaoLogin.rejected]: (state, action) => {
+      state.error = false;
+      state.errorMsg = action.payload;
     },
   },
 });

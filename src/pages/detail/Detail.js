@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -26,7 +27,6 @@ const Detail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const commentList = detailVideo?.comments;
-
   const onChangUpdatament = (e) => {
     const { name, value } = e.target;
     setUpdatement({ ...updatement, [name]: value });
@@ -51,7 +51,6 @@ const Detail = () => {
   const onPatchHandler = () => {
     dispatch(patchVideo({ videoId, updatement }));
   };
-  //comment 부분
   const postCommentHandler = () => {
     dispatch(postComment({ comment: updatement.comment, postId: videoId }));
   };
@@ -60,9 +59,15 @@ const Detail = () => {
       {detailVideo && (
         <>
           <StPlayerContainer>
-            <video controls width="100%" height="100%" autoPlay>
-              <source src={detailVideo?.origVid} type="video/mp4" />
-            </video>
+            <ReactPlayer
+              className="react-player"
+              url={detailVideo?.origVid}
+              height="100%"
+              width="100%"
+              playing={true}
+              muted={true}
+              controls={true}
+            />
           </StPlayerContainer>
           <StVideoInfo>
             <StProfile src={detailVideo?.profile} alt={detailVideo?.title} />
@@ -155,8 +160,8 @@ const StPlayerContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 80%;
+  background-color: black;
   height: 600px;
-  padding: 40px;
   margin: 0 auto;
 `;
 const StVideoInfo = styled.div`

@@ -18,8 +18,8 @@ const Player = ({ video }) => {
           <ReactPlayer
             className="react-player"
             url={video.compVid}
-            width="100%"
             height="100%"
+            width="100%"
             playing={true}
             muted={true}
             controls={true}
@@ -51,6 +51,7 @@ const StPlayerAll = styled.div`
 `;
 
 const StPlyerContainer = styled.div`
+  background-color: black;
   border-radius: 12px;
   width: 300px;
   height: 200px;
@@ -58,7 +59,11 @@ const StPlyerContainer = styled.div`
   overflow: hidden;
 `;
 
-const StThumbnail = styled.img``;
+const StThumbnail = styled.img`
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+`;
 const StContainerCol = styled.div`
   display: flex;
   flex-direction: column;
