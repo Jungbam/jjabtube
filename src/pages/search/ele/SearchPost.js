@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import ReactPlayer from "react-player";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-const Player = ({ video }) => {
+const SearchPost = ({ video }) => {
   const [play, setPlay] = useState(false);
+
   return (
     <StPlayerAll>
       <StPlyerContainer
@@ -14,29 +16,41 @@ const Player = ({ video }) => {
           <StThumbnail src={video.thumbnail} alt={video.title} />
         ) : (
           <ReactPlayer
-            url={video.compVid ?? null}
-            poster={video.thumbnail ?? null}
+            className="react-player"
+            url={video.compVid}
             width="100%"
             height="100%"
             playing={true}
             muted={true}
             controls={true}
-            light={false}
-            pip={true}
           />
         )}
       </StPlyerContainer>
       <StContainerCol>
-        <h1>{video.title}</h1>
-        <h1>작성자 : {video.nickname}</h1>
-        <h1>등록일자 : {video.createdAt}</h1>
+        <NavLink
+          to={`/detail/${video.postId}`}
+          style={{ textDecoration: "none" }}
+        >
+          <h1>{video.title}</h1>
+        </NavLink>
+        <StBoxRow>
+          <p>조회수 : {video.view}</p>
+          <p>등록일자 : {video.createdAt}</p>
+        </StBoxRow>
+        <div>
+          <h2>작성자 : {video.nickname}</h2>
+          <p>{video.content}</p>
+        </div>
       </StContainerCol>
     </StPlayerAll>
   );
 };
 
+export default SearchPost;
+
 const StPlayerAll = styled.div`
-  width: 300px;
+  width: 80%;
+  display: flex;
 `;
 
 const StPlyerContainer = styled.div`
@@ -45,15 +59,12 @@ const StPlyerContainer = styled.div`
   height: 200px;
   box-shadow: 0 0 6px #333;
   overflow: hidden;
-  &:hover {
-    transform: scale(1.2);
-  }
 `;
-
+const StBoxRow = styled.div`
+  display: flex;
+`;
 const StThumbnail = styled.img``;
 const StContainerCol = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
-export default Player;

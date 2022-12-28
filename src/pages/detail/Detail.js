@@ -1,73 +1,150 @@
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getDetailVideo } from "../../redux/modules/videoSlice";
+import { postComment } from "../../redux/modules/commentSlice";
+import {
+  deleteVideo,
+  getDetailVideo,
+  patchVideo,
+} from "../../redux/modules/videoSlice";
+import StButton from "../../UI/StButton";
 import Comment from "./el/Comment";
 
-const commentList = [
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-  { coment: "hi" },
-];
-
 const Detail = () => {
-  const { videoId } = useParams();
-  const dispatch = useDispatch();
-  const [openComment, SetOpenComment] = useState(false);
+  const { isLogedIn } = useSelector((state) => state.signSlice);
   const detailVideo = useSelector((state) => state.videoSlice.detailViedeo);
+  const { videoId } = useParams();
+  const [openComment, SetOpenComment] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [updatement, setUpdatement] = useState({
+    title: "",
+    content: "",
+    tage: "",
+    comment: "",
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const commentList = detailVideo?.comments;
+  const onChangUpdatament = (e) => {
+    const { name, value } = e.target;
+    setUpdatement({ ...updatement, [name]: value });
+  };
+
   useEffect(() => {
     dispatch(getDetailVideo(videoId));
+    setUpdatement({
+      title: detailVideo?.title ?? "",
+      tag: detailVideo?.tag ?? "",
+      content: detailVideo?.content ?? "",
+      comment: "",
+    });
   }, []);
 
+  const onDeleteHandler = () => {
+    dispatch(deleteVideo(videoId));
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
+  const onPatchHandler = () => {
+    dispatch(patchVideo({ videoId, updatement }));
+  };
+  const postCommentHandler = () => {
+    dispatch(postComment({ comment: updatement.comment, postId: videoId }));
+  };
   return (
     <section>
       {detailVideo && (
         <>
           <StPlayerContainer>
             <ReactPlayer
-              url={detailVideo.origVid}
-              poster=""
-              width="100%"
+              className="react-player"
+              url={detailVideo?.origVid}
               height="100%"
+              width="100%"
               playing={true}
               muted={true}
               controls={true}
-              light={false}
-              pip={true}
             />
           </StPlayerContainer>
           <StVideoInfo>
-            <StProfile src={detailVideo.profile} alt={detailVideo.title} />
+            <StProfile src={detailVideo?.profile} alt={detailVideo?.title} />
             <StInfoBox>
-              <h1>{detailVideo.title}</h1>
-              <p>{detailVideo.nickname}</p>
-              <p>{detailVideo.updatedAt}</p>
+              <h1>{detailVideo?.title}</h1>
+              <p>{detailVideo?.nickname}</p>
+              <p>{detailVideo?.updatedAt}</p>
             </StInfoBox>
             <StInfoContent>
-              <p>{detailVideo.content}</p>
+              <p>{detailVideo?.content}</p>
             </StInfoContent>
           </StVideoInfo>
+          {isLogedIn && (
+            <>
+              {updating ? (
+                <>
+                  <input
+                    type="text"
+                    value={updatement.title}
+                    onChange={onChangUpdatament}
+                    name="title"
+                  />
+                  <input
+                    type="text"
+                    value={updatement.content}
+                    onChange={onChangUpdatament}
+                    name="content"
+                  />
+                  <input
+                    type="text"
+                    value={updatement.tag}
+                    onChange={onChangUpdatament}
+                    name="tag"
+                  />
+                  <StButton mode="smpr" onClick={onPatchHandler}>
+                    완료
+                  </StButton>
+                </>
+              ) : (
+                <>
+                  <StButton mode="smpr" onClick={onDeleteHandler}>
+                    삭제
+                  </StButton>
+                  <StButton mode="smpr" onClick={() => setUpdating(true)}>
+                    수정
+                  </StButton>
+                </>
+              )}
+            </>
+          )}
+
           <button onClick={() => SetOpenComment((prev) => !prev)}>
             {openComment ? "댓글 닫기" : "댓글 보기"}
           </button>
           {openComment && (
-            <StCommentContainer>
-              {commentList.map((el) => {
-                return <Comment>{el.coment}</Comment>;
-              })}
-            </StCommentContainer>
+            <>
+              <StCommentInput>
+                <input
+                  type="text"
+                  value={updatement.comment}
+                  name="comment"
+                  onChange={onChangUpdatament}
+                ></input>
+                <button onClick={postCommentHandler}>작성</button>
+              </StCommentInput>
+              <StCommentContainer>
+                {commentList?.map((el, i) => {
+                  return (
+                    <Comment
+                      key={`comment${el?.commentId}${i}`}
+                      el={el}
+                      videoId={videoId}
+                    ></Comment>
+                  );
+                })}
+              </StCommentContainer>
+            </>
           )}
         </>
       )}
@@ -83,8 +160,8 @@ const StPlayerContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 80%;
+  background-color: black;
   height: 600px;
-  padding: 40px;
   margin: 0 auto;
 `;
 const StVideoInfo = styled.div`
@@ -112,6 +189,11 @@ const StInfoContent = styled.div`
   height: 70px;
   border-radius: 12px;
   background-color: #ccc;
+`;
+const StCommentInput = styled.div`
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
 `;
 const StCommentContainer = styled.div`
   width: 80%;
