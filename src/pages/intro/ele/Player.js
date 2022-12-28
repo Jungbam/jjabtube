@@ -33,7 +33,9 @@ const Player = ({ video }) => {
           <StProfileImgDiv>
             <img
               alt="profile"
+
               src={video.profile}
+
               width="32px"
               height="32px"
               border-radius="50%"
