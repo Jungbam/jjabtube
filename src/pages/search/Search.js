@@ -20,9 +20,33 @@ const Search = () => {
     <>
       <StWrap>
         <StBtnContainer>
-          <StToggleBtn>BTN</StToggleBtn>
-          <StBtn>업로드날짜</StBtn>
-          <StBtn>정렬기준</StBtn>
+          <StToggleBtn
+            onClick={() => {
+              setShow(!show);
+            }}
+          >
+            {show ? "hide" : "show"}
+          </StToggleBtn>
+          {show && <StWrapBtn />}
+
+          <StFilter>
+            <StWrapBtn>
+              <StInnerTitle>업로드 날짜</StInnerTitle>
+              <StBtn>지난 1시간</StBtn>
+              <StBtn>오늘</StBtn>
+              <StBtn>이번 주</StBtn>
+              <StBtn>이번 달</StBtn>
+              <StBtn>올해</StBtn>
+            </StWrapBtn>
+
+            <StWrapBtn>
+              <StInnerTitle>정렬 기준</StInnerTitle>
+              <StBtn>관련성</StBtn>
+              <StBtn>업로드 날짜</StBtn>
+              <StBtn>조회수</StBtn>
+              <StBtn>평점</StBtn>
+            </StWrapBtn>
+          </StFilter>
         </StBtnContainer>
       </StWrap>
 
@@ -56,5 +80,24 @@ const StToggleBtn = styled.button`
 const StBtn = styled.button`
   width: 90px;
   height: 30px;
-  background-color: lightgray;
+  background-color: white;
+  color: black;
+`;
+
+const StWrapBtn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: flex-start;
+`;
+
+const StInnerTitle = styled.p`
+  font-size: 15px;
+  font-weight: 600;
+`;
+
+const StFilter = styled.div`
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
 `;
