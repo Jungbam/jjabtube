@@ -63,6 +63,9 @@ const StPlayerAll = styled.div`
 `;
 
 const StPlyerContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: black;
   height: 180px;
   border-radius: 12px 12px 0 0;

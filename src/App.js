@@ -2,7 +2,6 @@ import "./App.css";
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 import Router from "./shares/Router";
 
-import StButton from "./UI/StButton";
 import { useEffect } from "react";
 import { auth } from "./redux/modules/signSlice";
 import { useDispatch } from "react-redux";
