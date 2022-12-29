@@ -115,9 +115,11 @@ const videoSlice = createSlice({
       state.searchedFilterVideo = null;
     },
     fitlerTitle: (state, payload) => {
-      state.searchedVideo = state.searchedVideo?.sort(
-        (a, b) => b.title - a.title
-      );
+      state.searchedVideo = state.searchedVideo?.sort((a, b) => {
+        if (a.title.toLowerCase() > b.title.toLowerCase()) return 1;
+        else if (a.title.toLowerCase() < b.title.toLowerCase()) return -1;
+        else return 0;
+      });
       state.searchedFilterVideo = null;
     },
     detailFilterDay: (state, payload) => {
