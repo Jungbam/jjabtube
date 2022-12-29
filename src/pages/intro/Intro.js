@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Player from "./ele/Player";
@@ -11,18 +11,44 @@ import { StLabel } from "../../UI/StIndex";
 
 const Intro = () => {
   const { allVideos, searchedVideo } = useSelector((state) => state.videoSlice);
-
+  const target = useRef();
   const dispatch = useDispatch();
 
+  // useEffect(() => {
+  //   dispatch(getAllVideo());
+  // }, []);
+
+  // 1차 시도 : IntersectionObserver
+
   useEffect(() => {
-    dispatch(getAllVideo());
-  }, []);
+    let observer = new IntersectionObserver(
+      (e, io) => {
+        e.forEach((e) => {
+          if (e.isIntersecting) {
+            io.unobserve(e.target);
+            setTimeout(() => {
+              const num = allVideos?.length - 1;
+              if (allVideos) {
+                const id = allVideos[num].postId;
+                dispatch(getAllVideo(id));
+              } else if (!allVideos) {
+                dispatch(getAllVideo(0));
+              }
+            }, 500);
+          }
+        });
+      },
+      { threshold: 0.7 }
+    );
+    if (target.current) observer.observe(target.current);
+    return () => observer.disconnect();
+  }, [allVideos]);
 
   const searchByTagHandler = (e) => {
     dispatch(searchTag(e.target.name));
   };
   return (
-    <>
+    <StAllBox>
       <section>
         <StLabelContainer>
           <StLabel
@@ -50,8 +76,8 @@ const Intro = () => {
       <section>
         <StAllVideoContainer>
           {searchedVideo === null ? (
-            allVideos?.map((video) => {
-              return <Player key={`player${video.postId}`} video={video} />;
+            allVideos?.map((video, i) => {
+              return <Player key={`player${i}`} video={video} />;
             })
           ) : (
             <></>
@@ -64,8 +90,9 @@ const Intro = () => {
             })
           )}
         </StAllVideoContainer>
+        <StTarget ref={target}></StTarget>
       </section>
-    </>
+    </StAllBox>
   );
 };
 
@@ -85,4 +112,12 @@ const StLabelContainer = styled.article`
   display: flex;
   justify-content: center;
   gap: 5px;
+`;
+const StAllBox = styled.div`
+  position: relative;
+`;
+const StTarget = styled.input`
+  position: absolute;
+  bottom: 10%;
+  z-index: -9999;
 `;

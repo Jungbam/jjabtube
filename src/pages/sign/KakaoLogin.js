@@ -17,7 +17,6 @@ const KakaoLogin = () => {
 
   const sendAuth = async () => {
     const code = location.search.split("=")[1];
-    console.log(code);
     const res = await dispatch(kakaoLogin(code));
     if (res.meta.requestStatus === "fulfilled") {
       navigate("/");
