@@ -44,7 +44,7 @@ export const getAllVideo = createAsyncThunk(
   "videoSlice/getAllVideo",
   async (getAll, thunkAPI) => {
     try {
-      const result = await VideoAPI.getAllVideo();
+      const result = await VideoAPI.getAllVideo(getAll);
       if (result.status === 200) {
         return thunkAPI.fulfillWithValue(result.data.posts);
       }
@@ -95,9 +95,10 @@ export const patchVideo = createAsyncThunk(
 );
 
 const initialState = {
-  allVideos: null,
+  allVideos: [],
   detailViedeo: null,
   searchedVideo: null,
+  isLoaded: false,
 };
 const videoSlice = createSlice({
   name: "videoSlice",
@@ -119,6 +120,9 @@ const videoSlice = createSlice({
     filterDate: (state, payload) => {
       state.searchedVideo = state.searchedVideo;
     },
+    changeIsLoaded: (state, payload) => {
+      state.isLoaded = false;
+    }
   },
   extraReducers: {
     [searchTag.fulfilled]: (state, action) => {
@@ -134,7 +138,8 @@ const videoSlice = createSlice({
     [postVideo.rejected]: (state, action) => {},
 
     [getAllVideo.fulfilled]: (state, action) => {
-      state.allVideos = action.payload;
+      state.isLoaded = true;
+      state.allVideos = [...state.allVideos, ...action.payload];
     },
     [getAllVideo.rejected]: (state, action) => {},
 
@@ -148,6 +153,6 @@ const videoSlice = createSlice({
     [patchVideo.rejected]: (state, action) => {},
   },
 });
-export const { initSearch, filterNick, filterDate, filterView, fitlerTitle } =
+export const { initSearch, filterNick, filterDate, filterView, fitlerTitle, changeIsLoaded } =
   videoSlice.actions;
 export default videoSlice.reducer;

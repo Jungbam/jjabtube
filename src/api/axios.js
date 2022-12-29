@@ -11,7 +11,7 @@ export const VideoAPI = {
   searchTag: (tag) => client.get(`/post/search?tag=${tag}`),
   sarchTitle: (keyword) => client.get(`/post/search?keyword=${keyword}`),
   postVideo: (formData) => client.post("/post", formData),
-  getAllVideo: () => client.get("/post"),
+  getAllVideo: (lastId) => client.get(`/post?lastId=${lastId}`),
   getDetailVideo: (videoId) => client.get(`/post/${videoId}`),
   deleteVideo: (videoId) => client.delete(`/post/${videoId}`),
   patchVideo: (videoId, updatement) =>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback,useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Player from "./ele/Player";
@@ -8,15 +8,24 @@ import {
   searchTag,
 } from "../../redux/modules/videoSlice";
 import { StLabel } from "../../UI/StIndex";
+import { changeIsLoaded } from '../../redux/modules/videoSlice';
+import useIntersect from '../../hooks/useIntersction';
 
 const Intro = () => {
-  const { allVideos, searchedVideo } = useSelector((state) => state.videoSlice);
-
+  const { allVideos, searchedVideo, isLoaded } = useSelector((state) => state.videoSlice);
+  const [init, setInit] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllVideo());
-  }, []);
+    const lastId = allVideos[allVideos.length-1]?.postId;
+    dispatch(getAllVideo(lastId));
+  }, [init]);
+
+  const [_, setRef] = useIntersect(async(entry, observer) => {
+    observer.unobserve(entry.target);
+    setInit(prev => !prev);
+    observer.observe(entry.target);
+  }, { threshold: 0.5 });
 
   const searchByTagHandler = (e) => {
     dispatch(searchTag(e.target.name));
@@ -50,8 +59,8 @@ const Intro = () => {
       <section>
         <StAllVideoContainer>
           {searchedVideo === null ? (
-            allVideos?.map((video) => {
-              return <Player key={`player${video.postId}`} video={video} />;
+            allVideos?.map((video, index) => {
+              return <Player key={index} video={video} />;
             })
           ) : (
             <></>
@@ -59,11 +68,12 @@ const Intro = () => {
           {searchedVideo?.length === 0 ? (
             <p>검색결과가 없습니다.</p>
           ) : (
-            searchedVideo?.map((video) => {
+            searchedVideo?.map((video, index) => {
               return <Player key={`player${video.postId}`} video={video} />;
             })
           )}
         </StAllVideoContainer>
+        {isLoaded && <p ref={setRef}>Loading...</p>}
       </section>
     </>
   );
