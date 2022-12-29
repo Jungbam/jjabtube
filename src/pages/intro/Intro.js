@@ -1,4 +1,4 @@
-import React, { useCallback,useState, useEffect } from "react";
+import React, { useCallback,useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Player from "./ele/Player";
@@ -12,24 +12,51 @@ import { changeIsLoaded } from '../../redux/modules/videoSlice';
 import useIntersect from '../../hooks/useIntersction';
 
 const Intro = () => {
-  const { allVideos, searchedVideo, isLoaded } = useSelector((state) => state.videoSlice);
+  const { allVideos, searchedVideo, isLoading, hasNextPage } = useSelector((state) => state.videoSlice);
   const [init, setInit] = useState(false);
+  const [pageNum, setPageNum] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const lastId = allVideos[allVideos.length-1]?.postId;
+    if(lastId === 1){
+      dispatch(changeIsLoaded());
+      return ;
+    }
     dispatch(getAllVideo(lastId));
   }, [init]);
 
-  const [_, setRef] = useIntersect(async(entry, observer) => {
-    observer.unobserve(entry.target);
-    setInit(prev => !prev);
-    observer.observe(entry.target);
-  }, { threshold: 0.5 });
+  // const [_, setRef] = useIntersect(async(entry, observer) => {
+  //   observer.unobserve(entry.target);
+  //   setInit(prev => !prev);
+  //   observer.observe(entry.target);
+  // }, { threshold: 0.5 });
 
   const searchByTagHandler = (e) => {
     dispatch(searchTag(e.target.name));
   };
+
+
+  const intObserver = useRef();
+
+  const lastPostRef = useCallback(post => {
+    if(isLoading) return
+    
+    if(intObserver.current) intObserver.current.disconnect()
+    
+    intObserver.current = new IntersectionObserver(posts => {
+      if(posts[0].isIntersecting && hasNextPage){
+        console.log('We are near the last post!')
+        setPageNum(prev => prev + 1)
+      }
+    })
+
+    if(post) intObserver.current.observe(post)
+  }, [isLoading, hasNextPage])
+
+
+
+
   return (
     <>
       <section>
@@ -72,8 +99,9 @@ const Intro = () => {
               return <Player key={`player${video.postId}`} video={video} />;
             })
           )}
+        <StTarget ref={lastPostRef}></StTarget>
         </StAllVideoContainer>
-        {isLoaded && <p ref={setRef}>Loading...</p>}
+        
       </section>
     </>
   );
@@ -81,7 +109,15 @@ const Intro = () => {
 
 export default Intro;
 
+const StTarget = styled.div`
+  position absolute;
+  height: 0.5px;
+  bottom: 30%;
+  background: orange;
+`;
 const StAllVideoContainer = styled.div`
+  position: relative;
+
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   column-gap: 30px;

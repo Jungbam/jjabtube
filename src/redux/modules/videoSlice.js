@@ -98,7 +98,9 @@ const initialState = {
   allVideos: [],
   detailViedeo: null,
   searchedVideo: null,
-  isLoaded: false,
+  isLoading: false,
+  isError: false,
+  hasNextPage: false
 };
 const videoSlice = createSlice({
   name: "videoSlice",
@@ -138,8 +140,9 @@ const videoSlice = createSlice({
     [postVideo.rejected]: (state, action) => {},
 
     [getAllVideo.fulfilled]: (state, action) => {
-      state.isLoaded = true;
+      state.isLoading = false;
       state.allVideos = [...state.allVideos, ...action.payload];
+      state.hasNextPage = state.allVideos.leng
     },
     [getAllVideo.rejected]: (state, action) => {},
 
