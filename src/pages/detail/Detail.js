@@ -16,7 +16,6 @@ const Detail = () => {
   const { isLogedIn } = useSelector((state) => state.signSlice);
   const detailVideo = useSelector((state) => state.videoSlice.detailViedeo);
   const { videoId } = useParams();
-  const [openComment, SetOpenComment] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [updatement, setUpdatement] = useState({
     title: "",
@@ -135,33 +134,26 @@ const Detail = () => {
             )}
           </StTotalContainer>
           <StCommentBox>
-            <button onClick={() => SetOpenComment((prev) => !prev)}>
-              {openComment ? "댓글 닫기" : "댓글 보기"}
-            </button>
-            {openComment && (
-              <>
-                <StCommentInput>
-                  <input
-                    type="text"
-                    value={updatement.comment}
-                    name="comment"
-                    onChange={onChangUpdatament}
-                  ></input>
-                  <button onClick={postCommentHandler}>작성</button>
-                </StCommentInput>
-                <StCommentContainer>
-                  {commentList?.map((el, i) => {
-                    return (
-                      <Comment
-                        key={`comment${el?.commentId}${i}`}
-                        el={el}
-                        videoId={videoId}
-                      ></Comment>
-                    );
-                  })}
-                </StCommentContainer>
-              </>
-            )}
+            <StCommentInput>
+              <input
+                type="text"
+                value={updatement.comment}
+                name="comment"
+                onChange={onChangUpdatament}
+              ></input>
+              <button onClick={postCommentHandler}>작성</button>
+            </StCommentInput>
+            <StCommentContainer>
+              {commentList?.map((el, i) => {
+                return (
+                  <Comment
+                    key={`comment${el?.commentId}${i}`}
+                    el={el}
+                    videoId={videoId}
+                  ></Comment>
+                );
+              })}
+            </StCommentContainer>
           </StCommentBox>
         </>
       )}
@@ -195,7 +187,7 @@ const StVideoInfo = styled.div`
   align-items: center;
   margin: 0 auto;
   width: 80%;
-  gap: 20px;
+  gap: 4px;
 `;
 const StInfoBox = styled.div`
   display: flex;
@@ -214,6 +206,7 @@ const StProfile = styled.img`
   height: 70px;
   border-radius: 35px;
 `;
+
 const StInfoContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -226,30 +219,38 @@ const StInfoContent = styled.div`
   border-radius: 3px;
   background-color: #ccc;
 `;
+
 const StCommentInput = styled.div`
   display: flex;
+  justify-content: flex-end;
   width: 80%;
-  margin: 0 auto;
+  margin: 1em auto 1em auto;
 `;
 const StButtonBox = styled.div`
-  width: 100px;
   display: flex;
   justify-content: center;
-  gap: 10px;
   width: 80%;
+  gap: 15px;
   margin: 0 auto;
 `;
 const StCommentContainer = styled.div`
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   border: 1px solid #ccc;
   border-radius: 12px;
 `;
 const StCommentBox = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 80%;
-  margin: 0 auto;
+  margin: 1em auto 2em auto;
 `;
-const StUpdateBox = styled.div``;
+
+const StUpdateBox = styled.div`
+  display: flex;
+  gap: 50px;
+`;
+
 const StContent = styled.p`
   width: 100%;
   font-size: 1em;
@@ -260,6 +261,7 @@ const StContent = styled.p`
   -webkit-box-orient: vertical;
   overflow: hidden;
 `;
+
 const StTag = styled.p`
   width: 100%;
   font-size: 1.2em;
