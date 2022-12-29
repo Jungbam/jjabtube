@@ -4,15 +4,18 @@ import { useParams } from "react-router-dom";
 import SearchPost from "./ele/SearchPost";
 import styled from "styled-components";
 import {
-  filterDate,
-  filterNick,
+  detailFilterDay,
+  detailFilterMonth,
+  detailFilterYear,
   filterView,
   fitlerTitle,
   searchTitle,
 } from "../../redux/modules/videoSlice";
 
 const Search = () => {
-  const { searchedVideo } = useSelector((state) => state.videoSlice);
+  const { searchedVideo, searchedFilterVideo } = useSelector(
+    (state) => state.videoSlice
+  );
   const { searchValue } = useParams();
 
   const dispatch = useDispatch();
@@ -26,31 +29,40 @@ const Search = () => {
   return (
     <>
       <StWrap>
-        <StBtnContainer>
-          <StBtn
-            onClick={() => {
-              setShow(!show);
-            }}
-          >
-            정렬
-          </StBtn>
-          {show && (
-            <StFilter>
-              <StWrapBtn>
-                <StInnerTitle>정렬 기준</StInnerTitle>
-                <StBtn onClick={() => dispatch(fitlerTitle())}>제목순</StBtn>
-                <StBtn onClick={() => dispatch(filterDate())}>날짜순</StBtn>
-                <StBtn onClick={() => dispatch(filterView())}>조회수</StBtn>
-              </StWrapBtn>
-            </StFilter>
-          )}
-        </StBtnContainer>
+        <StBtn
+          onClick={() => {
+            setShow(!show);
+          }}
+        >
+          정렬
+        </StBtn>
+        {show && (
+          <StFilter>
+            <StWrapBtn>
+              <StInnerTitle>정렬 기준</StInnerTitle>
+              <StBtn onClick={() => dispatch(fitlerTitle())}>제목순</StBtn>
+              <StBtn onClick={() => dispatch(filterView())}>조회수</StBtn>
+            </StWrapBtn>
+            <StWrapBtn>
+              <StInnerTitle>정렬 기준</StInnerTitle>
+              <StBtn onClick={() => dispatch(detailFilterDay())}>오늘</StBtn>
+              <StBtn onClick={() => dispatch(detailFilterMonth())}>
+                이번 달
+              </StBtn>
+              <StBtn onClick={() => dispatch(detailFilterYear())}>올해</StBtn>
+            </StWrapBtn>
+          </StFilter>
+        )}
       </StWrap>
 
       <StSearchResult>
-        {searchedVideo?.map((video, i) => (
-          <SearchPost key={`search${i}`} video={video} />
-        ))}
+        {searchedFilterVideo
+          ? searchedFilterVideo?.map((video, i) => (
+              <SearchPost key={`search${i}`} video={video} />
+            ))
+          : searchedVideo?.map((video, i) => (
+              <SearchPost key={`search${i}`} video={video} />
+            ))}
       </StSearchResult>
     </>
   );
@@ -65,8 +77,6 @@ const StWrap = styled.div`
   background-color: #ccc;
   padding: 5px;
 `;
-
-const StBtnContainer = styled.div``;
 
 const StBtn = styled.button`
   width: 90px;

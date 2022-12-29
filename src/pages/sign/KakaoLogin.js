@@ -1,14 +1,14 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { kakaoLogin } from "../../redux/modules/signSlice";
 
 const { Kakao } = window;
 const CLIENT_ID = process.env.REACT_APP_KAKAO_ID;
 Kakao.init(process.env.REACT_APP_KAKAO_ID);
 
-export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=https://jjabtube-oehq7gdnq-jungbam.vercel.app/login/kakao&response_type=code`;
+export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=http://localhost:3000/login/kakao&response_type=code`;
 
 const KakaoLogin = () => {
   const dispatch = useDispatch();
@@ -17,8 +17,8 @@ const KakaoLogin = () => {
 
   const sendAuth = async () => {
     const code = location.search.split("=")[1];
+    console.log(code);
     const res = await dispatch(kakaoLogin(code));
-
     if (res.meta.requestStatus === "fulfilled") {
       navigate("/");
     }

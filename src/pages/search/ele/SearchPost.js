@@ -36,7 +36,7 @@ const SearchPost = ({ video }) => {
 
         <StBoxRow>
           <StView>조회수 : {video.view}</StView>
-          <StCreatedAt>등록일자 : {video.createdAt}</StCreatedAt>
+          <StCreatedAt>등록일자 : {video.ago}</StCreatedAt>
           <StNickname>작성자 : {video.nickname}</StNickname>
           <StContent>{video.content}</StContent>
         </StBoxRow>

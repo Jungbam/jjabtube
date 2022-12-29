@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { VideoAPI } from "../../api/axios";
 
 export const searchTag = createAsyncThunk(
@@ -44,7 +44,7 @@ export const getAllVideo = createAsyncThunk(
   "videoSlice/getAllVideo",
   async (getAll, thunkAPI) => {
     try {
-      const result = await VideoAPI.getAllVideo();
+      const result = await VideoAPI.getAllVideo(getAll);
       if (result.status === 200) {
         return thunkAPI.fulfillWithValue(result.data.posts);
       }
@@ -53,6 +53,7 @@ export const getAllVideo = createAsyncThunk(
     }
   }
 );
+
 export const getDetailVideo = createAsyncThunk(
   "videoSlice/getDetailVideo",
   async (videoId, thunkAPI) => {
@@ -98,6 +99,7 @@ const initialState = {
   allVideos: null,
   detailViedeo: null,
   searchedVideo: null,
+  searchedFilterVideo: null,
 };
 const videoSlice = createSlice({
   name: "videoSlice",
@@ -110,14 +112,28 @@ const videoSlice = createSlice({
       state.searchedVideo = state.searchedVideo?.sort(
         (a, b) => b.view - a.view
       );
+      state.searchedFilterVideo = null;
     },
     fitlerTitle: (state, payload) => {
       state.searchedVideo = state.searchedVideo?.sort(
         (a, b) => b.title - a.title
       );
+      state.searchedFilterVideo = null;
     },
-    filterDate: (state, payload) => {
-      state.searchedVideo = state.searchedVideo;
+    detailFilterDay: (state, payload) => {
+      state.searchedFilterVideo = state.searchedVideo?.filter(
+        (el) => new Date(el.createdAt).getDate() === new Date().getDate()
+      );
+    },
+    detailFilterMonth: (state, payload) => {
+      state.searchedFilterVideo = state.searchedVideo?.filter(
+        (el) => new Date(el.createdAt).getMonth() === new Date().getMonth()
+      );
+    },
+    detailFilterYear: (state, payload) => {
+      state.searchedFilterVideo = state.searchedVideo?.filter(
+        (el) => new Date(el.createdAt).getYear() === new Date().getYear()
+      );
     },
   },
   extraReducers: {
@@ -128,13 +144,23 @@ const videoSlice = createSlice({
 
     [searchTitle.fulfilled]: (state, action) => {
       state.searchedVideo = action.payload;
+      state.searchedFilterVideo = null;
     },
     [searchTitle.rejected]: (state, action) => {},
 
     [postVideo.rejected]: (state, action) => {},
 
     [getAllVideo.fulfilled]: (state, action) => {
-      state.allVideos = action.payload;
+      if (state.allVideos === null) {
+        state.allVideos = action.payload;
+      } else if (action.payload.length > 0) {
+        if (
+          state.allVideos[state.allVideos?.length - 1].postId !==
+          action.payload[action.payload.length - 1].postId
+        ) {
+          state.allVideos = [...state.allVideos, ...action.payload];
+        }
+      }
     },
     [getAllVideo.rejected]: (state, action) => {},
 
@@ -148,6 +174,12 @@ const videoSlice = createSlice({
     [patchVideo.rejected]: (state, action) => {},
   },
 });
-export const { initSearch, filterNick, filterDate, filterView, fitlerTitle } =
-  videoSlice.actions;
+export const {
+  initSearch,
+  filterView,
+  fitlerTitle,
+  detailFilterDay,
+  detailFilterMonth,
+  detailFilterYear,
+} = videoSlice.actions;
 export default videoSlice.reducer;

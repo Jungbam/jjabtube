@@ -63,7 +63,7 @@ export const kakaoLogin = createAsyncThunk(
   "signSlice/kakaoLogin",
   async (code, thunkAPI) => {
     try {
-      const response = await kakaoLogin(code);
+      const response = await SignAPI.kakaoLogin(code);
       if (response.status === 200) {
         return thunkAPI.fulfillWithValue();
       } else {
