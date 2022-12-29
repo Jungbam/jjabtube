@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
+import StButton from '../../../UI/StButton';
 
 const Modal = ({ children, modal, closeModal }) => {
   const styles = { modal };
@@ -9,7 +10,6 @@ const Modal = ({ children, modal, closeModal }) => {
       {ReactDOM.createPortal(
         <Fragment>
           <StModal {...styles}>
-            <StModalButton onClick={closeModal}>닫기</StModalButton>
             {children}
           </StModal>
           <StBackDrop {...styles} onClick={closeModal}></StBackDrop>
@@ -56,12 +56,13 @@ const StBackDrop = styled.div`
 `;
 
 const StModalButton = styled.button`
-  width: 360px;
-  height: 40px;
+  width: 280px;
+  height: 50px;
   position: absolute;
-  transform: translateY(220px);
+  transform: translate(40px, 200px);
   color: #fff;
-  background-color: rgb(0, 0, 0, 0.85);
+  background-color: ${(props) => props.theme.colors.blue};
+  border: none;
   border-radius: 5px;
   margin-left: 20px;
 `;
