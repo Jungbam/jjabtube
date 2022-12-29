@@ -141,13 +141,13 @@ const Detail = () => {
             {openComment && (
               <>
                 <StCommentInput>
-                  <input
+                  <StInput
                     type="text"
                     value={updatement.comment}
                     name="comment"
                     onChange={onChangUpdatament}
-                  ></input>
-                  <button onClick={postCommentHandler}>작성</button>
+                  ></StInput>
+                  <StCommentBtn onClick={postCommentHandler}>작성</StCommentBtn>
                 </StCommentInput>
                 <StCommentContainer>
                   {commentList?.map((el, i) => {
@@ -230,6 +230,12 @@ const StCommentInput = styled.div`
   display: flex;
   width: 80%;
   margin: 0 auto;
+  margin-bottom: 20px;
+`;
+
+const StInput = styled.input`
+  margin-right: 10px;
+  width: 60%;
 `;
 const StButtonBox = styled.div`
   width: 100px;
@@ -239,6 +245,12 @@ const StButtonBox = styled.div`
   width: 80%;
   margin: 0 auto;
 `;
+
+const StCommentBtn = styled.button`
+  width: 60px;
+  height: 30px;
+`;
+
 const StCommentContainer = styled.div`
   width: 80%;
   margin: 0 auto;

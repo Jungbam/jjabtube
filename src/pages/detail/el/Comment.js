@@ -12,20 +12,23 @@ const Comment = ({ el, videoId }) => {
   const [upComment, setUpComment] = useState("");
   return (
     <StWrapper>
-      <StP>{el.nickname}</StP>
-      {updating ? (
-        <input
-          type="text"
-          value={upComment}
-          onChange={(e) => setUpComment(e.target.value)}
-        ></input>
-      ) : (
-        <StP>{el.comment}</StP>
-      )}
-      <StP>{el.createdAt}</StP>
-      <div>
+      <StContentWrap>
+        <StNickname>{el.nickname}</StNickname>
+        <StcreatedAt>{el.createdAt}</StcreatedAt>
         {updating ? (
-          <button
+          <StInput
+            type="text"
+            value={upComment}
+            onChange={(e) => setUpComment(e.target.value)}
+            placeholder="수정할 내용을 입력하세요"
+          ></StInput>
+        ) : (
+          <StComment>{el.comment}</StComment>
+        )}
+      </StContentWrap>
+      <StBtnWrap>
+        {updating ? (
+          <StBtn
             onClick={() => {
               dispatch(
                 patchComment({
@@ -38,17 +41,17 @@ const Comment = ({ el, videoId }) => {
             }}
           >
             완료
-          </button>
+          </StBtn>
         ) : (
-          <button
+          <StBtn
             onClick={() => {
               setUpdating(true);
             }}
           >
             수정
-          </button>
+          </StBtn>
         )}
-        <button
+        <StBtn
           onClick={() => {
             dispatch(
               deleteComment({ postId: videoId, commentId: el.commentId })
@@ -56,8 +59,8 @@ const Comment = ({ el, videoId }) => {
           }}
         >
           삭제
-        </button>
-      </div>
+        </StBtn>
+      </StBtnWrap>
     </StWrapper>
   );
 };
@@ -69,14 +72,53 @@ const StWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const StP = styled.p`
+const StContentWrap = styled.div`
+  padding: 10px;
+`;
+
+const StNickname = styled.p`
+  font-size: 20px;
+  font-weight: 600;
   height: 2rem;
-  box-shadow: 0px 0px 3px #eee;
   border: none;
-  border-bottom: 1px solid #ccc;
   width: 40%;
   margin: 0 auto;
-  filter: blur(0.5px);
+`;
+
+const StComment = styled.p`
+  font-size: 15px;
+  width: 100px;
+  height: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+const StInput = styled.input`
+  width: 200px;
+  height: 20px;
+  margin-left: 20px;
+`;
+
+const StcreatedAt = styled.p`
+  font-size: 13px;
+  height: 20px;
+  margin-left: 35px;
+`;
+
+const StBtnWrap = styled.div`
+  padding-right: 30px;
+`;
+
+const StBtn = styled.button`
+  width: 60px;
+  height: 30px;
+  margin-top: 25px;
+
   &:hover {
     transform: scale(1.01);
     filter: blur(0);
