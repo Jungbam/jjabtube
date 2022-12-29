@@ -43,7 +43,7 @@ const Player = ({ video }) => {
           <StContainerCol>
             <StTitle>{video.title}</StTitle>
             <StNickName>작성자 : {video.nickname}</StNickName>
-            <StCreateAt>등록일자 : {video.createdAt}</StCreateAt>
+            <StCreateAt>등록일자 : {video.ago}</StCreateAt>
             <StViewCount>조회수 : {video.view}</StViewCount>
           </StContainerCol>
         </StContainerRow>

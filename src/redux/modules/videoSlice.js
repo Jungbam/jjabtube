@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { VideoAPI } from "../../api/axios";
 
 export const searchTag = createAsyncThunk(
@@ -44,7 +44,8 @@ export const getAllVideo = createAsyncThunk(
   "videoSlice/getAllVideo",
   async (getAll, thunkAPI) => {
     try {
-      const result = await VideoAPI.getAllVideo();
+      console.log(getAll);
+      const result = await VideoAPI.getAllVideo(getAll);
       if (result.status === 200) {
         return thunkAPI.fulfillWithValue(result.data.posts);
       }
@@ -53,6 +54,7 @@ export const getAllVideo = createAsyncThunk(
     }
   }
 );
+
 export const getDetailVideo = createAsyncThunk(
   "videoSlice/getDetailVideo",
   async (videoId, thunkAPI) => {
@@ -150,7 +152,16 @@ const videoSlice = createSlice({
     [postVideo.rejected]: (state, action) => {},
 
     [getAllVideo.fulfilled]: (state, action) => {
-      state.allVideos = action.payload;
+      if (state.allVideos === null) {
+        state.allVideos = action.payload;
+      } else if (action.payload.length > 0) {
+        if (
+          state.allVideos[state.allVideos?.length - 1].postId !==
+          action.payload[action.payload.length - 1].postId
+        ) {
+          state.allVideos = [...state.allVideos, ...action.payload];
+        }
+      }
     },
     [getAllVideo.rejected]: (state, action) => {},
 
