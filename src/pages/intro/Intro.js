@@ -34,7 +34,7 @@ const Intro = () => {
               } else if (!allVideos) {
                 dispatch(getAllVideo(0));
               }
-            }, 2000);
+            }, 500);
           }
         });
       },
@@ -48,7 +48,7 @@ const Intro = () => {
     dispatch(searchTag(e.target.name));
   };
   return (
-    <>
+    <StAllBox>
       <section>
         <StLabelContainer>
           <StLabel
@@ -73,7 +73,7 @@ const Intro = () => {
           </StLabel>
         </StLabelContainer>
       </section>
-      <StVideoContainerBox>
+      <section>
         <StAllVideoContainer>
           {searchedVideo === null ? (
             allVideos?.map((video, i) => {
@@ -91,8 +91,8 @@ const Intro = () => {
           )}
         </StAllVideoContainer>
         <StTarget ref={target}></StTarget>
-      </StVideoContainerBox>
-    </>
+      </section>
+    </StAllBox>
   );
 };
 
@@ -113,11 +113,11 @@ const StLabelContainer = styled.article`
   justify-content: center;
   gap: 5px;
 `;
-const StVideoContainerBox = styled.div`
+const StAllBox = styled.div`
   position: relative;
 `;
-const StTarget = styled.div`
+const StTarget = styled.input`
   position: absolute;
-  bottom: 80%;
-  z-index: -90;
+  bottom: 10%;
+  z-index: -9999;
 `;
