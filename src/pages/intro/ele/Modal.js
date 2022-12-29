@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
-import StButton from '../../../UI/StButton';
 
 const Modal = ({ children, modal, closeModal }) => {
   const styles = { modal };
@@ -9,9 +8,7 @@ const Modal = ({ children, modal, closeModal }) => {
     <>
       {ReactDOM.createPortal(
         <Fragment>
-          <StModal {...styles}>
-            {children}
-          </StModal>
+          <StModal {...styles}>{children}</StModal>
           <StBackDrop {...styles} onClick={closeModal}></StBackDrop>
         </Fragment>,
         document.getElementById("root")

@@ -14,12 +14,6 @@ const Intro = () => {
   const target = useRef();
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(getAllVideo());
-  // }, []);
-
-  // 1차 시도 : IntersectionObserver
-
   useEffect(() => {
     let observer = new IntersectionObserver(
       (e, io) => {
@@ -120,4 +114,6 @@ const StTarget = styled.input`
   position: absolute;
   bottom: 10%;
   z-index: -9999;
+  border: none;
+  background-color: whitesmoke;
 `;

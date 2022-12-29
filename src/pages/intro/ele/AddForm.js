@@ -1,14 +1,14 @@
+import { async } from "q";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useInputItem from "../../../hooks/useInputItem";
 import { postVideo } from "../../../redux/modules/videoSlice";
-import { StButton, StLabel } from "../../../UI/StIndex";
+import { StButton } from "../../../UI/StIndex";
 
 const AddForm = ({ onToggleModal }) => {
   const { input, onChangeHandler, reset } = useInputItem();
-  const { msg, isValid } = useSelector(state => state.videoSlice);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [video, setVideo] = useState();
@@ -23,18 +23,10 @@ const AddForm = ({ onToggleModal }) => {
     formData.append("tag", tag);
     formData.append("video", video);
 
-    dispatch(postVideo(formData))
-      .then(response => {
-        console.log(response);
-        if(response.meta.requestStatus === "fulfilled"){
-          window.alert(response.payload);
-          onToggleModal();
-          navigate("/");
-          reset();
-        } else {
-          window.alert(response.payload.errorMessage);
-        }    
-      });
+    dispatch(postVideo(formData));
+    onToggleModal();
+    navigate("/");
+    reset();
   };
 
   const onCloseModal = (e) => {
@@ -49,7 +41,11 @@ const AddForm = ({ onToggleModal }) => {
           <label>제목</label>
           <input name="title" value={input.title} onChange={onChangeHandler} />
           <label>내용</label>
-          <StInput name="content" value={input.content} onChange={onChangeHandler} />
+          <StInput
+            name="content"
+            value={input.content}
+            onChange={onChangeHandler}
+          />
           <label>태그</label>
           <input onChange={onChangeHandler} name="tag" value={input.tag} />
         </StContentContainer>
@@ -65,11 +61,14 @@ const AddForm = ({ onToggleModal }) => {
           />
         </StVideoContainer>
         <StButtonWrapper>
-          <StButton mode={'pr'} onClick={onSubmitHandler}>추가하기</StButton>
-          <StButton mode={'second'} onClick={onCloseModal}>취소</StButton>
-        </StButtonWrapper>     
+          <StButton mode={"pr"} onClick={onSubmitHandler}>
+            추가하기
+          </StButton>
+          <StButton mode={"second"} onClick={onCloseModal}>
+            취소
+          </StButton>
+        </StButtonWrapper>
       </StContainer>
-
     </>
   );
 };
@@ -93,7 +92,7 @@ const StContentContainer = styled.div`
 const StInput = styled.input`
   boreder: 1px solid ${(props) => props.theme.colors.lightGray};
   height: 50px;
-  &:focus{
+  &:focus {
     boreder: 1px solid ${(props) => props.theme.colors.blue};
   }
 `;
@@ -102,7 +101,7 @@ const StInputText = styled.input`
 `;
 
 const StVideoContainer = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: column;
   margin-top: 15px;
   width: 80%;

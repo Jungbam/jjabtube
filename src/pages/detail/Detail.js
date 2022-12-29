@@ -73,7 +73,7 @@ const Detail = () => {
                 height="100%"
                 width="100%"
                 playing={true}
-                muted={true}
+                muted={false}
                 controls={true}
               />
             </StPlayerContainer>
@@ -126,7 +126,18 @@ const Detail = () => {
                     <StButton mode="smpr" onClick={onDeleteHandler}>
                       삭제
                     </StButton>
-                    <StButton mode="smpr" onClick={() => setUpdating(true)}>
+                    <StButton
+                      mode="smpr"
+                      onClick={() => {
+                        setUpdatement({
+                          title: "",
+                          content: "",
+                          tag: "",
+                          comment: "",
+                        });
+                        setUpdating(true);
+                      }}
+                    >
                       수정
                     </StButton>
                   </StUpdateBox>

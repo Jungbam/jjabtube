@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
-import { VideoAPI } from "../../api/axios";
+import { client, VideoAPI } from "../../api/axios";
 
 export const searchTag = createAsyncThunk(
   "videoSlice/searchTag",
@@ -32,12 +32,8 @@ export const postVideo = createAsyncThunk(
     try {
       const response = await VideoAPI.postVideo(formData);
       if (response.status === 200) {
-        await thunkAPI.dispatch(getAllVideo());
-        const msg = response.data.message;
-        return thunkAPI.fulfillWithValue(msg);
-      } else {
-        const err = response.response.data;
-        return thunkAPI.rejectWithValue(err);
+        const result = await client.get(`/post?lastId=0`);
+        return thunkAPI.fulfillWithValue(result.data.posts);
       }
     } catch (err) {
       return thunkAPI.rejectWithValue();
@@ -105,8 +101,6 @@ const initialState = {
   detailViedeo: null,
   searchedVideo: null,
   searchedFilterVideo: null,
-  isValid: false,
-  msg: ""
 };
 const videoSlice = createSlice({
   name: "videoSlice",
@@ -158,8 +152,7 @@ const videoSlice = createSlice({
     [searchTitle.rejected]: (state, action) => {},
 
     [postVideo.fulfilled]: (state, action) => {
-      state.msg = action.payload;
-      state.isValid = true;
+      state.allVideos = action.payload;
     },
     [postVideo.rejected]: (state, action) => {
       state.msg = action.payload.errorMessage;

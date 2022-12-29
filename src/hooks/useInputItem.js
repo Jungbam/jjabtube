@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const useInputItem = () => {
   const [input, setInput] = useState({
     title: "",
-    content: 0,
+    content: "",
     tag: "",
   });
 
@@ -15,7 +15,7 @@ const useInputItem = () => {
   const reset = () => {
     setInput({
       title: "",
-      content: 0,
+      content: "",
       tag: "",
     });
   };
