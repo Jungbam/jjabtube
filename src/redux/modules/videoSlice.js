@@ -98,6 +98,7 @@ const initialState = {
   allVideos: null,
   detailViedeo: null,
   searchedVideo: null,
+  searchedFilterVideo: null,
 };
 const videoSlice = createSlice({
   name: "videoSlice",
@@ -110,14 +111,28 @@ const videoSlice = createSlice({
       state.searchedVideo = state.searchedVideo?.sort(
         (a, b) => b.view - a.view
       );
+      state.searchedFilterVideo = null;
     },
     fitlerTitle: (state, payload) => {
       state.searchedVideo = state.searchedVideo?.sort(
         (a, b) => b.title - a.title
       );
+      state.searchedFilterVideo = null;
     },
-    filterDate: (state, payload) => {
-      state.searchedVideo = state.searchedVideo;
+    detailFilterDay: (state, payload) => {
+      state.searchedFilterVideo = state.searchedVideo?.filter(
+        (el) => new Date(el.createdAt).getDate() === new Date().getDate()
+      );
+    },
+    detailFilterMonth: (state, payload) => {
+      state.searchedFilterVideo = state.searchedVideo?.filter(
+        (el) => new Date(el.createdAt).getMonth() === new Date().getMonth()
+      );
+    },
+    detailFilterYear: (state, payload) => {
+      state.searchedFilterVideo = state.searchedVideo?.filter(
+        (el) => new Date(el.createdAt).getYear() === new Date().getYear()
+      );
     },
   },
   extraReducers: {
@@ -128,6 +143,7 @@ const videoSlice = createSlice({
 
     [searchTitle.fulfilled]: (state, action) => {
       state.searchedVideo = action.payload;
+      state.searchedFilterVideo = null;
     },
     [searchTitle.rejected]: (state, action) => {},
 
@@ -148,6 +164,12 @@ const videoSlice = createSlice({
     [patchVideo.rejected]: (state, action) => {},
   },
 });
-export const { initSearch, filterNick, filterDate, filterView, fitlerTitle } =
-  videoSlice.actions;
+export const {
+  initSearch,
+  filterView,
+  fitlerTitle,
+  detailFilterDay,
+  detailFilterMonth,
+  detailFilterYear,
+} = videoSlice.actions;
 export default videoSlice.reducer;

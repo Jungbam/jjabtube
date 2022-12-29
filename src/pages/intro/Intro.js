@@ -79,41 +79,6 @@ const StAllVideoContainer = styled.div`
   margin: 0 24px;
 `;
 
-const StWrap1 = styled.div`
-  width: 300px;
-  overflow: hidden;
-`;
-
-const StVideo = styled.div`
-  border: 2px solid blue;
-  border-radius: 15px;
-  width: 17rem;
-  height: 170px;
-  overflow: auto;
-  display: flex;
-  align-items: center;
-  margin: 3%;
-`;
-
-const StWrap2 = styled.div`
-  width: 100%;
-`;
-
-const StTitle = styled.div`
-  font-size: 1.3rem;
-  font-weight: 500;
-`;
-
-const StView = styled.div`
-  font-size: 1rem;
-  font-weight: 500;
-`;
-
-const StNickname = styled.div`
-  font-size: 1rem;
-  font-weight: 500;
-`;
-
 const StLabelContainer = styled.article`
   width: 100%;
   padding: 1rem 0;
