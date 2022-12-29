@@ -44,7 +44,6 @@ export const getAllVideo = createAsyncThunk(
   "videoSlice/getAllVideo",
   async (getAll, thunkAPI) => {
     try {
-      console.log(getAll);
       const result = await VideoAPI.getAllVideo(getAll);
       if (result.status === 200) {
         return thunkAPI.fulfillWithValue(result.data.posts);

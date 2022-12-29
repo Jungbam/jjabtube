@@ -73,7 +73,7 @@ const Intro = () => {
           </StLabel>
         </StLabelContainer>
       </section>
-      <section>
+      <StVideoContainerBox>
         <StAllVideoContainer>
           {searchedVideo === null ? (
             allVideos?.map((video, i) => {
@@ -89,9 +89,9 @@ const Intro = () => {
               return <Player key={`player${video.postId}`} video={video} />;
             })
           )}
-          <input ref={target}></input>
         </StAllVideoContainer>
-      </section>
+        <StTarget ref={target}></StTarget>
+      </StVideoContainerBox>
     </>
   );
 };
@@ -112,4 +112,12 @@ const StLabelContainer = styled.article`
   display: flex;
   justify-content: center;
   gap: 5px;
+`;
+const StVideoContainerBox = styled.div`
+  position: relative;
+`;
+const StTarget = styled.div`
+  position: absolute;
+  bottom: 80%;
+  z-index: -90;
 `;
